@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LazyLlamaLedger.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,30 @@ namespace LazyLlamaLedger.Controllers
     public class LedgerController:ApiController
     {
         [HttpGet]
-        [Route("hello")]
-        public IEnumerable<string> Test()
+        public IEnumerable<LedgerEntry> Get()
         {
-            return new string[] { "value1", "value2" };
+            LedgerDBContext db = new LedgerDBContext();
+
+            return db.Entries.ToArray();
+        }
+
+        [HttpPost]
+        public IHttpActionResult Post([FromBody] LedgerEntry le)
+        {
+            if (le != null && ModelState.IsValid)
+            {
+                LedgerDBContext db = new LedgerDBContext();
+
+                db.Entries.Add(le);
+
+                db.SaveChanges();
+
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
