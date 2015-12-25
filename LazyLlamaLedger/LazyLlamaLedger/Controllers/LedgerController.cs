@@ -10,8 +10,8 @@ using System.Web.Http.Cors;
 
 namespace LazyLlamaLedger.Controllers
 {
-    [EnableCors("*","*","*")]
-    public class LedgerController:ApiController
+    [EnableCors("*", "*", "*")]
+    public class LedgerController : ApiController
     {
         [HttpGet]
         [ActionName("LedgerEntry")]
@@ -24,7 +24,7 @@ namespace LazyLlamaLedger.Controllers
         [ActionName("LedgerEntry")]
         public IHttpActionResult Get(int month)
         {
-            return Ok( DataHandling.LedgerEntries.Where(e => e.Date.Month == month).ToArray().Select(e => new LedgerEntryView(e)).ToArray());
+            return Ok(DataHandling.LedgerEntries.Where(e => e.Date.Month == month).ToArray().Select(e => new LedgerEntryView(e)).ToArray());
         }
 
         [HttpPost]
@@ -45,7 +45,7 @@ namespace LazyLlamaLedger.Controllers
         [HttpGet]
         [ActionName("Category")]
         public IHttpActionResult Category(bool activeOnly)
-        {            
+        {
             if (activeOnly)
             {
                 return Ok(DataHandling.Categories.Where(c => c.Active));
@@ -63,6 +63,28 @@ namespace LazyLlamaLedger.Controllers
             if (cat != null && ModelState.IsValid)
             {
                 DataHandling.AddCategory(cat);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        [ActionName("Subcategory")]
+        public IHttpActionResult SubCategory(int category, bool activeOnly)
+        {
+            return Ok(DataHandling.SubCategories.Where(sc => sc.CategoryID == category && (!activeOnly || sc.Active)).ToArray());
+        }
+
+        [HttpPost]
+        [ActionName("Subcategory")]
+        public IHttpActionResult SubCategory([FromBody]SubCategory subCat)
+        {
+            if (subCat != null && ModelState.IsValid)
+            {
+                DataHandling.AddSubCategory(subCat);
                 return Ok();
             }
             else
