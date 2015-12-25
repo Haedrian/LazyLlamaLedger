@@ -1,6 +1,7 @@
 ﻿using Owin;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,9 @@ namespace LazyLlamaLedger
             );
 
             appBuilder.UseWebApi(config);
+
+            //Open the browser
+            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + "/../../LazyLlamaLedger.htm");
         }
     }
 }
