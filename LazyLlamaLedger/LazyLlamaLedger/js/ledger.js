@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
     getCurrentMonth();
+
+    $("#txtDate").datepicker();
+    $("#txtDate").datepicker("option", "dateFormat", "d M y");
 });
 
 
