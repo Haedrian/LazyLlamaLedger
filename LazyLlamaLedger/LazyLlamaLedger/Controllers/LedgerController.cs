@@ -22,9 +22,9 @@ namespace LazyLlamaLedger.Controllers
 
         [HttpGet]
         [ActionName("LedgerEntry")]
-        public IHttpActionResult Get(int month)
+        public IHttpActionResult Get(int month,int year)
         {
-            return Ok(DataHandling.LedgerEntries.Where(e => e.Date.Month == month).ToArray().OrderBy(e => e.Date).Select(e => new LedgerEntryView(e)).ToArray());
+            return Ok(DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year).ToArray().OrderBy(e => e.Date).Select(e => new LedgerEntryView(e)).ToArray());
         }
 
         [HttpPost]

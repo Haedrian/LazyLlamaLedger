@@ -1,9 +1,13 @@
-﻿$(document).ready(function () {
-    fetchData();
+﻿var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+var chosenMonth = (new Date()).getMonth();
+var chosenYear = (new Date()).getFullYear();
+
+$(document).ready(function () {
+    changeMonth();
 
     $('.datepicker').pickadate({
         selectMonths: false,
-        selectYears: 2 
+        selectYears: false 
     });
 
     $('.picker').appendTo('body');
@@ -11,6 +15,13 @@
     $('#slCategory').material_select();
     $('#slSubCategory').material_select();
 });
+
+function changeMonth()
+{
+    $("#lblMonth").html(months[chosenMonth] + " " + chosenYear);
+
+    fetchData();
+}
 
 function readLedgerEntry()
 {
@@ -91,7 +102,7 @@ function closeModal()
 ///Fetches the data. Considers filters and month and whatnot.
 function fetchData()
 {
-    $.get("http://localhost:7744/api/ledger/ledgerentry?Month=" + ((new Date()).getMonth() + 1), function (data) {
+    $.get("http://localhost:7744/api/ledger/ledgerentry?Month=" + (chosenMonth+1) + "&year="+chosenYear, function (data) {
         //Populate a table
         var html = "";
         var total = 0;

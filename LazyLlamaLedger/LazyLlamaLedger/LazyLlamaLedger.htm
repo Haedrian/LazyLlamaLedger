@@ -24,7 +24,7 @@
 
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo center">Lazy Llama Ledger</a>
+            <a href="#" class="brand-logo" style="margin-left:30px">Lazy Llama Ledger</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li class="active"><a href="">Ledger</a></li>
                 <li><a href="">Setup</a></li>
@@ -35,7 +35,11 @@
 
     <div class="container" style="width:75%">
 
-        <h4>Current Month</h4>
+        <div style="text-align:center;margin-top:30px;margin-bottom:30px">
+            <a style="vertical-align:central;" class="modal-action waves-effect waves-green btn-flat"><i class="material-icons large" style="font-size:3rem">keyboard_arrow_left</i></a>
+            <h4 style="text-align:center;display:inline;vertical-align:bottom" id="lblMonth"></h4>
+            <a style="vertical-align:central" class="modal-action waves-effect waves-green btn-flat"><i class="material-icons large" style="font-size:3rem">keyboard_arrow_right</i></a>
+        </div>
 
         <table id="tblLedger">
             <thead>
