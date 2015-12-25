@@ -24,7 +24,7 @@ namespace LazyLlamaLedger.Controllers
         [ActionName("LedgerEntry")]
         public IHttpActionResult Get(int month)
         {
-            return Ok(DataHandling.LedgerEntries.Where(e => e.Date.Month == month).ToArray().Select(e => new LedgerEntryView(e)).ToArray());
+            return Ok(DataHandling.LedgerEntries.Where(e => e.Date.Month == month).ToArray().OrderBy(e => e.Date).Select(e => new LedgerEntryView(e)).ToArray());
         }
 
         [HttpPost]
@@ -44,15 +44,15 @@ namespace LazyLlamaLedger.Controllers
 
         [HttpGet]
         [ActionName("Category")]
-        public IHttpActionResult Category(bool activeOnly)
+        public IHttpActionResult Category(bool activeOnly,bool expense)
         {
             if (activeOnly)
             {
-                return Ok(DataHandling.Categories.Where(c => c.Active));
+                return Ok(DataHandling.Categories.Where(c => c.Active && c.IsExpense == expense));
             }
             else
             {
-                return Ok(DataHandling.Categories);
+                return Ok(DataHandling.Categories.Where(c => c.IsExpense == expense));
             }
         }
 

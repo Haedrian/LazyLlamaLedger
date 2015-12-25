@@ -13,7 +13,7 @@ namespace LazyLlamaLedger.Views
 
         public string Item { get; set; }
         public bool IsExpense { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
         public string Category { get; set; }
 
@@ -29,9 +29,9 @@ namespace LazyLlamaLedger.Views
             ID = le.ID;
             Item = le.Item;
             IsExpense = le.IsExpense;
-            Date = le.Date;
-            Category = "";
-            SubCategory = "";
+            Date = le.Date.ToString("yyyy-MM-dd");
+            Category = DataHandling.Categories.Where(c => c.ID == le.Category).Select(c => c.Name).FirstOrDefault();
+            SubCategory = DataHandling.SubCategories.Where(c => c.ID == le.SubCategory).Select(c => c.Name).FirstOrDefault(); ;
             Money = le.Money;
         }
     }
