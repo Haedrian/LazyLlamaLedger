@@ -1,8 +1,18 @@
 ﻿$(document).ready(function () {
     getCurrentMonth();
 
-    $("#txtDate").datepicker();
-    $("#txtDate").datepicker("option", "dateFormat", "d M y");
+    //$("#txtDate").datepicker();
+    //$("#txtDate").datepicker("option", "dateFormat", "d M y");
+
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 2 // Creates a dropdown of 15 years to control year
+    });
+
+    $('.picker').appendTo('body');
+
+    $('#slCategory').material_select();
+    $('#slSubCategory').material_select();
 });
 
 

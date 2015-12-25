@@ -18,9 +18,9 @@
     <link href="jqueryui/jquery-ui.structure.min.css" rel="stylesheet" />
     <link href="jqueryui/jquery-ui.theme.min.css" rel="stylesheet" />
     <script src="jqueryui/jquery-ui.min.js"></script>
-    
+
     <script src="js/ledger.js"></script>
-    
+
     <nav>
         <div class="nav-wrapper">
             <a href="#" class="brand-logo center">Lazy Llama Ledger</a>
@@ -59,31 +59,70 @@
                 <li><a class="btn-floating yellow darken-1"><i class="material-icons">edit</i></a></li>
             </ul>
         </div>
+    </div>
 
-        <!-- Modal Structure -->
-        <div id="mdlPurchase" class="modal modal-fixed-footer">
-            <div class="modal-content">
-                <h4>Add new Entry</h4>
+
+
+    <!-- Modal Structure -->
+    <div id="mdlPurchase" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Add new Entry</h4>
+            <form class="col s12">
                 <div class="row">
-                    <form class="col s12">
-                        <div class="row">
-                            <div class="input-field col s6">
-                                <input placeholder="Purchase" id="txtItem" type="text">
-                                <label for="txtItem">Purchased Item</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <input placeholder="Date" id="txtDate" type="text">
-                                <label for="txtDate">Date</label>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="switch col s6">
+                        <label>
+                            Expense
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            Income
+                        </label>
+                    </div>
                 </div>
-                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Insert</a>
-                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Insert and Close</a>
-            </div>
-
-
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="Item" id="txtItem" type="text">
+                        <label for="txtItem">Item</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input placeholder="Date" id="txtDate" class="datepicker">
+                        <label for="txtDate"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select id="slCategory">
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                        <label>Category</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select id="slSubCategory">
+                            <option value="" disabled selected>Choose your option</option>
+                            <option value="1">Option 1</option>
+                            <option value="2">Option 2</option>
+                            <option value="3">Option 3</option>
+                        </select>
+                        <label>Subcategory</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="" min="0" step="0.01" id="txtMoney" type="number">
+                        <label for="txtMoney">Money</label>
+                    </div>
+                </div>
+            </form>
         </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Insert</a>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Insert and Close</a>
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat " onclick="$('#mdlPurchase').closeModal()">Close</a>
+        </div>
+    </div>
+
 
 
 </body>
