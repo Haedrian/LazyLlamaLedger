@@ -1,9 +1,8 @@
 ﻿var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-var chosenMonth = (new Date()).getMonth();
-var chosenYear = (new Date()).getFullYear();
+var chosenDate = new Date();
 
 $(document).ready(function () {
-    changeMonth();
+    updateMonth();
 
     $('.datepicker').pickadate({
         selectMonths: false,
@@ -16,11 +15,18 @@ $(document).ready(function () {
     $('#slSubCategory').material_select();
 });
 
-function changeMonth()
+function updateMonth()
 {
-    $("#lblMonth").html(months[chosenMonth] + " " + chosenYear);
+    $("#lblMonth").html(months[chosenDate.getMonth()] + " " + chosenDate.getFullYear());
 
     fetchData();
+}
+
+///Changes the chosen date by a number of months and reloads everything
+function changeDate(amount)
+{
+    chosenDate.setMonth(chosenDate.getMonth() + amount);
+    updateMonth();
 }
 
 function readLedgerEntry()
@@ -102,7 +108,7 @@ function closeModal()
 ///Fetches the data. Considers filters and month and whatnot.
 function fetchData()
 {
-    $.get("http://localhost:7744/api/ledger/ledgerentry?Month=" + (chosenMonth+1) + "&year="+chosenYear, function (data) {
+    $.get("http://localhost:7744/api/ledger/ledgerentry?Month=" + (chosenDate.getMonth()+1) + "&year="+chosenDate.getFullYear(), function (data) {
         //Populate a table
         var html = "";
         var total = 0;
