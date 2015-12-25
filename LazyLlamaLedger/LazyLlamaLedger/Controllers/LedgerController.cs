@@ -1,13 +1,16 @@
 ﻿using LazyLlamaLedger.Models;
+using LazyLlamaLedger.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace LazyLlamaLedger.Controllers
 {
+    [EnableCors("*","*","*")]
     public class LedgerController:ApiController
     {
         [HttpGet]
@@ -16,6 +19,14 @@ namespace LazyLlamaLedger.Controllers
             LedgerDBContext db = new LedgerDBContext();
 
             return db.Entries.ToArray();
+        }
+
+        [HttpGet]
+        public IHttpActionResult Get(int month)
+        {
+            LedgerDBContext db = new LedgerDBContext();
+
+            return Ok( db.Entries.Where(e => e.Date.Month == month).ToArray().Select(e => new LedgerEntryView(e)).ToArray());
         }
 
         [HttpPost]

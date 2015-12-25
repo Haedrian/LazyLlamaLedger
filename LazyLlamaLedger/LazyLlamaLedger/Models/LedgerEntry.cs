@@ -19,6 +19,12 @@ namespace LazyLlamaLedger.Models
         public bool IsExpense { get; set; }
         [Required]
         public DateTime Date { get; set; }
+        [Required]
+        public int Category { get; set; }
+        [Required]
+        public int SubCategory { get; set; }
+        [Required]
+        public decimal Money { get; set; }
     }
 
     public class LedgerDBContext: DbContext
