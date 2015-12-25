@@ -15,7 +15,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script src="js/ledger.js"></script>
-    
+
     <nav>
         <div class="nav-wrapper">
             <a href="#" class="brand-logo center">Lazy Llama Ledger</a>
@@ -43,6 +43,32 @@
             </thead>
             <tbody></tbody>
         </table>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large red">
+                <i class="large material-icons">add</i>
+            </a>
+            <ul>
+                <li><a class="btn-floating green" onclick="$('#mdlPurchase').openModal()"><i class="material-icons">attach_money</i></a></li>
+                <li><a class="btn-floating red" onclick="$('#mdlPurchase').openModal()"><i class="material-icons">attach_money</i></a></li>
+                <li><a class="btn-floating yellow darken-1"><i class="material-icons">edit</i></a></li>
+            </ul>
+        </div>
+
+        <!-- Modal Structure -->
+        <div id="mdlPurchase" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Add new Entry</h4>
+                <p>A bunch of text</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Done</a>
+            </div>
+        </div>
+
+
     </div>
+
+
 </body>
 </html>
