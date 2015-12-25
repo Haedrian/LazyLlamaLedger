@@ -47,5 +47,13 @@ namespace LazyLlamaLedger.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult Categories(bool activeOnly)
+        {
+            LedgerDBContext db = new LedgerDBContext();
+
+            return Ok( db.Categories.Where(c => c.Active).ToArray());
+        }
     }
 }

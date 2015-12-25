@@ -109,7 +109,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\LedgerController.cs" />
+    <Compile Include="Models\Category.cs" />
     <Compile Include="Models\LedgerEntry.cs" />
+    <Compile Include="Models\SubCategory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -158,21 +160,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="jqueryui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="jqueryui\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="jqueryui\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="jqueryui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="jqueryui\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="jqueryui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="jqueryui\images\ui-icons_222222_256x240.png" />
-    <Content Include="jqueryui\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="jqueryui\images\ui-icons_454545_256x240.png" />
-    <Content Include="jqueryui\images\ui-icons_888888_256x240.png" />
-    <Content Include="jqueryui\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="jqueryui\jquery-ui.min.css" />
-    <Content Include="jqueryui\jquery-ui.min.js" />
-    <Content Include="jqueryui\jquery-ui.structure.min.css" />
-    <Content Include="jqueryui\jquery-ui.theme.min.css" />
     <Content Include="js\ledger.js" />
     <Content Include="LazyLlamaLedger.htm" />
     <Content Include="css\materialize.css" />

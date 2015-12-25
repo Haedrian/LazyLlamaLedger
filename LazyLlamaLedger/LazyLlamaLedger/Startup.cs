@@ -1,4 +1,5 @@
-﻿using Owin;
+﻿using LazyLlamaLedger.Models;
+using Owin;
 using System;
 using System.Collections.Generic;
 using System.IO;
