@@ -9,7 +9,6 @@ namespace LazyLlamaLedger.Models
 {
     public class Category
     {
-        [Required]
         public int ID { get; set; }
         [Required]
         public string Name { get; set; }

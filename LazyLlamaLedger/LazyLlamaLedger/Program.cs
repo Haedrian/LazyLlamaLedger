@@ -24,13 +24,6 @@ namespace LazyLlamaLedger
 
             AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetCurrentDirectory());
 
-            Database.SetInitializer<LedgerDBContext>(new CreateDatabaseIfNotExists<LedgerDBContext>());
-
-            LedgerDBContext db = new LedgerDBContext();
-            db.Categories.Add(new Category() { Active = true, Name = "Misc" });
-
-            db.SaveChanges();
-
             Console.ReadLine();
         }
     }

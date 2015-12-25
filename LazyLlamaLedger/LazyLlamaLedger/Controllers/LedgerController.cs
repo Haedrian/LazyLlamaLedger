@@ -14,32 +14,26 @@ namespace LazyLlamaLedger.Controllers
     public class LedgerController:ApiController
     {
         [HttpGet]
+        [ActionName("LedgerEntry")]
         public IEnumerable<LedgerEntry> Get()
         {
-            LedgerDBContext db = new LedgerDBContext();
-
-            return db.Entries.ToArray();
+            return DataHandling.LedgerEntries;
         }
 
         [HttpGet]
+        [ActionName("LedgerEntry")]
         public IHttpActionResult Get(int month)
         {
-            LedgerDBContext db = new LedgerDBContext();
-
-            return Ok( db.Entries.Where(e => e.Date.Month == month).ToArray().Select(e => new LedgerEntryView(e)).ToArray());
+            return Ok( DataHandling.LedgerEntries.Where(e => e.Date.Month == month).ToArray().Select(e => new LedgerEntryView(e)).ToArray());
         }
 
         [HttpPost]
+        [ActionName("LedgerEntry")]
         public IHttpActionResult Post([FromBody] LedgerEntry le)
         {
             if (le != null && ModelState.IsValid)
             {
-                LedgerDBContext db = new LedgerDBContext();
-
-                db.Entries.Add(le);
-
-                db.SaveChanges();
-
+                DataHandling.AddLedgerEntry(le);
                 return Ok();
             }
             else
@@ -49,11 +43,32 @@ namespace LazyLlamaLedger.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Categories(bool activeOnly)
-        {
-            LedgerDBContext db = new LedgerDBContext();
+        [ActionName("Category")]
+        public IHttpActionResult Category(bool activeOnly)
+        {            
+            if (activeOnly)
+            {
+                return Ok(DataHandling.Categories.Where(c => c.Active));
+            }
+            else
+            {
+                return Ok(DataHandling.Categories);
+            }
+        }
 
-            return Ok( db.Categories.Where(c => c.Active).ToArray());
+        [HttpPost]
+        [ActionName("Category")]
+        public IHttpActionResult Category([FromBody]Category cat)
+        {
+            if (cat != null && ModelState.IsValid)
+            {
+                DataHandling.AddCategory(cat);
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

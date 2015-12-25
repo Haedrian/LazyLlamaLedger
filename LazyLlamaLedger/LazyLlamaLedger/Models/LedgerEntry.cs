@@ -26,17 +26,4 @@ namespace LazyLlamaLedger.Models
         [Required]
         public decimal Money { get; set; }
     }
-
-    public class LedgerDBContext: DbContext
-    {
-        static LedgerDBContext()
-        {
-            Database.SetInitializer<LedgerDBContext>(new CreateDatabaseIfNotExists<LedgerDBContext>());
-        }
-
-        public DbSet<LedgerEntry> Entries { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<SubCategory> SubCategory { get; set; }
-    }
-
 }
