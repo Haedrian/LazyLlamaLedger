@@ -21,7 +21,7 @@ namespace LazyLlamaLedger
 
             LedgerEntries.Add(le);
 
-            FlushLedgers();
+           // FlushLedgers();
         }
 
         public static void AddCategory(Category cat)
@@ -30,7 +30,7 @@ namespace LazyLlamaLedger
 
             Categories.Add(cat);
 
-            FlushCats();
+           // FlushCats();
         }
 
         public static void AddSubCategory(SubCategory subCat)
@@ -38,7 +38,7 @@ namespace LazyLlamaLedger
             subCat.ID = SubCategories.Count + 1;
             SubCategories.Add(subCat);
 
-            FlushSubcats();
+           // FlushSubcats();
         }
 
         static DataHandling()
