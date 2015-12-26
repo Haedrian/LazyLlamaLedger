@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LazyLlamaLedger", "LazyLlamaLedger\LazyLlamaLedger.csproj", "{8779D164-8D51-4772-A919-430B02478512}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LLLApplication", "LLLApplication\LLLApplication.csproj", "{F24E6D15-70FB-4FE4-885F-5014E3D439A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{676B538B-52A5-4BE0-A4E4-F4CB40C2A722}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{8779D164-8D51-4772-A919-430B02478512}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8779D164-8D51-4772-A919-430B02478512}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8779D164-8D51-4772-A919-430B02478512}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F24E6D15-70FB-4FE4-885F-5014E3D439A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F24E6D15-70FB-4FE4-885F-5014E3D439A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F24E6D15-70FB-4FE4-885F-5014E3D439A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F24E6D15-70FB-4FE4-885F-5014E3D439A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{676B538B-52A5-4BE0-A4E4-F4CB40C2A722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{676B538B-52A5-4BE0-A4E4-F4CB40C2A722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{676B538B-52A5-4BE0-A4E4-F4CB40C2A722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{676B538B-52A5-4BE0-A4E4-F4CB40C2A722}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

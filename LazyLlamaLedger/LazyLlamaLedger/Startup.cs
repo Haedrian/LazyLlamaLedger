@@ -28,9 +28,6 @@ namespace LazyLlamaLedger
             );
 
             appBuilder.UseWebApi(config);
-
-            //Open the browser
-            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + "/../../LazyLlamaLedger.htm");
         }
     }
 }
