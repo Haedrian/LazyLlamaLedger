@@ -7,6 +7,8 @@
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection" />
 
+    <link rel="shortcut icon" type="image/png" href="images/lll.png" />
+
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
@@ -24,7 +26,7 @@
 
     <nav>
         <div class="nav-wrapper">
-            <a href="#" class="brand-logo" style="margin-left:30px">Lazy Llama Ledger</a>
+            <a href="#" class="brand-logo" style="margin-left:30px"><img style="height: 50px;vertical-align: middle;padding-right: 15px;padding-bottom: 5px" src="images/lll.png" />Lazy Llama Ledger</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li class="active"><a href="">Ledger</a></li>
                 <li><a href="">Setup</a></li>
@@ -54,7 +56,7 @@
             <tbody></tbody>
         </table>
 
-        <h4 id="lblTotal" style="text-align:right">100</h4>
+        <h4 id="lblTotal" style="text-align:right">-</h4>
 
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
             <a class="btn-floating btn-large red">
@@ -96,13 +98,11 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <select id="slCategory" onchange="getSubCategories($('#slCategory').val())">
-                        </select>
+                        <select id="slCategory" onchange="getSubCategories($('#slCategory').val())"></select>
                         <label>Category</label>
                     </div>
                     <div class="input-field col s6">
-                        <select id="slSubCategory">
-                        </select>
+                        <select id="slSubCategory"></select>
                         <label>Subcategory</label>
                     </div>
                 </div>
@@ -120,8 +120,5 @@
             <a class="modal-action waves-effect waves-green btn-flat " onclick="closeModal();">Close</a>
         </div>
     </div>
-
-
-
 </body>
 </html>
