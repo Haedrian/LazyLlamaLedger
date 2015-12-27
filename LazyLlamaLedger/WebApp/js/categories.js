@@ -43,8 +43,7 @@ function newSubcat() {
     currentSubcats.push(subCat);
 }
 
-function openNewSubcatInterface()
-{
+function openNewSubcatInterface() {
     //Load it to a pristene stage
     $("#ulCat > li").not(':first').not(':last').remove();
 
@@ -54,8 +53,7 @@ function openNewSubcatInterface()
     $("#mdlCats").openModal();
 }
 
-function deleteSubcat(index)
-{
+function deleteSubcat(index) {
     //Just null the Nth one - then when we read them server-side we decide whether we need to actually delete some subcats
     currentSubcats[index] = null;
 
@@ -67,6 +65,13 @@ $(document).on('focusout', '[contenteditable=true]', function (e) {
     var element = $(this);
     if (!element.text().trim().length) {
         element.text("...");
+    }
+});
+
+$(document).on('focusin', '[contenteditable=true]', function (e) {
+    var element = $(this);
+    if (element.text() == "...") {
+        element.text("");
     }
 });
 
