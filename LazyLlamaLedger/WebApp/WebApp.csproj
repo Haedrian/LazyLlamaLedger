@@ -50,6 +50,9 @@
     <Content Include="css\materialize.min.css" />
     <Content Include="font\material-design-icons\LICENSE.txt" />
     <Content Include="font\material-design-icons\Material-Design-Icons.svg" />
+    <Content Include="images\lll.png" />
+    <Content Include="js\categories.js" />
+    <Content Include="js\common.js" />
     <Content Include="js\ledger.js" />
     <Content Include="js\materialize.js" />
     <Content Include="js\materialize.min.js" />
