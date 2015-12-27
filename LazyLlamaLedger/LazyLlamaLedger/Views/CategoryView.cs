@@ -12,6 +12,8 @@ namespace LazyLlamaLedger.Views
         public int ID { get; set; }
         public string CategoryName { get; set; }
         public List<string> Subcategories { get; set; }
+        public bool Active { get; set; }
+        public bool IsExpense { get; set; }
 
         public CategoryView()
         {
@@ -22,7 +24,9 @@ namespace LazyLlamaLedger.Views
         {
             this.ID = cat.ID;
             this.CategoryName = cat.Name;
-
+            this.Subcategories = subcats.Where(s => s.Active).Select(s => s.Name).ToList();
+            this.Active = cat.Active;
+            this.IsExpense = cat.IsExpense;
         }
 
     }

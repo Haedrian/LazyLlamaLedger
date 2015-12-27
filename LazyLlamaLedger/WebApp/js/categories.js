@@ -63,9 +63,15 @@ function deleteSubcat(index) {
     $($("#sc" + index).parent().parent()).remove();
 }
 
-function editCategory()
-{
+function loadCategories() {
+    $.get("http://localhost:7744/api/cat/Categories", function (data) {
+        //build up the html
+        var html = "";
+        $.each(data, function (index, val)
+        {
 
+        });
+    });
 }
 
 $(document).on('focusout', '[contenteditable=true]', function (e) {
@@ -90,7 +96,6 @@ $(document).on('paste', '[contenteditable=true]', function (e) {
     e.preventDefault();
 })
 
-function closeCatModal()
-{
+function closeCatModal() {
     $("#mdlCats").closeModal();
 }

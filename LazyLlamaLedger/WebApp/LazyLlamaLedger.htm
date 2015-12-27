@@ -95,16 +95,32 @@
     <div id="mdlCats" class="modal modal-fixed-footer">
         <div class="modal-content">
             <ul id="ulCat" class="collection with-header">
-                <li class="collection-header"><h5 id="txtCatName" contenteditable="true">House</h5></li>
+                <li class="collection-header">
+                    <h5 id="txtCatName" contenteditable="true">House</h5>
+                </li>
                 <li style="height:73.5px" class="collection-item"><p><span id="sc0" contenteditable="true">Maintenance</span> <i onclick="deleteSubcat(0)" style="float:right" class="material-icons">delete</i></p></li>
                 <li style="height:73.5px" class="collection-item"><p><span id="sc1" contenteditable="true">Other</span> <i onclick="deleteSubcat(1)" style="float:right" class="material-icons">delete</i></p></li>
                 <li id="liNewSubcat" style="height:73.5px" class="collection-item"><p><span id="newSubcat" contenteditable="true">...</span> <i onclick="newSubcat()" style="float:right" class="material-icons">add</i></p></li>
             </ul>
         </div>
         <div class="modal-footer">
-            <input id="chkActive" checked type="checkbox" /><label style="margin-left:25px;margin-top:13px" for="chkActive">Active</label>
-            <a class="modal-action waves-effect waves-green btn-flat ">Save</a>
-            <a class="modal-action waves-effect waves-green btn-flat " onclick="closeCatModal();">Close</a>
+            <form class="col s12">
+                <div class="row" style="margin-bottom:0px">
+                    <div class="col s3">
+                        <input id="chkActive" checked type="checkbox" /><label style="margin-left:25px;margin-top:13px" for="chkActive">Active</label>
+                    </div>
+                    <div class="switch col s4" style="padding-top:11px">
+                        <label>
+                            Income
+                            <input id="ckExpense" type="checkbox" onchange="setIE()">
+                            <span class="lever"></span>
+                            Expense
+                        </label>
+                    </div>
+                    <a class="btn-flat col s1 ">Save</a>
+                    <a class="btn-flat col s1 " onclick="closeCatModal();">Close</a>
+                </div>
+            </form>
         </div>
     </div>
 
