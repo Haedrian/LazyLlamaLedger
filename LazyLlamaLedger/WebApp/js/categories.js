@@ -43,6 +43,17 @@ function newSubcat() {
     currentSubcats.push(subCat);
 }
 
+function openNewSubcatInterface()
+{
+    //Load it to a pristene stage
+    $("#ulCat > li").not(':first').not(':last').remove();
+
+    $("#txtCatName").text("...");
+    $("#newSubcat").text("...");
+
+    $("#mdlCats").openModal();
+}
+
 function deleteSubcat(index)
 {
     //Just null the Nth one - then when we read them server-side we decide whether we need to actually delete some subcats
