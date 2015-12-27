@@ -35,7 +35,7 @@ function newSubcat() {
     $("#liNewSubcat").before(html);
 
     //And clear the newsubcat
-    $("#newSubcat").text("...");
+    $("#newSubcat").text("");
 
     //Add it to the list
     var subCat = { ID: null, Name: text };
@@ -82,3 +82,8 @@ $(document).on('keypress', '[contenteditable=true]', function (e) {
 $(document).on('paste', '[contenteditable=true]', function (e) {
     e.preventDefault();
 })
+
+function closeCatModal()
+{
+    $("#mdlCats").closeModal();
+}
