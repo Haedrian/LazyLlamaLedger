@@ -1,6 +1,8 @@
 ﻿///Holds the current subcats so we can keep them in mind
 var currentSubcats = [];
 
+var cats = [];
+
 $(document).ready(function () {
     $("#newSubcat").on("keydown", function (e) {
         var charCode = e.which || e.keyCode;
@@ -69,8 +71,31 @@ function loadCategories() {
         var html = "";
         $.each(data, function (index, val)
         {
+            //TODO: ATTACH EVENT
+            html += '<ul class="collection with-header">';
+            html += '<li class="collection-header"><h5>' + val.Name;
 
+            if (val.IsExpense)
+            {
+                html += "<i class='material-icons' style='color:red;padding-left:10px'>attach_money</i>";
+            }
+            else
+            {
+                html += "<i class='material-icons' style='color:green;padding-left:10px'>attach_money</i>";
+            }
+
+            html+='<i style="float:right" class="material-icons">edit</i></h5></li>';
+
+            $.each(val.Subcategories, function (i, subcat)
+            {
+                html += '<li class="collection-item">' + subcat + '</li>';
+            });
+
+            html += '</ul>';
         });
+
+        $("#cats").html(html);
+        cats = data;
     });
 }
 

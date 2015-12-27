@@ -16,6 +16,8 @@ function openLedger()
 function openCats()
 {
     closeAll();
+    loadCategories();
+
     $("#divCategories").css("display", "block");
     $("#liCategories").addClass("active");
 }
