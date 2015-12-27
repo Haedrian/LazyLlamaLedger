@@ -51,6 +51,8 @@ function openNewSubcatInterface() {
     $("#newSubcat").text("...");
 
     $("#mdlCats").openModal();
+
+    $("#chkActive").prop("checked", "checked");
 }
 
 function deleteSubcat(index) {
@@ -59,6 +61,11 @@ function deleteSubcat(index) {
 
     //Delete the control
     $($("#sc" + index).parent().parent()).remove();
+}
+
+function editCategory()
+{
+
 }
 
 $(document).on('focusout', '[contenteditable=true]', function (e) {
