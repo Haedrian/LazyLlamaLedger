@@ -1,4 +1,7 @@
-﻿///Closes all sections
+﻿var versionNumber = "0.1";
+
+
+///Closes all sections
 function closeAll()
 {
     $("#divCategories").css("display", "none");
@@ -20,4 +23,10 @@ function openCats()
 
     $("#divCategories").css("display", "block");
     $("#liCategories").addClass("active");
+}
+
+function openAbout()
+{
+    $("#txtVersion").text("Version " + versionNumber);
+    $("#mdlAbout").openModal();
 }
