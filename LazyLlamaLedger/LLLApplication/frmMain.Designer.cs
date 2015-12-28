@@ -30,8 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.btnShutdown = new System.Windows.Forms.Button();
-            this.btnFlush = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtLog
@@ -47,32 +45,12 @@
             this.txtLog.Size = new System.Drawing.Size(662, 229);
             this.txtLog.TabIndex = 0;
             // 
-            // btnShutdown
-            // 
-            this.btnShutdown.Location = new System.Drawing.Point(13, 255);
-            this.btnShutdown.Name = "btnShutdown";
-            this.btnShutdown.Size = new System.Drawing.Size(75, 23);
-            this.btnShutdown.TabIndex = 1;
-            this.btnShutdown.Text = "Shut Down";
-            this.btnShutdown.UseVisualStyleBackColor = true;
-            // 
-            // btnFlush
-            // 
-            this.btnFlush.Location = new System.Drawing.Point(94, 255);
-            this.btnFlush.Name = "btnFlush";
-            this.btnFlush.Size = new System.Drawing.Size(75, 23);
-            this.btnFlush.TabIndex = 2;
-            this.btnFlush.Text = "Flush To File";
-            this.btnFlush.UseVisualStyleBackColor = true;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(686, 290);
-            this.Controls.Add(this.btnFlush);
-            this.Controls.Add(this.btnShutdown);
+            this.ClientSize = new System.Drawing.Size(686, 251);
             this.Controls.Add(this.txtLog);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -87,8 +65,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtLog;
-        private System.Windows.Forms.Button btnShutdown;
-        private System.Windows.Forms.Button btnFlush;
     }
 }
 
