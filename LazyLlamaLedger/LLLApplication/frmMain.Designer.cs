@@ -49,6 +49,7 @@
             // 
             // tmrFlush
             // 
+            this.tmrFlush.Enabled = true;
             this.tmrFlush.Interval = 60000;
             this.tmrFlush.Tick += new System.EventHandler(this.tmrFlush_Tick);
             // 
