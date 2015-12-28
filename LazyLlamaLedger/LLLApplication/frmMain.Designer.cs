@@ -28,8 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.txtLog = new System.Windows.Forms.TextBox();
+            this.tmrFlush = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // txtLog
@@ -45,6 +47,11 @@
             this.txtLog.Size = new System.Drawing.Size(662, 229);
             this.txtLog.TabIndex = 0;
             // 
+            // tmrFlush
+            // 
+            this.tmrFlush.Interval = 60000;
+            this.tmrFlush.Tick += new System.EventHandler(this.tmrFlush_Tick);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -57,6 +64,7 @@
             this.Name = "frmMain";
             this.Text = "Lazy Llama Ledger Server";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -65,6 +73,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.Timer tmrFlush;
     }
 }
 

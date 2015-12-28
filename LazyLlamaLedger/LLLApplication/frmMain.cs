@@ -51,5 +51,16 @@ namespace LLLApplication
 
             AddToLog("Done. Bye");
         }
+
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tmrFlush_Tick(object sender, EventArgs e)
+        {
+            //Flush everything - use a task so we don't block anything
+            Task.Factory.StartNew(() => DataHandling.FlushAll());
+        }
     }
 }

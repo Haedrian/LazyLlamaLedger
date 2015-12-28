@@ -19,8 +19,6 @@ namespace LazyLlamaLedger
             le.ID = LedgerEntries.Count + 1;
 
             LedgerEntries.Add(le);
-
-            // FlushLedgers();
         }
 
         public static void AddCategory(Category cat)
@@ -28,8 +26,6 @@ namespace LazyLlamaLedger
             cat.ID = Categories.Count + 1;
 
             Categories.Add(cat);
-
-            // FlushCats();
         }
 
         static DataHandling()
@@ -61,16 +57,40 @@ namespace LazyLlamaLedger
 
         }
 
+        /// <summary>
+        /// So we ensure we're not trying to write to the file at the same time
+        /// </summary>
+        private static object fileLock = new object();
+
+
         public static void FlushLedgers()
         {
-            string les = JsonConvert.SerializeObject(LedgerEntries);
-            File.WriteAllText("les.json", les);
+            lock(fileLock)
+            {
+                string les = JsonConvert.SerializeObject(LedgerEntries);
+                File.WriteAllText("les.json", les);
+            }
         }
 
         public static void FlushCats()
         {
-            string cats = JsonConvert.SerializeObject(Categories);
-            File.WriteAllText("cats.json", cats);
+            lock(fileLock)
+            {
+                string cats = JsonConvert.SerializeObject(Categories);
+                File.WriteAllText("cats.json", cats);
+            }
+        }
+
+        public static void FlushAll()
+        {
+            lock(fileLock)
+            {
+                string les = JsonConvert.SerializeObject(LedgerEntries);
+                File.WriteAllText("les.json", les);
+
+                string cats = JsonConvert.SerializeObject(Categories);
+                File.WriteAllText("cats.json", cats);
+            }
         }
     }
 }
