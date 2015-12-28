@@ -27,13 +27,19 @@ namespace LazyLlamaLedger.Controllers
             return Ok(DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year).ToArray().OrderBy(e => e.Date).Select(e => new LedgerEntryView(e)).ToArray());
         }
 
+        /// <summary>
+        /// Returns aggregate data for EXPENSES
+        /// </summary>
+        /// <param name="month"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
         [HttpGet]
-        [ActionName("LedgerAggregate")]
+        [ActionName("LedgerExpAggregate")]
         public IHttpActionResult GetAggregate(int month, int year)
         {
             //First get all the values of that month
 
-            var monthValues = DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year).ToArray();
+            var monthValues = DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year && e.IsExpense).ToArray();
 
             //Then group them by category and return the cat and the sum
             var res = monthValues.GroupBy(m => m.Category).Select(cg => new { Category = DataHandling.Categories.Where(c => c.ID == cg.First().Category).Select(c => c.Name).FirstOrDefault(), Sum = cg.Sum(cg1 => cg1.Money).ToString("0.00") });

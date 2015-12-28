@@ -18,7 +18,7 @@ $(document).ready(function () {
 function drawChart() {
     //Get the chart data
 
-    $.get("http://localhost:7744/api/ledger/LedgerAggregate?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data) {
+    $.get("http://localhost:7744/api/ledger/LedgerExpAggregate?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data) {
         var cData = [];
 
         $.each(data, function (index, val) {
