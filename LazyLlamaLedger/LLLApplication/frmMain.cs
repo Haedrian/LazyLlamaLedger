@@ -48,7 +48,6 @@ namespace LLLApplication
             //Flush everything
             LazyLlamaLedger.DataHandling.FlushCats();
             LazyLlamaLedger.DataHandling.FlushLedgers();
-            LazyLlamaLedger.DataHandling.FlushSubcats();
 
             AddToLog("Done. Bye");
         }

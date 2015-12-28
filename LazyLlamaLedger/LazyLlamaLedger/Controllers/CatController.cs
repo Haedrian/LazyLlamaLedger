@@ -1,4 +1,5 @@
-﻿using LazyLlamaLedger.Views;
+﻿using LazyLlamaLedger.Models;
+using LazyLlamaLedger.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +17,19 @@ namespace LazyLlamaLedger.Controllers
         [ActionName("Categories")]
         public IHttpActionResult Categories()
         {
-            return Ok(DataHandling.Categories.Select(c => new CategoryView(c, DataHandling.SubCategories.Where(sc => sc.CategoryID == c.ID).ToList())));
+            return Ok(DataHandling.Categories.ToList());
         }
 
         [HttpGet]
         [ActionName("Categories")]
         public IHttpActionResult Category(int ID)
         {
-            return Ok(DataHandling.Categories.Where(c => c.ID == ID).Select(c => new CategoryView(c, DataHandling.SubCategories.Where(sc => sc.CategoryID == c.ID).OrderBy(sc => sc.ID).ToList())));
+            return Ok(DataHandling.Categories.Where(c => c.ID == ID).ToList());
         }
 
         [HttpPost]
         [ActionName("Categories")]
-        public IHttpActionResult Category([FromBody]CategoryView cat)
+        public IHttpActionResult Category([FromBody]Category cat)
         {
             //Check that the model is correct
             if (cat == null || !ModelState.IsValid)
@@ -37,23 +38,23 @@ namespace LazyLlamaLedger.Controllers
             }
 
             //Does it have an ID ?
-            Update(cat);
+          //  Update(cat);
 
             return Ok();
         }
 
-        private void Update(CategoryView cat)
-        {
-            //Find the actual cat
-            var actualCat = DataHandling.Categories.FirstOrDefault(c => c.ID == cat.ID);
+        //private void Update(CategoryView cat)
+        //{
+        //    //Find the actual cat
+        //    var actualCat = DataHandling.Categories.FirstOrDefault(c => c.ID == cat.ID);
 
-            actualCat.Active = cat.Active;
-            actualCat.Name = cat.Name;
+        //    actualCat.Active = cat.Active;
+        //    actualCat.Name = cat.Name;
 
-            //Find the subcats
-            var subCats = DataHandling.SubCategories.Where(sc => sc.CategoryID == cat.ID);
+        //    //Find the subcats
+        //    var subCats = DataHandling.SubCategories.Where(sc => sc.CategoryID == cat.ID);
 
             
-        }
+        //}
     }
 }

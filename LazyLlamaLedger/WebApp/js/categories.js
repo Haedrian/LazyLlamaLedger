@@ -40,7 +40,7 @@ function newSubcat() {
     $("#newSubcat").text("");
 
     //Add it to the list
-    var subCat = { ID: null, Name: text };
+    var subCat = { ID: null, Name: text, Active:true };
 
     currentSubcats.push(subCat);
 }

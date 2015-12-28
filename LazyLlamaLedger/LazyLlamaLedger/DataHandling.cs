@@ -21,7 +21,7 @@ namespace LazyLlamaLedger
 
             LedgerEntries.Add(le);
 
-           // FlushLedgers();
+            // FlushLedgers();
         }
 
         public static void AddCategory(Category cat)
@@ -30,22 +30,13 @@ namespace LazyLlamaLedger
 
             Categories.Add(cat);
 
-           // FlushCats();
-        }
-
-        public static void AddSubCategory(SubCategory subCat)
-        {
-            subCat.ID = SubCategories.Count + 1;
-            SubCategories.Add(subCat);
-
-           // FlushSubcats();
+            // FlushCats();
         }
 
         static DataHandling()
         {
             LedgerEntries = new List<LedgerEntry>();
             Categories = new List<Category>();
-            SubCategories = new List<SubCategory>();
 
             if (File.Exists("les.json"))
             {
@@ -57,7 +48,7 @@ namespace LazyLlamaLedger
                     LedgerEntries.AddRange(fromFile);
                 }
             }
-            
+
             if (File.Exists("cats.json"))
             {
                 string cats = File.ReadAllText("cats.json");
@@ -68,18 +59,7 @@ namespace LazyLlamaLedger
                     Categories.AddRange(fromFile);
                 }
             }
-            
-            if (File.Exists("subcats.json"))
-            {
-                string subcats = File.ReadAllText("subcats.json");
-                var fromFile = JsonConvert.DeserializeObject<List<SubCategory>>(subcats);
 
-                if (fromFile != null)
-                {
-                    SubCategories.AddRange(fromFile);
-                }
-            }
-            
         }
 
         public static void FlushLedgers()
@@ -91,14 +71,7 @@ namespace LazyLlamaLedger
         public static void FlushCats()
         {
             string cats = JsonConvert.SerializeObject(Categories);
-            File.WriteAllText("cats.json", cats);   
+            File.WriteAllText("cats.json", cats);
         }
-
-        public static void FlushSubcats()
-        {
-            string subCats = JsonConvert.SerializeObject(SubCategories);
-            File.WriteAllText("subcats.json", subCats);
-        }
-        
     }
 }

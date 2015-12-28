@@ -22,7 +22,7 @@ namespace LazyLlamaLedger.Controllers
 
         [HttpGet]
         [ActionName("LedgerEntry")]
-        public IHttpActionResult Get(int month,int year)
+        public IHttpActionResult Get(int month, int year)
         {
             return Ok(DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year).ToArray().OrderBy(e => e.Date).Select(e => new LedgerEntryView(e)).ToArray());
         }
@@ -44,15 +44,15 @@ namespace LazyLlamaLedger.Controllers
 
         [HttpGet]
         [ActionName("Category")]
-        public IHttpActionResult Category(bool activeOnly,bool expense)
+        public IHttpActionResult Category(bool activeOnly, bool expense)
         {
             if (activeOnly)
             {
-                return Ok(DataHandling.Categories.Where(c => c.Active && c.IsExpense == expense));
+                return Ok(DataHandling.Categories.Where(c => c.Active && c.IsExpense == expense).ToArray());
             }
             else
             {
-                return Ok(DataHandling.Categories.Where(c => c.IsExpense == expense));
+                return Ok(DataHandling.Categories.Where(c => c.IsExpense == expense).ToArray());
             }
         }
 
@@ -63,28 +63,6 @@ namespace LazyLlamaLedger.Controllers
             if (cat != null && ModelState.IsValid)
             {
                 DataHandling.AddCategory(cat);
-                return Ok();
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet]
-        [ActionName("Subcategory")]
-        public IHttpActionResult SubCategory(int category, bool activeOnly)
-        {
-            return Ok(DataHandling.SubCategories.Where(sc => sc.CategoryID == category && (!activeOnly || sc.Active)).ToArray());
-        }
-
-        [HttpPost]
-        [ActionName("Subcategory")]
-        public IHttpActionResult SubCategory([FromBody]SubCategory subCat)
-        {
-            if (subCat != null && ModelState.IsValid)
-            {
-                DataHandling.AddSubCategory(subCat);
                 return Ok();
             }
             else

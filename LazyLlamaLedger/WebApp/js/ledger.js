@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $('.datepicker').pickadate({
         selectMonths: false,
-        selectYears: false 
+        selectYears: false
     });
 
     $('.picker').appendTo('body');
@@ -15,22 +15,19 @@ $(document).ready(function () {
     $('#slSubCategory').material_select();
 });
 
-function updateMonth()
-{
+function updateMonth() {
     $("#lblMonth").html(months[chosenDate.getMonth()] + " " + chosenDate.getFullYear());
 
     fetchData();
 }
 
 ///Changes the chosen date by a number of months and reloads everything
-function changeDate(amount)
-{
+function changeDate(amount) {
     chosenDate.setMonth(chosenDate.getMonth() + amount);
     updateMonth();
 }
 
-function readLedgerEntry()
-{
+function readLedgerEntry() {
     var entry = new Object();
     entry.Item = $("#txtItem").val();
     entry.IsExpense = $("#ckExpense").prop("checked");
@@ -42,22 +39,18 @@ function readLedgerEntry()
     return entry;
 }
 
-function validateLedgerEntry(entry)
-{
-    if (entry.Item.length == 0)
-    {
+function validateLedgerEntry(entry) {
+    if (entry.Item.length == 0) {
         Materialize.toast('Item Missing', 2000);
         return false;
     }
 
-    if (entry.Date.length == 0)
-    {
+    if (entry.Date.length == 0) {
         Materialize.toast('Date Missing', 2000);
         return false;
     }
 
-    if (Number(entry.Money) == NaN || Number(entry.Money) <= 0)
-    {
+    if (Number(entry.Money) == NaN || Number(entry.Money) <= 0) {
         Materialize.toast('Money needs to be larger than 0', 2000);
         return false;
     }
@@ -66,49 +59,41 @@ function validateLedgerEntry(entry)
 }
 
 ///Sorta clears the interface. Will retain the date and categories in case multiples want to be input
-function clearEntryInterface()
-{
+function clearEntryInterface() {
     $("#txtItem").val("");
     $("#txtMoney").val("0");
 }
 
-function saveEntry(quit)
-{
+function saveEntry(quit) {
     var entry = readLedgerEntry();
-    
-    if (validateLedgerEntry(entry))
-    {
+
+    if (validateLedgerEntry(entry)) {
         //Save
-        $.post("http://localhost:7744/api/ledger/LedgerEntry", entry, function (data)
-        {
+        $.post("http://localhost:7744/api/ledger/LedgerEntry", entry, function (data) {
             Materialize.toast('Entry Saved', 2000);
 
             fetchData();
 
             clearEntryInterface();
 
-            if (quit)
-            {
+            if (quit) {
                 closeModal();
             }
         });
     }
-    else 
-    {
+    else {
         return;
     }
 }
 
-function closeModal()
-{
+function closeModal() {
     fetchData();
     $('#mdlPurchase').closeModal();
 }
 
 ///Fetches the data. Considers filters and month and whatnot.
-function fetchData()
-{
-    $.get("http://localhost:7744/api/ledger/ledgerentry?Month=" + (chosenDate.getMonth()+1) + "&year="+chosenDate.getFullYear(), function (data) {
+function fetchData() {
+    $.get("http://localhost:7744/api/ledger/ledgerentry?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data) {
         //Populate a table
         var html = "";
         var total = 0;
@@ -116,32 +101,28 @@ function fetchData()
         $.each(data, function (index, val) {
             html += "<tr><td>" + val.Item + "</td><td>" + val.Date + "</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
 
-            if (val.IsExpense)
-            {
+            if (val.IsExpense) {
                 html += ";color:red";
                 total -= val.Money;
             }
-            else
-            {
+            else {
                 html += ";color:green";
                 total += val.Money;
             }
 
-            html+= "'>" + val.Money + "</td><tr>";
+            html += "'>" + val.Money + "</td><tr>";
         });
 
         $("#tblLedger tbody").html(html);
 
         $("#lblTotal").html(total);
-        
-        $("#lblTotal").css("color","green");
 
-        if (total < 0)
-        {
-            $("#lblTotal").css("color","red");
+        $("#lblTotal").css("color", "green");
+
+        if (total < 0) {
+            $("#lblTotal").css("color", "red");
         }
-        else if (total == 0)
-        {
+        else if (total == 0) {
             $("#lblTotal").css("color", "black");
         }
 
@@ -150,8 +131,7 @@ function fetchData()
 
 //Marks the modal interface as being expense or income depending on the state of the lever
 function setIE() {
-    if ($("#ckExpense").prop("checked"))
-    {
+    if ($("#ckExpense").prop("checked")) {
         $("#lblNewEntry").html("Add New Expense");
     }
     else {
@@ -169,13 +149,17 @@ function openAddElement(isExpense) {
     $('#mdlPurchase').openModal();
 }
 
+var categories = [];
+
 function getCategories(isExpense) {
-    $.get("http://localhost:7744/api/ledger/category?activeonly=true&expense=" + isExpense , function (data) {
+    $.get("http://localhost:7744/api/ledger/category?activeonly=true&expense=" + isExpense, function (data) {
         var html = "";
 
         $.each(data, function (index, val) {
             html += "<option value='" + val.ID + "'>" + val.Name + "</option>";
         });
+
+        categories = data;
 
         $("#slCategory").html(html);
         $("#slCategory").material_select();
@@ -185,14 +169,27 @@ function getCategories(isExpense) {
 }
 
 function getSubCategories(id) {
-    $.get("http://localhost:7744/api/ledger/subcategory?activeonly=true&category=" + id, function (data) {
-        var html = "";
+    //Find the subcat by looking through the categories we have
 
-        $.each(data, function (index, val) {
-            html += "<option value='" + val.ID + "'>" + val.Name + "</option>";
-        });
+    var cat = null;
+    var html = "";
 
-        $("#slSubCategory").html(html);
-        $("#slSubCategory").material_select();
+    for (var i = 0; i < categories.length; i++) {
+        if (categories[i].ID == id) {
+            //match found
+            cat = categories[i];
+            break;
+        }
+    }
+
+    //Go through all the subcats
+    
+
+    $.each(cat.Subcats, function (index, val) {
+        html += "<option value='" + val.ID + "'>" + val.Name + "</option>";
     });
+
+    $("#slSubCategory").html(html);
+    $("#slSubCategory").material_select();
+
 }
