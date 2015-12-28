@@ -31,7 +31,7 @@ namespace LazyLlamaLedger.Views
             IsExpense = le.IsExpense;
             Date = le.Date.ToString("yyyy-MM-dd");
             Category = DataHandling.Categories.Where(c => c.ID == le.Category).Select(c => c.Name).FirstOrDefault();
-            SubCategory = DataHandling.SubCategories.Where(c => c.ID == le.SubCategory).Select(c => c.Name).FirstOrDefault(); ;
+            SubCategory = DataHandling.Categories.FirstOrDefault(c => c.ID == le.Category).Subcats.Where(c => c.ID == le.SubCategory).Select(c => c.Name).FirstOrDefault(); ;
             Money = le.Money;
         }
     }

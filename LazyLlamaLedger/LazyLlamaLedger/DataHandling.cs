@@ -13,7 +13,6 @@ namespace LazyLlamaLedger
     {
         public static List<LedgerEntry> LedgerEntries { get; set; }
         public static List<Category> Categories { get; set; }
-        public static List<SubCategory> SubCategories { get; set; }
 
         public static void AddLedgerEntry(LedgerEntry le)
         {

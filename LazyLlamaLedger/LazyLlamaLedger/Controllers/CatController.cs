@@ -32,29 +32,50 @@ namespace LazyLlamaLedger.Controllers
         public IHttpActionResult Category([FromBody]Category cat)
         {
             //Check that the model is correct
-            if (cat == null || !ModelState.IsValid)
+            if (cat == null )
             {
-                return BadRequest();
+                return BadRequest("Category is missing");
             }
 
-            //Does it have an ID ?
-          //  Update(cat);
+            CreateOrUpdate(cat);
 
             return Ok();
         }
 
-        //private void Update(CategoryView cat)
-        //{
-        //    //Find the actual cat
-        //    var actualCat = DataHandling.Categories.FirstOrDefault(c => c.ID == cat.ID);
+        private void CreateOrUpdate(Category cat)
+        {
+            Category actualCat = null;
 
-        //    actualCat.Active = cat.Active;
-        //    actualCat.Name = cat.Name;
+            //Is it a new cat?
+            if (cat.ID == -1)
+            {
+                actualCat = cat; //Apparently not
+                actualCat.ID = DataHandling.Categories.Count;
+                DataHandling.Categories.Add(actualCat);
+            }
+            else
+            {
+                //Find the actual cat
+                actualCat = DataHandling.Categories.FirstOrDefault(c => c.ID == cat.ID);
+            }
 
-        //    //Find the subcats
-        //    var subCats = DataHandling.SubCategories.Where(sc => sc.CategoryID == cat.ID);
+            actualCat.Active = cat.Active;
+            actualCat.Name = cat.Name;
 
-            
-        //}
+            //Expense/Income & ID is read-only - so no support to change it
+
+            actualCat.Subcats = cat.Subcats;
+
+            //Go through the subcats and ID any which need idying - for now just use their position in the array
+            for(int i=0; i < actualCat.Subcats.Count; i++)
+            {
+                if (actualCat.Subcats[i].ID == -1)
+                {
+                    actualCat.Subcats[i].ID = i;
+                }
+            }
+
+            //Done :)
+        }
     }
 }

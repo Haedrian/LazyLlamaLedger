@@ -20,7 +20,8 @@ $(document).ready(function () {
 function newSubcat() {
     var text = $("#newSubcat").text();
 
-    if (text.length == 0) {
+    if (text.length == 0)
+    {
         Materialize.toast('Subcategory Name Required', 2000);
         return;
     }
@@ -65,6 +66,69 @@ function clearCatInterface() {
     $("#chkActive").prop("checked", "checked");
     $("#ckCatExpense").prop("disabled", "");
 }
+
+///Reads and returns the category and all it's details
+function readCategory()
+{
+    var cat = new Object();
+
+    if (selectedCat!= null)
+    {
+        cat.ID = selectedCat.ID;
+    }
+    else 
+    {
+        cat.ID = -1;
+    }
+
+    //Read the details
+    cat.Name = $("#txtCatName").text();
+    cat.Active = $("#chkActive").prop("checked");
+    cat.IsExpense = $("#chkCatExpense").prop("checked");
+
+    cat.Subcats = currentSubcats;
+
+    return cat;
+}
+
+function validateCategory(cat)
+{
+    if (cat.Name.length == 0 || cat.Name == "...")
+    {
+        Materialize.toast('Category Name Required', 2000);
+        return false;
+    }
+
+    if (cat.Subcats.length == 0)
+    {
+        Materialize.toast('At least one subcategory is required', 2000);
+        return false;
+    }
+
+    return true;
+}
+
+///Saves and closes
+function SaveAndClose()
+{
+    var cat = readCategory();
+
+    if (!validateCategory(cat))
+    {
+        return;
+    }
+    //Save!
+
+    $.post("http://localhost:7744/api/cat/Categories", cat, function (data)
+    {
+        Materialize.toast('Entry Saved', 2000);
+
+        loadCategories();
+
+        closeCatModal();
+    });
+}
+
 
 function loadCategoryForEditing(id)
 {
