@@ -84,7 +84,7 @@ function readCategory()
     //Read the details
     cat.Name = $("#txtCatName").text();
     cat.Active = $("#chkActive").prop("checked");
-    cat.IsExpense = $("#chkCatExpense").prop("checked");
+    cat.IsExpense = $("#ckCatExpense").prop("checked");
 
     cat.Subcats = currentSubcats;
 
