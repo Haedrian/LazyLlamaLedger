@@ -22,6 +22,10 @@
     <script src="js/ledger.js"></script>
     <script src="js/common.js"></script>
 
+    <script src="Charts/jquery.jqplot.min.js"></script>
+    <link href="Charts/jquery.jqplot.min.css" rel="stylesheet" />
+    <script src="Charts/plugins/jqplot.pieRenderer.min.js"></script>
+
     <nav>
         <div class="nav-wrapper">
             <a href="#" class="brand-logo" style="margin-left:30px"><img style="height: 50px;vertical-align: middle;padding-right: 15px;padding-bottom: 5px" src="images/lll.png" />Lazy Llama Ledger</a>
@@ -56,6 +60,8 @@
         </table>
 
         <h4 id="lblTotal" style="text-align:right">-</h4>
+
+        <div id="chartdiv" style="height:300px;width:300px; "></div>
 
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
             <a class="btn-floating btn-large red">

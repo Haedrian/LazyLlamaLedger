@@ -15,6 +15,38 @@ $(document).ready(function () {
     $('#slSubCategory').material_select();
 });
 
+function drawChart() {
+    //Get the chart data
+
+    $.get("http://localhost:7744/api/ledger/LedgerAggregate?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data) {
+        var cData = [];
+
+        $.each(data, function (index, val) {
+            cData.push([val.Category, Number(val.Sum)]);
+        });
+
+        //and plot it
+        jQuery.jqplot('chartdiv', [cData],
+    {
+        seriesDefaults: {
+            renderer: jQuery.jqplot.PieRenderer,
+            rendererOptions:
+                {
+                    showDataLabels: true,
+                    dataLabels: 'label',
+                    // stroke the slices with a little thicker line.
+                    lineWidth: 5
+                }
+        },
+        legend: { show: false, location: 'e' }
+    }
+  );
+
+    });
+
+
+}
+
 function updateMonth() {
     $("#lblMonth").html(months[chosenDate.getMonth()] + " " + chosenDate.getFullYear());
 
@@ -127,6 +159,8 @@ function fetchData() {
         }
 
     }, "json");
+
+    drawChart();
 }
 
 //Marks the modal interface as being expense or income depending on the state of the lever
@@ -183,7 +217,7 @@ function getSubCategories(id) {
     }
 
     //Go through all the subcats
-    
+
 
     $.each(cat.Subcats, function (index, val) {
         html += "<option value='" + val.ID + "'>" + val.Name + "</option>";

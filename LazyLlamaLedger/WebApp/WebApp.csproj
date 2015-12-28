@@ -46,6 +46,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Charts\excanvas.min.js" />
+    <Content Include="Charts\jquery.jqplot.min.css" />
+    <Content Include="Charts\jquery.jqplot.min.js" />
+    <Content Include="Charts\plugins\jqplot.pieRenderer.min.js" />
     <Content Include="css\lll.css" />
     <Content Include="css\materialize.css" />
     <Content Include="css\materialize.min.css" />
@@ -85,6 +89,7 @@
     <Content Include="font\roboto\Roboto-Thin.woff" />
     <Content Include="font\roboto\Roboto-Thin.woff2" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
