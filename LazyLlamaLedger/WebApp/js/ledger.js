@@ -28,6 +28,8 @@ function drawChart() {
         //and plot it
         jQuery.jqplot('chartdiv', [cData],
     {
+        grid: { background: '#FFFFFF', borderWidth: 0, shadow :0}
+            ,
         seriesDefaults: {
             renderer: jQuery.jqplot.PieRenderer,
             rendererOptions:
@@ -35,7 +37,7 @@ function drawChart() {
                     showDataLabels: true,
                     dataLabels: 'label',
                     // stroke the slices with a little thicker line.
-                    lineWidth: 5
+                    lineWidth: 5,
                 }
         },
         legend: { show: false, location: 'e' }
