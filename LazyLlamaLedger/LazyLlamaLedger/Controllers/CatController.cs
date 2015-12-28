@@ -17,14 +17,14 @@ namespace LazyLlamaLedger.Controllers
         [ActionName("Categories")]
         public IHttpActionResult Categories()
         {
-            return Ok(DataHandling.Categories.ToList());
+            return Ok(DataHandling.Categories.OrderBy(c => c.IsExpense).ThenBy(c => c.Name).ToList());
         }
 
         [HttpGet]
         [ActionName("Categories")]
         public IHttpActionResult Category(int ID)
         {
-            return Ok(DataHandling.Categories.Where(c => c.ID == ID).ToList());
+            return Ok(DataHandling.Categories.Where(c => c.ID == ID).FirstOrDefault());
         }
 
         [HttpPost]

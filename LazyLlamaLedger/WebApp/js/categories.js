@@ -40,32 +40,106 @@ function newSubcat() {
     $("#newSubcat").text("");
 
     //Add it to the list
-    var subCat = { ID: null, Name: text, Active:true };
+    var subCat = { ID: -1, Name: text, Active: true };
 
     currentSubcats.push(subCat);
 }
 
-function openNewSubcatInterface() {
+function openNewSubcatInterface()
+{
+
+    clearCatInterface();
+    $("#mdlCats").openModal();
+}
+
+function clearCatInterface() {
     //Load it to a pristene stage
     $("#ulCat > li").not(':first').not(':last').remove();
 
     $("#txtCatName").text("...");
     $("#newSubcat").text("...");
 
-    $("#mdlCats").openModal();
-
-    $("#chkActive").prop("checked", "checked");
-
     currentSubcats = [];
     selectedCat = null;
+
+    $("#chkActive").prop("checked", "checked");
+    $("#ckCatExpense").prop("disabled", "");
+}
+
+function loadCategoryForEditing(id)
+{
+    //Clear the cat interface
+    clearCatInterface();
+
+    //Now get the details
+    $.get("http://localhost:7744/api/cat/Categories?ID=" + id, function (data)
+    {
+        selectedCat = data;
+        currentSubcats = [];
+
+        //Popualte the details
+        $("#txtCatName").text(data.Name);
+        $("#chkActive").prop("checked", data.Active);
+
+        $("#ckCatExpense").prop("checked", data.IsExpense);
+        $("#ckCatExpense").prop("disabled", "disabled");
+
+        //Create subcats
+        for(var i=0; i < data.Subcats.length; i++)
+        {
+            $("#newSubcat").text("..."); //This is a dirty hack so we get by the 'subcat needs to have a value' issue
+            newSubcat();
+
+            currentSubcats.pop(); //remove the duplicate valuie 'newsubcat' creates
+
+            //Then populate the details
+            $("#sc" + i).text(data.Subcats[i].Name);
+
+            //Active?
+            if (data.Subcats[i].Active)
+            {
+                $("#sc" + i).css("text-decoration", "");
+            }
+            else 
+            {
+                $("#sc" + i).css("text-decoration", "line-through");
+            }
+            currentSubcats.push(data.Subcats[i]);
+
+        }
+        $("#newSubcat").text("...");
+
+        //OPen it up!
+        $("#mdlCats").openModal();
+
+    });
 }
 
 function deleteSubcat(index) {
-    //Just null the Nth one - then when we read them server-side we decide whether we need to actually delete some subcats
-    currentSubcats[index] = null;
+    //Is the subcat one of those existing ones?
+    var subCat = currentSubcats[index];
 
-    //Delete the control
-    $($("#sc" + index).parent().parent()).remove();
+    if (subCat.ID != -1) {
+        //Was it an inactive one already?
+        if (subCat.Active) {
+            //It's an existing one, we need to set the subcat to inactive instead
+            $("#sc" + index).css("text-decoration", "line-through");
+            subCat.Active = false;
+        }
+        else {
+            //Toggle back on
+            $("#sc" + index).css("text-decoration", "");
+            subCat.Active = true;
+        }
+
+    }
+    else {
+        //Just null the Nth one - then when we read them server-side we decide whether we need to actually delete some subcats
+        currentSubcats[index] = null;
+
+        //Delete the control
+        $($("#sc" + index).parent().parent()).remove();
+    }
 }
 
 function loadCategories() {
@@ -73,14 +147,12 @@ function loadCategories() {
         //build up the html
         var html = "";
         $.each(data, function (index, val) {
-            //TODO: ATTACH EVENT
-            html += '<ul class="collection with-header">';
+            html += '<ul class="collection with-header" onclick="loadCategoryForEditing('+ val.ID +')">';
 
             if (val.Active) {
                 html += '<li class="collection-header"><h5>' + val.Name;
             }
-            else
-            {
+            else {
                 html += '<li class="collection-header"><h5 style="text-decoration:line-through">' + val.Name;
             }
 
@@ -97,8 +169,7 @@ function loadCategories() {
                 if (subcat.Active) {
                     html += '<li class="collection-item">' + subcat.Name + '</li>';
                 }
-                else 
-                {
+                else {
                     html += '<li style="text-decoration:line-through" class="collection-item">' + subcat.Name + '</li>';
                 }
             });
