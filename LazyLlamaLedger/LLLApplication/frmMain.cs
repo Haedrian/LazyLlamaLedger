@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.Owin.Hosting;
 using LazyLlamaLedger;
 using System.IO;
+using System.Configuration;
 
 namespace LLLApplication
 {
@@ -29,7 +30,7 @@ namespace LLLApplication
             AddToLog("Started Service on " + baseAddress);
 
             //Open the browser
-            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + "/../../../WebApp/LazyLlamaLedger.htm"); //TODO: Make this app.config-able
+            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + ConfigurationManager.AppSettings["PagePath"] );
         }
 
         /// <summary>
