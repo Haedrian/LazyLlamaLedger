@@ -93,8 +93,14 @@ function loadCategories() {
 
             html += '<i style="float:right" class="material-icons">edit</i></h5></li>';
 
-            $.each(val.Subcategories, function (i, subcat) {
-                html += '<li class="collection-item">' + subcat + '</li>';
+            $.each(val.Subcats, function (i, subcat) {
+                if (subcat.Active) {
+                    html += '<li class="collection-item">' + subcat.Name + '</li>';
+                }
+                else 
+                {
+                    html += '<li style="text-decoration:line-through" class="collection-item">' + subcat.Name + '</li>';
+                }
             });
 
             html += '</ul>';
