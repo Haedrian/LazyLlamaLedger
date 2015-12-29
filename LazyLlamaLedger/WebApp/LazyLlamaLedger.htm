@@ -46,22 +46,49 @@
             <a onclick="changeDate(1);" style="vertical-align:central" class="modal-action waves-effect waves-green btn-flat"><i class="material-icons large" style="font-size:3rem">keyboard_arrow_right</i></a>
         </div>
 
-        <table id="tblLedger">
-            <thead>
-                <tr>
-                    <td>Item</td>
-                    <td>Date</td>
-                    <td>Category</td>
-                    <td>Subcategory</td>
-                    <td style="text-align:right">€</td>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <div class="row">
+            <div class="col s12">
+                <ul class="tabs">
+                    <li class="tab col s3"><a href="#divLedgerTab">Ledger</a></li>
+                    <li class="tab col s3"><a onclick="drawChart()" href="#divChartTab">Charts</a></li>
+                </ul>
+            </div>
 
-        <h4 id="lblTotal" style="text-align:right">-</h4>
+            <div id="divLedgerTab" class="col s12">
+                <table id="tblLedger">
+                    <thead>
+                        <tr>
+                            <td>Item</td>
+                            <td>Date</td>
+                            <td>Category</td>
+                            <td>Subcategory</td>
+                            <td style="text-align:right">€</td>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
 
-        <div id="chartdiv" style="height:300px;width:300px; "></div>
+                <h4 id="lblTotal" style="text-align:right">-</h4>
+            </div>
+            <div id="divChartTab" class="col s12">
+                <h4>Expenditure Breakdown</h4>
+
+                <div class="row">
+
+                    <div class="col s6">
+                        <div id="divExpenseChart" style="height:500px;width:500px; "></div>
+                    </div>
+                    <div class="col s6">
+                        <div id="divExpenseSubcatChart" style="height:300px;width:300px; "></div>
+                    </div>
+
+                </div>
+
+                
+            </div>
+        </div>
+
+
 
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
             <a class="btn-floating btn-large red">

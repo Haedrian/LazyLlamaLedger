@@ -48,6 +48,24 @@ namespace LazyLlamaLedger.Controllers
         }
 
         [HttpGet]
+        [ActionName("LedgerSubcategoryAggregate")]
+        public IHttpActionResult GetSubCatAggregate(int month, int year, string catName)
+        {
+            //Decode the base64-ness of it all
+            string catN = Encoding.UTF8.GetString( Convert.FromBase64String(catName));
+
+            //Determine the category by name
+            var catID = DataHandling.Categories.FirstOrDefault(c => String.Equals(c.Name, catN, StringComparison.InvariantCultureIgnoreCase)).ID;
+
+            //First get all the values of that month
+            var monthValues = DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year && e.Category == catID).ToArray();
+
+            var res = monthValues.GroupBy(m => m.SubCategory).Select(cg => new { Category = DataHandling.Categories.First(c => c.ID == catID).Subcats.FirstOrDefault(sc => sc.ID == cg.FirstOrDefault().SubCategory).Name, Sum = cg.Sum(cg1 => cg1.Money).ToString("0.00") });
+
+            return Ok(res);
+        }
+
+        [HttpGet]
         [ActionName("LedgerIncAggregate")]
         public IHttpActionResult GetIncomeAggregate(int month, int year)
         {
