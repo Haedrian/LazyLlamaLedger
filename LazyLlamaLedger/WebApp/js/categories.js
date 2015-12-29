@@ -20,13 +20,10 @@ $(document).ready(function () {
 function newSubcat() {
     var text = $("#newSubcat").text();
 
-    if (text.length == 0)
-    {
+    if (text.length == 0) {
         Materialize.toast('Subcategory Name Required', 2000);
         return;
     }
-
-    //TODO: Check for duplicates
 
     //Determine the id we want for the next subcat
     var id = currentSubcats.length;
@@ -46,9 +43,7 @@ function newSubcat() {
     currentSubcats.push(subCat);
 }
 
-function openNewSubcatInterface()
-{
-
+function openNewSubcatInterface() {
     clearCatInterface();
     $("#mdlCats").openModal();
 }
@@ -68,16 +63,13 @@ function clearCatInterface() {
 }
 
 ///Reads and returns the category and all it's details
-function readCategory()
-{
+function readCategory() {
     var cat = new Object();
 
-    if (selectedCat!= null)
-    {
+    if (selectedCat != null) {
         cat.ID = selectedCat.ID;
     }
-    else 
-    {
+    else {
         cat.ID = -1;
     }
 
@@ -91,16 +83,13 @@ function readCategory()
     return cat;
 }
 
-function validateCategory(cat)
-{
-    if (cat.Name.length == 0 || cat.Name == "...")
-    {
+function validateCategory(cat) {
+    if (cat.Name.length == 0 || cat.Name == "...") {
         Materialize.toast('Category Name Required', 2000);
         return false;
     }
 
-    if (cat.Subcats.length == 0)
-    {
+    if (cat.Subcats.length == 0) {
         Materialize.toast('At least one subcategory is required', 2000);
         return false;
     }
@@ -109,35 +98,45 @@ function validateCategory(cat)
 }
 
 ///Saves and closes
-function SaveAndClose()
-{
+function SaveAndClose() {
     var cat = readCategory();
 
-    if (!validateCategory(cat))
-    {
+    if (!validateCategory(cat)) {
         return;
     }
     //Save!
 
-    $.post("http://localhost:7744/api/cat/Categories", cat, function (data)
-    {
-        Materialize.toast('Entry Saved', 2000);
+    //Check for duplicate name, even if it's an edit (we handle that later)
 
-        loadCategories();
+    $.get("http://localhost:7744/api/cat/CheckUnique?catname=" + window.btoa(cat.Name) + "&id=" + cat.ID, function (data) {
+        if (data) {
+            //Save away
+            $.post("http://localhost:7744/api/cat/Categories", cat, function (data) {
+                Materialize.toast('Entry Saved', 2000);
 
-        closeCatModal();
+                loadCategories();
+
+                closeCatModal();
+            });
+        }
+        else {
+            //Nope, dupe name
+            Materialize.toast("Category Names must be unique", 2000);
+        }
     });
+
+
+
+
 }
 
 
-function loadCategoryForEditing(id)
-{
+function loadCategoryForEditing(id) {
     //Clear the cat interface
     clearCatInterface();
 
     //Now get the details
-    $.get("http://localhost:7744/api/cat/Categories?ID=" + id, function (data)
-    {
+    $.get("http://localhost:7744/api/cat/Categories?ID=" + id, function (data) {
         selectedCat = data;
         currentSubcats = [];
 
@@ -149,8 +148,7 @@ function loadCategoryForEditing(id)
         $("#ckCatExpense").prop("disabled", "disabled");
 
         //Create subcats
-        for(var i=0; i < data.Subcats.length; i++)
-        {
+        for (var i = 0; i < data.Subcats.length; i++) {
             $("#newSubcat").text("..."); //This is a dirty hack so we get by the 'subcat needs to have a value' issue
             newSubcat();
 
@@ -160,12 +158,10 @@ function loadCategoryForEditing(id)
             $("#sc" + i).text(data.Subcats[i].Name);
 
             //Active?
-            if (data.Subcats[i].Active)
-            {
+            if (data.Subcats[i].Active) {
                 $("#sc" + i).css("text-decoration", "");
             }
-            else 
-            {
+            else {
                 $("#sc" + i).css("text-decoration", "line-through");
             }
             currentSubcats.push(data.Subcats[i]);
@@ -211,7 +207,7 @@ function loadCategories() {
         //build up the html
         var html = "";
         $.each(data, function (index, val) {
-            html += '<ul class="collection with-header" onclick="loadCategoryForEditing('+ val.ID +')">';
+            html += '<ul class="collection with-header" onclick="loadCategoryForEditing(' + val.ID + ')">';
 
             if (val.Active) {
                 html += '<li class="collection-header"><h5>' + val.Name;

@@ -42,6 +42,16 @@ namespace LazyLlamaLedger.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [ActionName("CheckUnique")]
+        public IHttpActionResult CheckUnique(string catName,int id)
+        {
+            string cName = Encoding.UTF8.GetString(Convert.FromBase64String(catName));
+
+            return Ok(!DataHandling.Categories.Any(c => String.Equals(c.Name, cName, StringComparison.InvariantCultureIgnoreCase) && c.ID != id));
+        }
+
+
         private void CreateOrUpdate(Category cat)
         {
             Category actualCat = null;
