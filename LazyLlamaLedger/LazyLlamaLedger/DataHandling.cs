@@ -69,7 +69,7 @@ namespace LazyLlamaLedger
                     Active = true,
                     ID = 0,
                     IsExpense = true,
-                    Name = "Misc",
+                    Name = "Misc Expenditure",
                     Subcats = new List<SubCategory>()
                     {
                         new SubCategory()
@@ -86,7 +86,7 @@ namespace LazyLlamaLedger
                     Active = true,
                     ID = 1,
                     IsExpense = false,
-                    Name = "Misc",
+                    Name = "Misc Income",
                     Subcats = new List<SubCategory>()
                     {
                         new SubCategory()
