@@ -74,7 +74,7 @@ namespace LazyLlamaLedger.Controllers
 
             //Expense/Income & ID is read-only - so no support to change it
 
-            actualCat.Subcats = cat.Subcats;
+            actualCat.Subcats = cat.Subcats.Where(sc => sc != null).ToList(); //remove the nullsubcats
 
             //Go through the subcats and ID any which need idying - for now just use their position in the array
             for(int i=0; i < actualCat.Subcats.Count; i++)
