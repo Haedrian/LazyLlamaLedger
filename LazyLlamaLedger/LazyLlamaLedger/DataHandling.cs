@@ -84,7 +84,7 @@ namespace LazyLlamaLedger
                 Categories.Add(new Category()
                 {
                     Active = true,
-                    ID = 0,
+                    ID = 1,
                     IsExpense = false,
                     Name = "Misc",
                     Subcats = new List<SubCategory>()
