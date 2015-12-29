@@ -50,7 +50,7 @@ namespace LazyLlamaLedger
                     LedgerEntries.AddRange(fromFile);
                 }
             }
-
+            
             if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "cats.json"))
             {
                 string cats = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "cats.json");
@@ -61,12 +61,44 @@ namespace LazyLlamaLedger
                     Categories.AddRange(fromFile);
                 }
             }
-        }
+            else
+            {
+                //Put in a default pair of cats
+                Categories.Add(new Category()
+                {
+                    Active = true,
+                    ID = 0,
+                    IsExpense = true,
+                    Name = "Misc",
+                    Subcats = new List<SubCategory>()
+                    {
+                        new SubCategory()
+                        {
+                            Active = true,
+                            ID = 0,
+                            Name = "Other"
+                        }
+                    }
+                });
 
-        static DataHandling()
-        {
-            
+                Categories.Add(new Category()
+                {
+                    Active = true,
+                    ID = 0,
+                    IsExpense = false,
+                    Name = "Misc",
+                    Subcats = new List<SubCategory>()
+                    {
+                        new SubCategory()
+                        {
+                            Active = true,
+                            ID = 0,
+                            Name = "Other"
+                        }
+                    }
+                });
 
+            }
         }
 
         /// <summary>
