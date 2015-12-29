@@ -17,7 +17,7 @@ namespace LazyLlamaLedger.Controllers
         [ActionName("Categories")]
         public IHttpActionResult Categories()
         {
-            return Ok(DataHandling.Categories.OrderBy(c => c.IsExpense).ThenBy(c => c.Name).ToList());
+            return Ok(DataHandling.Categories.OrderBy(c => c.IsExpense).ThenBy(c => c.Active).ThenBy(c => c.Name).ToList());
         }
 
         [HttpGet]
