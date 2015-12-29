@@ -20,37 +20,26 @@ namespace LLLApplication
         {
             InitializeComponent();
 
-            AddToLog("Starting Lazy Llama Ledger");
-
             string baseAddress = "http://localhost:7744/";
 
             // Start OWIN host 
             WebApp.Start<Startup>(url: baseAddress);
 
-            AddToLog("Started Service on " + baseAddress);
+
 
             //Open the browser
-            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + ConfigurationManager.AppSettings["PagePath"] );
-        }
-
-        /// <summary>
-        /// Displays a log message to the user
-        /// </summary>
-        /// <param name="log"></param>
-        public void AddToLog(string log)
-        {
-            txtLog.Text = log + "\r\n" + txtLog.Text;
+            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + ConfigurationManager.AppSettings["PagePath"]);
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            AddToLog("Please wait while we save the files");
+
 
             //Flush everything
             LazyLlamaLedger.DataHandling.FlushCats();
             LazyLlamaLedger.DataHandling.FlushLedgers();
 
-            AddToLog("Done. Bye");
+
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -62,6 +51,35 @@ namespace LLLApplication
         {
             //Flush everything - use a task so we don't block anything
             Task.Factory.StartNew(() => DataHandling.FlushAll());
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                notifyIcon.Visible = true;
+                //notifyIcon.ShowBalloonTip(3000);
+                this.ShowInTaskbar = false;
+            }
+        }
+
+        private void notifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+            notifyIcon.Visible = false;
+        }
+
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.ShowInTaskbar = true;
+            notifyIcon.Visible = false;
         }
     }
 }
