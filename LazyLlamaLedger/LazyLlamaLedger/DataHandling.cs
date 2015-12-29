@@ -11,6 +11,8 @@ namespace LazyLlamaLedger
 {
     public static class DataHandling
     {
+        public static string FolderPath = "";
+
         public static List<LedgerEntry> LedgerEntries { get; set; }
         public static List<Category> Categories { get; set; }
 
@@ -28,14 +30,19 @@ namespace LazyLlamaLedger
             Categories.Add(cat);
         }
 
-        static DataHandling()
+        /// <summary>
+        /// This starts the data handler
+        /// Had to be done this way, because we can't guarantee when the constructor starts
+        /// </summary>
+        public static void StartDataHandling()
         {
             LedgerEntries = new List<LedgerEntry>();
             Categories = new List<Category>();
 
-            if (File.Exists("les.json"))
+            //TODO: DEFAULT DATA
+            if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "les.json"))
             {
-                string les = File.ReadAllText("les.json");
+                string les = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "les.json");
                 var fromFile = JsonConvert.DeserializeObject<List<LedgerEntry>>(les);
 
                 if (fromFile != null)
@@ -44,9 +51,9 @@ namespace LazyLlamaLedger
                 }
             }
 
-            if (File.Exists("cats.json"))
+            if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "cats.json"))
             {
-                string cats = File.ReadAllText("cats.json");
+                string cats = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "cats.json");
                 var fromFile = JsonConvert.DeserializeObject<List<Category>>(cats);
 
                 if (fromFile != null)
@@ -54,6 +61,11 @@ namespace LazyLlamaLedger
                     Categories.AddRange(fromFile);
                 }
             }
+        }
+
+        static DataHandling()
+        {
+            
 
         }
 
@@ -68,7 +80,7 @@ namespace LazyLlamaLedger
             lock(fileLock)
             {
                 string les = JsonConvert.SerializeObject(LedgerEntries);
-                File.WriteAllText("les.json", les);
+                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", les);
             }
         }
 
@@ -77,7 +89,7 @@ namespace LazyLlamaLedger
             lock(fileLock)
             {
                 string cats = JsonConvert.SerializeObject(Categories);
-                File.WriteAllText("cats.json", cats);
+                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "cats.json", cats);
             }
         }
 
@@ -86,10 +98,10 @@ namespace LazyLlamaLedger
             lock(fileLock)
             {
                 string les = JsonConvert.SerializeObject(LedgerEntries);
-                File.WriteAllText("les.json", les);
+                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", les);
 
                 string cats = JsonConvert.SerializeObject(Categories);
-                File.WriteAllText("cats.json", cats);
+                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "cats.json", cats);
             }
         }
     }
