@@ -1,4 +1,4 @@
-﻿var versionNumber = "0.1";
+﻿var versionNumber = "1.0";
 
 //This is to fix a bug where the datepicker pops up when you change tab
 $(window).on("close", function ()
