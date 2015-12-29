@@ -18,6 +18,10 @@ $(document).ready(function () {
 function drawChart() {
 
     $("#divExpenseChart").html(""); //Clear the old div. It's ating up sometimes, not sure why
+    $("#divExpenseSubcatChart").html("");
+
+    $("#divIncomeChart").html("");
+    $("#divIncomeSubcatChart").html("");
 
     //Get the chart data
 
@@ -30,38 +34,64 @@ function drawChart() {
 
         //and plot it
         jQuery.jqplot('divExpenseChart', [cData],
-    {
-        grid: { background: '#FFFFFF', borderWidth: 0, shadow: 0 }
-            ,
-        seriesDefaults: {
-            renderer: jQuery.jqplot.PieRenderer,
-            rendererOptions:
-                {
-                    showDataLabels: true,
-                    dataLabels: 'label',
-                    // stroke the slices with a little thicker line.
-                    lineWidth: 5,
-                }
-        },
-        legend: { show: false, location: 'e' }
-    }
-  );
+        {
+            grid: { background: '#FFFFFF', borderWidth: 0, shadow: 0 },
+            seriesDefaults: {
+                renderer: jQuery.jqplot.PieRenderer,
+                rendererOptions:
+                    {
+                        showDataLabels: true,
+                        dataLabels: 'label',
+                        // stroke the slices with a little thicker line.
+                        lineWidth: 5,
+                    }
+            },
+            legend: { show: false, location: 'e' }
+        });
         $("#divExpenseChart").unbind("jqplotDataClick"); //Because otherwise it binds more than once
         $('#divExpenseChart').bind('jqplotDataClick',
     function (ev, seriesIndex, pointIndex, data) {
-        drawSubcatExpenseChart(data[0]);
-    }
-);
-
+        drawSubcatExpenseChart(data[0], "divExpenseSubcatChart");
+    });
     });
 
+    //Income Graph
+    $.get("http://localhost:7744/api/ledger/LedgerIncAggregate?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data) {
+        var cData = [];
+
+        $.each(data, function (index, val) {
+            cData.push([val.Category, Number(val.Sum)]);
+        });
+
+        //and plot it
+        jQuery.jqplot('divIncomeChart', [cData],
+        {
+            grid: { background: '#FFFFFF', borderWidth: 0, shadow: 0 },
+            seriesDefaults: {
+                renderer: jQuery.jqplot.PieRenderer,
+                rendererOptions:
+                    {
+                        showDataLabels: true,
+                        dataLabels: 'label',
+                        // stroke the slices with a little thicker line.
+                        lineWidth: 5,
+                    }
+            },
+            legend: { show: false, location: 'e' }
+        });
+        $("#divIncomeChart").unbind("jqplotDataClick"); //Because otherwise it binds more than once
+        $('#divIncomeChart').bind('jqplotDataClick',
+    function (ev, seriesIndex, pointIndex, data) {
+        drawSubcatExpenseChart(data[0], "divIncomeSubcatChart");
+    });
+    });
 
 }
 
 ///This uses catName instead of ID. I know, not ideal - but there's nothing to do about it.
-function drawSubcatExpenseChart(catName) {
+function drawSubcatExpenseChart(catName, chartSelector) {
     //Clear the old div. It acts up
-    $("#divExpenseSubcatChart").html("");
+    $("#" + chartSelector).html("");
 
     $.get("http://localhost:7744/api/ledger/LedgerSubcategoryAggregate?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear() + "&catName=" + window.btoa(catName), //base 64 so we don't have issues 
         function (data) {
@@ -72,7 +102,7 @@ function drawSubcatExpenseChart(catName) {
             });
 
             //and plot it
-            jQuery.jqplot('divExpenseSubcatChart', [cData],
+            jQuery.jqplot(chartSelector, [cData],
         {
             grid: { background: '#FFFFFF', borderWidth: 0, shadow: 0 }
                 ,
