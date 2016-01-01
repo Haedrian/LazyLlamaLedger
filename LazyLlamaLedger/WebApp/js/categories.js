@@ -78,6 +78,12 @@ function readCategory() {
     cat.Active = $("#chkActive").prop("checked");
     cat.IsExpense = $("#ckCatExpense").prop("checked");
 
+    //Go through the subcats and update the names
+    for (var i = 0; i < currentSubcats.length; i++)
+    {
+        currentSubcats[i].Name = $("#sc" + i).text();
+    }
+
     cat.Subcats = currentSubcats;
 
     return cat;
