@@ -42,6 +42,17 @@ namespace LazyLlamaLedger.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Determines whether this the first time we've run this.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("FirstTime")]
+        public IHttpActionResult FirstTime()
+        {
+            return Ok(DataHandling.isFirstTime);
+        }
+
         [HttpGet]
         [ActionName("CheckUnique")]
         public IHttpActionResult CheckUnique(string catName,int id)
@@ -49,6 +60,19 @@ namespace LazyLlamaLedger.Controllers
             string cName = Encoding.UTF8.GetString(Convert.FromBase64String(catName));
 
             return Ok(!DataHandling.Categories.Any(c => String.Equals(c.Name, cName, StringComparison.InvariantCultureIgnoreCase) && c.ID != id));
+        }
+        
+        /// <summary>
+        /// Loads the category starter pack
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("LoadCategoryStarterPack")]
+        public IHttpActionResult LoadCategoryStarterPack()
+        {
+            DataHandling.LoadCategoryStarterPack();
+            DataHandling.isFirstTime = false;
+            return Ok();
         }
 
 
