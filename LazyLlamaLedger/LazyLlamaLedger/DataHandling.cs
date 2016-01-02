@@ -11,6 +11,7 @@ namespace LazyLlamaLedger
 {
     public static class DataHandling
     {
+        public static bool isFirstTime = false;
         public static string FolderPath = "";
 
         public static List<LedgerEntry> LedgerEntries { get; set; }
@@ -39,7 +40,6 @@ namespace LazyLlamaLedger
             LedgerEntries = new List<LedgerEntry>();
             Categories = new List<Category>();
 
-            //TODO: DEFAULT DATA
             if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "les.json"))
             {
                 string les = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "les.json");
@@ -50,7 +50,7 @@ namespace LazyLlamaLedger
                     LedgerEntries.AddRange(fromFile);
                 }
             }
-            
+
             if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "cats.json"))
             {
                 string cats = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "cats.json");
@@ -63,6 +63,8 @@ namespace LazyLlamaLedger
             }
             else
             {
+                DataHandling.isFirstTime = true;
+
                 //Put in a default pair of cats
                 Categories.Add(new Category()
                 {
@@ -101,6 +103,23 @@ namespace LazyLlamaLedger
             }
         }
 
+        public static void LoadCategoryStarterPack()
+        {
+            //Load the file from resources
+            string sPack = File.ReadAllText("Resources/cats.json");
+
+            List<Category> sPackCats = JsonConvert.DeserializeObject<List<Category>>(sPack);
+
+            //Go through the active ones one at a time, if one with the same name doesn't exist, then add it
+            foreach (var cat in sPackCats.Where(c => c.Active))
+            {
+                if (!Categories.Any(cc => String.Equals(cc.Name, cat.Name)))
+                {
+                    AddCategory(cat);
+                }
+            }
+        }
+
         /// <summary>
         /// So we ensure we're not trying to write to the file at the same time
         /// </summary>
@@ -109,7 +128,7 @@ namespace LazyLlamaLedger
 
         public static void FlushLedgers()
         {
-            lock(fileLock)
+            lock (fileLock)
             {
                 string les = JsonConvert.SerializeObject(LedgerEntries);
                 File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", les);
@@ -118,7 +137,7 @@ namespace LazyLlamaLedger
 
         public static void FlushCats()
         {
-            lock(fileLock)
+            lock (fileLock)
             {
                 string cats = JsonConvert.SerializeObject(Categories);
                 File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "cats.json", cats);
@@ -127,7 +146,7 @@ namespace LazyLlamaLedger
 
         public static void FlushAll()
         {
-            lock(fileLock)
+            lock (fileLock)
             {
                 string les = JsonConvert.SerializeObject(LedgerEntries);
                 File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", les);
