@@ -16,7 +16,14 @@ namespace LazyLlamaLedger.Models
         public bool Active { get; set; }
         [Required]
         public bool IsExpense { get; set; }
+        
+        public int Uses { get; set; }
 
         public List<SubCategory> Subcats { get; set; }
+
+        public Category()
+        {
+            Uses = 0;
+        }
     }
 }

@@ -86,6 +86,12 @@ namespace LazyLlamaLedger.Controllers
             if (le != null && ModelState.IsValid)
             {
                 DataHandling.AddLedgerEntry(le);
+
+                //Increment the use amount
+                DataHandling.Categories.FirstOrDefault(cat => le.Category == cat.ID).Uses++;
+                //Incremement subcat amount
+                DataHandling.Categories.FirstOrDefault(cat => le.Category == cat.ID).Subcats.FirstOrDefault(sc => sc.ID == le.ID).Uses++;
+
                 return Ok();
             }
             else
@@ -100,7 +106,7 @@ namespace LazyLlamaLedger.Controllers
         {
             if (activeOnly)
             {
-                return Ok(DataHandling.Categories.Where(c => c.Active && c.IsExpense == expense).ToArray());
+                return Ok(DataHandling.Categories.Where(c => c.Active && c.IsExpense == expense).OrderByDescending(c => c.Uses).ThenBy(c => c.Name).ToArray());
             }
             else
             {
