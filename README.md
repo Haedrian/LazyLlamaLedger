@@ -5,9 +5,9 @@ Lazy Llama Ledger is a simple ledger app which lets you save any purchases and i
 
 LLL is a webapp, with the inner workings all run locally on the user's machine as a self-hosted RESTful service.
 
-Version 1.1
------------
-Fixed bug where updates to subcats wouldn't work
-Added cookie for LMF
-Added Subcat Starter Pack
-Added basic settings
+#Version 1.1
+
+-Fixed bug where updates to subcats wouldn't work
+-Added cookie for LMF
+-Added Subcat Starter Pack
+-Added basic settings
