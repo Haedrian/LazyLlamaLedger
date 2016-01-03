@@ -32,6 +32,7 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li id="liLedger" onclick="openLedger()" class="active"><a>Ledger</a></li>
                 <li id="liCategories" onclick="openCats()"><a>Categories</a></li>
+                <li id="liSettings" onclick="popupSettings()"><a>Settings</a></li>
                 <li id="liAbout" onclick="openAbout()"><a>About</a></li>
                 <!--<li><a href="">Reports</a></li>-->
             </ul>
@@ -227,10 +228,16 @@
             <p id="txtVersion"></p>
             <h4>Designed by <a href="https://www.linkedin.com/profile/view?id=278164224">Llama</a></h4>
             <p>This software is released under <a target="_blank" href="https://www.gnu.org/licenses/gpl-3.0.txt">GNU General Public License v3.0</a></p>
-            <p>Thanks go to guinea pigs</p>
-            <ul>
-                <li>LMF</li>
-            </ul>
+            <img title="Thank you LMF" alt="Thank you LMF" src="images/cookie.png" style="width:30px;height:30px" />
+        </div>
+    </div>
+
+    <div id="mdlSettings" class="modal">
+        <div class="modal-content">
+            <h4>Settings</h4>
+            <p style="font-weight:bold">Load Category Starter Pack</p>
+            <p>This will not overwrite your existing categories</p>
+            <button>Load Starter Pack</button>
         </div>
     </div>
 
