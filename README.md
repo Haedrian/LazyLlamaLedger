@@ -7,7 +7,7 @@ LLL is a webapp, with the inner workings all run locally on the user's machine a
 
 #Version 1.1
 
--Fixed bug where updates to subcats wouldn't work
--Added cookie for LMF
--Added Subcat Starter Pack
--Added basic settings
+- Fixed bug where updates to subcats wouldn't work
+- Added cookie for LMF
+- Added Subcat Starter Pack
+- Added basic settings
