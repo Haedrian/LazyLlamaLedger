@@ -42,7 +42,15 @@ function closeAll()
 {
     $("#divCategories").css("display", "none");
     $("#divLedger").css("display", "none");
+    $("#divReports").css("display", "none");
     $("li.active").removeClass("active");
+}
+
+function openReports()
+{
+    closeAll();
+    $("#divReports").css("display", "block");
+    $("liReports").addClass("active");
 }
 
 function openLedger()

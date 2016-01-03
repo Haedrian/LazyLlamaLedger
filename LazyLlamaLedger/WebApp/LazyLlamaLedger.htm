@@ -32,13 +32,34 @@
             <a href="#" class="brand-logo" style="margin-left:30px"><img style="height: 50px;vertical-align: middle;padding-right: 15px;padding-bottom: 5px" src="images/lll.png" />Lazy Llama Ledger</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li id="liLedger" onclick="openLedger()" class="active"><a>Ledger</a></li>
+                <li id="liReports" onclick="openReports()"><a>Reports</a></li>
                 <li id="liCategories" onclick="openCats()"><a>Categories</a></li>
                 <li id="liSettings" onclick="$('#mdlSettings').openModal();"><a>Settings</a></li>
                 <li id="liAbout" onclick="openAbout()"><a>About</a></li>
-                <!--<li><a href="">Reports</a></li>-->
             </ul>
         </div>
     </nav>
+
+    <div id="divReports" class="container" style="width:75%;display:none">
+        <h4>Reports</h4>
+        <form class="col s12">
+            <div class="row">
+                <div class="switch col s6">
+                        <input tabindex="1" placeholder="Date From" id="txtDateFrom" type="text">
+                        <label for="txtDateFrom">Start Date</label>
+                </div>
+                <div class="switch col s6">
+                    <input tabindex="1" placeholder="Date To" id="txtDateTo" type="text">
+                    <label for="txtDateFrom">End Date</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="switch col s6">
+                    <button class="waves-effect waves-light btn" onclick="">Load Report</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <div id="divLedger" class="container" style="width:75%">
 
