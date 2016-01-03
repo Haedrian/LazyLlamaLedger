@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="Controllers\CatController.cs" />
     <Compile Include="Controllers\LedgerController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DataHandling.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\LedgerEntry.cs" />

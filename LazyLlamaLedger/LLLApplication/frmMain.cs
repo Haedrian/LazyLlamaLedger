@@ -40,7 +40,7 @@ namespace LLLApplication
 
             key = key.OpenSubKey("LazyLlamaLedger", true);
             
-            if (key == null)
+            if (key == null || key.GetValue("DataPath") == null)
             {
                 //First time being loaded, get user to choose save directory
                 FolderBrowserDialog fbd = new FolderBrowserDialog()

@@ -21,6 +21,7 @@
     <script src="js/categories.js"></script>
     <script src="js/ledger.js"></script>
     <script src="js/common.js"></script>
+    <script src="js/settings.js"></script>
 
     <script src="Charts/jquery.jqplot.min.js"></script>
     <link href="Charts/jquery.jqplot.min.css" rel="stylesheet" />
@@ -32,7 +33,7 @@
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li id="liLedger" onclick="openLedger()" class="active"><a>Ledger</a></li>
                 <li id="liCategories" onclick="openCats()"><a>Categories</a></li>
-                <li id="liSettings" onclick="popupSettings()"><a>Settings</a></li>
+                <li id="liSettings" onclick="$('#mdlSettings').openModal();"><a>Settings</a></li>
                 <li id="liAbout" onclick="openAbout()"><a>About</a></li>
                 <!--<li><a href="">Reports</a></li>-->
             </ul>
@@ -237,7 +238,10 @@
             <h4>Settings</h4>
             <p style="font-weight:bold">Load Category Starter Pack</p>
             <p>This will not overwrite your existing categories</p>
-            <button>Load Starter Pack</button>
+            <button class="waves-effect waves-light btn" onclick="settingsAddCatStarterPack()">Load Starter Pack</button>
+            <p style="font-weight:bold">Reset File Location</p>
+            <p>When you next restart the server, you'll be asked to choose a new file location. THIS WILL NOT COPY THE EXISTING FILES</p>
+            <button class="waves-effect waves-light btn" onclick="resetFile()">Reset File Location</button>
         </div>
     </div>
 
