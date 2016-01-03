@@ -83,7 +83,7 @@ namespace LLLApplication
             WebApp.Start<Startup>(url: baseAddress);
 
             //Open the browser
-            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + ConfigurationManager.AppSettings["PagePath"]);
+            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + DataHandling.relativeChange +  ConfigurationManager.AppSettings["PagePath"]);
         }
 
         private void tmrFlush_Tick(object sender, EventArgs e)

@@ -11,6 +11,11 @@ namespace LazyLlamaLedger
 {
     public static class DataHandling
     {
+        /// <summary>
+        /// This is to fix a bug with the dirty fix for the relative shortcut. I'll have to pass this as a param
+        /// </summary>
+        public static string relativeChange = "";
+
         public static bool isFirstTime = false;
         public static string FolderPath = "";
 
@@ -106,7 +111,7 @@ namespace LazyLlamaLedger
         public static void LoadCategoryStarterPack()
         {
             //Load the file from resources
-            string sPack = File.ReadAllText("Resources/cats.json");
+            string sPack = File.ReadAllText(relativeChange + "Resources/cats.json");
 
             List<Category> sPackCats = JsonConvert.DeserializeObject<List<Category>>(sPack);
 
