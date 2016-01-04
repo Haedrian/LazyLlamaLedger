@@ -22,6 +22,7 @@
     <script src="js/ledger.js"></script>
     <script src="js/common.js"></script>
     <script src="js/settings.js"></script>
+    <script src="js/reports.js"></script>
 
     <script src="Charts/jquery.jqplot.min.js"></script>
     <link href="Charts/jquery.jqplot.min.css" rel="stylesheet" />
@@ -55,14 +56,14 @@
             </div>
             <div class="row">
                 <div class="switch col s6">
-                    <button class="waves-effect waves-light btn" onclick="">Load Report</button>
+                    <button class="waves-effect waves-light btn" onclick="getAndCreateExpenseTable(); return false;">Load Report</button>
                 </div>
             </div>
         </form>
 
         <div id="divActualReport">
-            <div id="divTable">
-                <table id="tblReport">
+            <div id="divExpenseTable" style="overflow-x:auto">
+                <table id="tblExpenseReport">
                     <thead></thead>
                     <tbody></tbody>
                 </table>

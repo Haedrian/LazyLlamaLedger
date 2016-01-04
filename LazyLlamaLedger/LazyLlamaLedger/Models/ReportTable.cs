@@ -8,12 +8,15 @@ namespace LazyLlamaLedger.Models
 {
     public class ReportTable
     {
-        public List<ReportRow> row;
+        public List<ReportRow> Rows;
+        public List<string> Headers;
     }
 
     public class ReportRow
     {
-        public string categoryName;
-        public List<decimal> values;
+        public string CategoryName;
+        public List<string> Values;
+
+        public int CatID { get; internal set; }
     }
 }
