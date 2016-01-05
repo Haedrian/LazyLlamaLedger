@@ -157,5 +157,16 @@ namespace LazyLlamaLedger.Controllers
 
             return Ok(rt); //TODO
         }
+
+        [HttpGet]
+        [ActionName("Totals")]
+        public IHttpActionResult GetTotals(DateTime startDate,DateTime endDate)
+        {
+            List<string> months = new List<string>();
+            List<string> incomes = new List<string>();
+            List<string> expenses = new List<string>();
+
+            return Ok();
+        }
     }
 }
