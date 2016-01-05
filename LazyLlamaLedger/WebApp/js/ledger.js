@@ -4,7 +4,7 @@ var chosenDate = new Date();
 $(document).ready(function () {
     updateMonth();
 
-    $('.datepicker').pickadate({
+    $('#txtDate').pickadate({
         selectMonths: false,
         selectYears: false
     });
