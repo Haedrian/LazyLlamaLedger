@@ -223,7 +223,7 @@ function fetchData() {
 
         $("#tblLedger tbody").html(html);
 
-        $("#lblTotal").html(total);
+        $("#lblTotal").html(total.toFixed(2));
 
         $("#lblTotal").css("color", "green");
 

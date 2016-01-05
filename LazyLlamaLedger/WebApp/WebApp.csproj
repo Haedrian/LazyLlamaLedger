@@ -62,6 +62,7 @@
     <Content Include="js\ledger.js" />
     <Content Include="js\materialize.js" />
     <Content Include="js\materialize.min.js" />
+    <Content Include="js\reports.js" />
     <Content Include="js\settings.js" />
     <Content Include="LazyLlamaLedger.htm" />
   </ItemGroup>
