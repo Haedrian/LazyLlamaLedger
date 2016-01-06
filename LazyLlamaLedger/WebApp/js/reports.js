@@ -123,7 +123,7 @@ function getAndCreateExpenseTable() {
         //        highlighter: { show: false }
         //    });
 
-        $.jqplot('divReportBar', [data.s1, data.s2, data.s3], {
+        $.jqplot('divReportBar', [data.s2,data.s1, data.s3], {
             seriesDefaults: {
                 renderer: $.jqplot.BarRenderer,
                 rendererOptions: {
