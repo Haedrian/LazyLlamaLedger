@@ -19,16 +19,14 @@ $(document).ready(function () {
 });
 
 
-function getAndCreateExpenseTable()
-{
+function getAndCreateExpenseTable() {
     //Do we have a date from and a date to?
-    if ($("#txtDateFrom").val().length == 0 || $("#txtDateTo").val().length == 0)
-    {
+    if ($("#txtDateFrom").val().length == 0 || $("#txtDateTo").val().length == 0) {
         Materialize.toast('Start Date and End Date are required', 2000);
         return;
     }
 
-    $.get("http://localhost:7744/api/report/ExpenseTable?StartDate="+$("#txtDateFrom").val()+"-01"+"&EndDate=" + $("#txtDateTo").val() + "-01", function (data) {
+    $.get("http://localhost:7744/api/report/ExpenseTable?StartDate=" + $("#txtDateFrom").val() + "-01" + "&EndDate=" + $("#txtDateTo").val() + "-01", function (data) {
         var headerHtml = "<tr>";
         //Start with the headings
 
@@ -100,4 +98,71 @@ function getAndCreateExpenseTable()
 
     });
 
+    //And the bar chart
+
+    $("#divReportBar").html("");
+
+    $.get("http://localhost:7744/api/report/Totals?StartDate=" + $("#txtDateFrom").val() + "-01" + "&EndDate=" + $("#txtDateTo").val() + "-01", function (data) {
+        //Load the bar chart
+        //$.jqplot('divReportBar', [data.s2, data.s1],
+        //    {
+        //        grid: { background: '#FFFFFF', borderWidth: 0, shadow: 0 },
+        //        animate: !$.jqplot.use_excanvas,
+        //        seriesDefaults:
+        //            {
+        //                renderer: $.jqplot.BarRenderer,
+        //                pointLabels: { show: true }
+        //            },
+        //        axes: {
+        //            xaxis:
+        //                {
+        //                    renderer: $.jqplot.CategoryAxisRenderer,
+        //                    ticks: data.ticks
+        //                }
+        //        },
+        //        highlighter: { show: false }
+        //    });
+
+        $.jqplot('divReportBar', [data.s1, data.s2, data.s3], {
+            seriesDefaults: {
+                renderer: $.jqplot.BarRenderer,
+                rendererOptions: {
+                    fillToZero: true
+                },
+                pointLabels: {
+                    show: true,
+                    stackedValue: true
+                }
+            },
+            series: [{},
+            {},
+                     {
+                         disableStack: true,//otherwise it wil be added to values of previous series
+                         renderer: $.jqplot.LineRenderer,
+                         lineWidth: 2,
+                         pointLabels: {
+                             show: false
+                         },
+                         markerOptions: {
+                             size: 5
+                         }
+                     }],
+            axesDefaults: {
+                tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                tickOptions: {
+                    angle: 30
+                }
+            },
+            axes: {
+                xaxis: {
+                    renderer: $.jqplot.CategoryAxisRenderer,
+                    ticks:data.ticks
+                },
+                yaxis: {
+                    autoscale: true
+                }
+            }
+        });
+
+    });
 }

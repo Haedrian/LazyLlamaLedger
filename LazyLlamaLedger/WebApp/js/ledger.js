@@ -17,7 +17,7 @@ $(document).ready(function () {
 
 function drawChart() {
 
-    $("#divExpenseChart").html(""); //Clear the old div. It's ating up sometimes, not sure why
+    $("#divExpenseChart").html(""); //Clear the old div. It's acting up sometimes, not sure why
     $("#divExpenseSubcatChart").html("");
 
     $("#divIncomeChart").html("");

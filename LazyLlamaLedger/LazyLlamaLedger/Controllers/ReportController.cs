@@ -162,11 +162,32 @@ namespace LazyLlamaLedger.Controllers
         [ActionName("Totals")]
         public IHttpActionResult GetTotals(DateTime startDate,DateTime endDate)
         {
-            List<string> months = new List<string>();
-            List<string> incomes = new List<string>();
-            List<string> expenses = new List<string>();
+            List<string> dates = new List<string>();
+            List<decimal> incomes = new List<decimal>();
+            List<decimal> expenses = new List<decimal>();
+            List<decimal> total = new List<decimal>();
 
-            return Ok();
+            DateTime dateTimeCursor = startDate;
+
+            while (dateTimeCursor <= endDate)
+            {
+                dates.Add(startDate.ToString("yy/MM"));
+
+                incomes.Add(DataHandling.LedgerEntries.Where(le => le.Date.Month == dateTimeCursor.Month && le.Date.Year == dateTimeCursor.Year && !le.IsExpense).Sum(e => e.Money));
+                expenses.Add(DataHandling.LedgerEntries.Where(le => le.Date.Month == dateTimeCursor.Month && le.Date.Year == dateTimeCursor.Year && le.IsExpense).Sum(e => e.Money));
+                total.Add(incomes[incomes.Count-1] - expenses[expenses.Count -1]);
+
+                dateTimeCursor = dateTimeCursor.AddMonths(1);
+            }
+
+            return Ok(
+                new
+                {
+                    s1 = expenses,
+                    s2 = incomes,
+                    s3 = total,
+                    ticks = dates
+                });
         }
     }
 }
