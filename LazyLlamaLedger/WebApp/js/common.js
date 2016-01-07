@@ -1,4 +1,4 @@
-﻿var versionNumber = "1.2";
+﻿var versionNumber = "2.0";
 
 //This is to fix a bug where the datepicker pops up when you change tab
 $(window).on("close", function ()
@@ -42,7 +42,15 @@ function closeAll()
 {
     $("#divCategories").css("display", "none");
     $("#divLedger").css("display", "none");
+    $("#divReports").css("display", "none");
     $("li.active").removeClass("active");
+}
+
+function openReports()
+{
+    closeAll();
+    $("#divReports").css("display", "block");
+    $("liReports").addClass("active");
 }
 
 function openLedger()

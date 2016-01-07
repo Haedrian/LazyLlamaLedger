@@ -49,7 +49,10 @@
     <Content Include="Charts\excanvas.min.js" />
     <Content Include="Charts\jquery.jqplot.min.css" />
     <Content Include="Charts\jquery.jqplot.min.js" />
+    <Content Include="Charts\plugins\jqplot.barRenderer.min.js" />
+    <Content Include="Charts\plugins\jqplot.categoryAxisRenderer.min.js" />
     <Content Include="Charts\plugins\jqplot.pieRenderer.min.js" />
+    <Content Include="Charts\plugins\jqplot.pointLabels.min.js" />
     <Content Include="css\lll.css" />
     <Content Include="css\materialize.css" />
     <Content Include="css\materialize.min.css" />
@@ -62,6 +65,7 @@
     <Content Include="js\ledger.js" />
     <Content Include="js\materialize.js" />
     <Content Include="js\materialize.min.js" />
+    <Content Include="js\reports.js" />
     <Content Include="js\settings.js" />
     <Content Include="LazyLlamaLedger.htm" />
   </ItemGroup>

@@ -4,7 +4,7 @@ var chosenDate = new Date();
 $(document).ready(function () {
     updateMonth();
 
-    $('.datepicker').pickadate({
+    $('#txtDate').pickadate({
         selectMonths: false,
         selectYears: false
     });
@@ -17,7 +17,7 @@ $(document).ready(function () {
 
 function drawChart() {
 
-    $("#divExpenseChart").html(""); //Clear the old div. It's ating up sometimes, not sure why
+    $("#divExpenseChart").html(""); //Clear the old div. It's acting up sometimes, not sure why
     $("#divExpenseSubcatChart").html("");
 
     $("#divIncomeChart").html("");
@@ -223,7 +223,7 @@ function fetchData() {
 
         $("#tblLedger tbody").html(html);
 
-        $("#lblTotal").html(total);
+        $("#lblTotal").html(total.toFixed(2));
 
         $("#lblTotal").css("color", "green");
 

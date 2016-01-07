@@ -113,10 +113,12 @@
   <ItemGroup>
     <Compile Include="Controllers\CatController.cs" />
     <Compile Include="Controllers\LedgerController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DataHandling.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\LedgerEntry.cs" />
+    <Compile Include="Models\ReportTable.cs" />
     <Compile Include="Models\SubCategory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
