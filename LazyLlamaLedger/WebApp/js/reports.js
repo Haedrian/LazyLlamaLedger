@@ -102,6 +102,8 @@ function getAndCreateExpenseTable() {
 
     $("#divReportBar").html("");
 
+    $("#divReportBar").css("width", $(window).width() * 0.75); //Resize it
+
     $.get("http://localhost:7744/api/report/Totals?StartDate=" + $("#txtDateFrom").val() + "-01" + "&EndDate=" + $("#txtDateTo").val() + "-01", function (data) {
         //Load the bar chart
         //$.jqplot('divReportBar', [data.s2, data.s1],
@@ -161,7 +163,9 @@ function getAndCreateExpenseTable() {
                 yaxis: {
                     autoscale: true
                 }
-            }
+            },
+            highlighter: { show: false },
+            grid: { background: '#FFFFFF', borderWidth: 0, shadow: 0 }
         });
 
     });
