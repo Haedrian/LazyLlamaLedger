@@ -82,6 +82,14 @@ namespace LazyLlamaLedger.Controllers
                 }
             }
 
+            //How about a total too ?
+            rt.Headers.Add("Total");
+
+            foreach(var row in rt.Rows)
+            {
+                row.Values.Add(row.Values.Sum(v => Decimal.Parse(v)).ToString("0.00") );
+            }
+
 
             return Ok(rt); //TODO
         }
@@ -152,6 +160,14 @@ namespace LazyLlamaLedger.Controllers
                     rt.Rows.RemoveAt(i);
                     i--;
                 }
+            }
+
+            //How about a total too ?
+            rt.Headers.Add("Total");
+
+            foreach (var row in rt.Rows)
+            {
+                row.Values.Add(row.Values.Sum(v => Decimal.Parse(v)).ToString("0.00"));
             }
 
 
