@@ -106,25 +106,7 @@ function getAndCreateExpenseTable() {
 
     $.get("http://localhost:7744/api/report/Totals?StartDate=" + $("#txtDateFrom").val() + "-01" + "&EndDate=" + $("#txtDateTo").val() + "-01", function (data) {
         //Load the bar chart
-        //$.jqplot('divReportBar', [data.s2, data.s1],
-        //    {
-        //        grid: { background: '#FFFFFF', borderWidth: 0, shadow: 0 },
-        //        animate: !$.jqplot.use_excanvas,
-        //        seriesDefaults:
-        //            {
-        //                renderer: $.jqplot.BarRenderer,
-        //                pointLabels: { show: true }
-        //            },
-        //        axes: {
-        //            xaxis:
-        //                {
-        //                    renderer: $.jqplot.CategoryAxisRenderer,
-        //                    ticks: data.ticks
-        //                }
-        //        },
-        //        highlighter: { show: false }
-        //    });
-
+        
         $.jqplot('divReportBar', [data.s2,data.s1, data.s3], {
             seriesDefaults: {
                 renderer: $.jqplot.BarRenderer,
