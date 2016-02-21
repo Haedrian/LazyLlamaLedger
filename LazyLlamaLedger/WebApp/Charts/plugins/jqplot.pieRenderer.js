@@ -471,6 +471,11 @@
                     fstr = this.dataLabelFormatString || '%d';
                     label = $.jqplot.sprintf(fstr, this.data[i][1]);
                 }
+                else if (this.dataLabels == 'both')
+                {
+                    fstr = this.dataLabelFormatString || '%s';
+                    label = $.jqplot.sprintf(fstr, gd[i][0] + "<br/> EUR " + this.data[i][1]);
+                }
                 else if (this.dataLabels == 'percent') {
                     fstr = this.dataLabelFormatString || '%d%%';
                     label = $.jqplot.sprintf(fstr, gd[i][2]*100);

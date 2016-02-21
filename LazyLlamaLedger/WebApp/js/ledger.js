@@ -41,7 +41,7 @@ function drawChart() {
                 rendererOptions:
                     {
                         showDataLabels: true,
-                        dataLabels: 'label',
+                        dataLabels: 'both',
                         // stroke the slices with a little thicker line.
                         lineWidth: 5,
                     }
@@ -72,7 +72,7 @@ function drawChart() {
                 rendererOptions:
                     {
                         showDataLabels: true,
-                        dataLabels: 'label',
+                        dataLabels: 'both',
                         // stroke the slices with a little thicker line.
                         lineWidth: 5,
                     }
@@ -111,7 +111,7 @@ function drawSubcatExpenseChart(catName, chartSelector) {
                 rendererOptions:
                     {
                         showDataLabels: true,
-                        dataLabels: 'label',
+                        dataLabels: 'both',
                         // stroke the slices with a little thicker line.
                         lineWidth: 5,
                     }
