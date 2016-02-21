@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +13,11 @@ namespace LazyLlamaLedger
 {
     public static class DataHandling
     {
+        /// <summary>
+        /// Holds the Encryption key for working with the file
+        /// </summary>
+        private static String EncryptionKey;
+
         /// <summary>
         /// This is to fix a bug with the dirty fix for the relative shortcut. I'll have to pass this as a param
         /// </summary>
@@ -39,16 +46,49 @@ namespace LazyLlamaLedger
         /// <summary>
         /// This starts the data handler
         /// Had to be done this way, because we can't guarantee when the constructor starts
+        /// Returns true if its okay - false if something went wrong (like the fileunlock key being bogus or something)
         /// </summary>
-        public static void StartDataHandling()
+        public static bool StartDataHandling(string fileUnlockKey = null)
         {
+            //Do we need to unlock the file?
+            if (fileUnlockKey == null)
+            {
+            }
+            else
+            {
+                //Encrypted I see. Let's unlock the keyfile
+                var key = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "key.json");
+
+                EncryptionKey = Encryption.SimpleDecryptWithPassword(key, fileUnlockKey);
+
+                return false;
+            }
+
+            //Nope
             LedgerEntries = new List<LedgerEntry>();
             Categories = new List<Category>();
 
             if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "les.json"))
             {
                 string les = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "les.json");
-                var fromFile = JsonConvert.DeserializeObject<List<LedgerEntry>>(les);
+
+                List<LedgerEntry> fromFile = null;
+
+                if (String.IsNullOrEmpty(EncryptionKey))
+                {
+                    fromFile = JsonConvert.DeserializeObject<List<LedgerEntry>>(les);
+                }
+                else
+                {
+                    try
+                    {
+                        fromFile = JsonConvert.DeserializeObject<List<LedgerEntry>>(les);
+                    }
+                    catch
+                    {
+                        return false; // Encryption is broken buddy
+                    }
+                }
 
                 if (fromFile != null)
                 {
@@ -106,6 +146,9 @@ namespace LazyLlamaLedger
                 });
 
             }
+
+            return true;
+
         }
 
         public static void LoadCategoryStarterPack()
@@ -130,13 +173,20 @@ namespace LazyLlamaLedger
         /// </summary>
         private static object fileLock = new object();
 
-
         public static void FlushLedgers()
         {
             lock (fileLock)
             {
                 string les = JsonConvert.SerializeObject(LedgerEntries);
-                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", les);
+
+                if (EncryptionKey == null)
+                {
+                    File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", Encryption.SimpleEncryptWithPassword(les, EncryptionKey));
+                }
+                else
+                {
+                    File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", les);
+                }
             }
         }
 
