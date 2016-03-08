@@ -249,6 +249,16 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
+                        <input onclick="" type="checkbox" id="chkRanged" />
+                        <label for="chkRanged">Entry effects multiple months </label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input disabled tabindex="3" placeholder="Date To" id="txtDateTo" class="datepicker">
+                        <label for="txtDateTo"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
                         <select tabindex="3" id="slCategory" onchange="getSubCategories($('#slCategory').val())"></select>
                         <label>Category</label>
                     </div>
