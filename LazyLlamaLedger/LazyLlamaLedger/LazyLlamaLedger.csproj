@@ -116,7 +116,6 @@
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DataHandling.cs" />
-    <Compile Include="Helper\Encryption.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\LedgerEntry.cs" />
     <Compile Include="Models\ReportTable.cs" />

@@ -74,31 +74,6 @@ namespace LLLApplication
 
             Directory.CreateDirectory(DataHandling.FolderPath); //Create the directory
 
-            frmPassword passwordForm = new frmPassword();
-
-            DialogResult pResult = DialogResult.Abort;
-
-            pResult = passwordForm.ShowDialog();
-
-            if ( pResult == DialogResult.OK)
-            {
-
-            }
-            else
-            {
-                Application.Exit(); //bye
-                return;
-            }
-
-            //Is it encrypted? Does the user want it to be?
-            if (File.Exists(DataHandling.FolderPath + Path.PathSeparator + "key.json"))
-            {
-                //It's encrypted. Oh noes!
-
-                //Get the password
-                
-            }
-
             DataHandling.StartDataHandling();
 
             //We're done? Now we can start
