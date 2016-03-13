@@ -9,10 +9,25 @@ $(document).ready(function () {
         selectYears: false
     });
 
+    $("#txtCollectiveStartDate").pickadate(
+        {
+            selectMonths: false,
+            selectYears:false
+        });
+
+    $("#txtCollectiveDateTo").pickadate(
+        {
+            selectMonths: false,
+            selectYears: false
+        });
+
     $('.picker').appendTo('body');
 
     $('#slCategory').material_select();
     $('#slSubCategory').material_select();
+
+    $('#slCollectiveCategory').material_select();
+    $('#slCollectiveSubCategory').material_select();
 });
 
 function drawChart() {

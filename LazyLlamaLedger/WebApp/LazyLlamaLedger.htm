@@ -306,7 +306,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <select tabindex="4" id="slCollectiveCategory" onchange="getCollectiveSubCategories($('#slCollectiveCategory').val())"></select>
+                        <select tabindex="4" id="slCollectiveCategory" onchange="getSubCategories($('#slCollectiveCategory').val())"></select>
                         <label>Category</label>
                     </div>
                     <div class="input-field col s6">
@@ -324,7 +324,7 @@
         </div>
         <div class="modal-footer">
             <a class="modal-action waves-effect waves-green btn-flat " onclick="saveCollectiveEntry(true);">Insert and Close</a>
-            <a class="modal-action waves-effect waves-green btn-flat " onclick="closeCollectiveModal();">Close</a>
+            <a class="modal-action waves-effect waves-green btn-flat " onclick="closeModal();">Close</a>
         </div>
     </div>
 
