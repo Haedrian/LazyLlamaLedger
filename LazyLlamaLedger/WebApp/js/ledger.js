@@ -197,6 +197,7 @@ function saveEntry(quit) {
 function closeModal() {
     fetchData();
     $('#mdlPurchase').closeModal();
+    $("#dmlCollective").closeModal();
 }
 
 ///Fetches the data. Considers filters and month and whatnot.
@@ -240,15 +241,32 @@ function fetchData() {
 }
 
 //Marks the modal interface as being expense or income depending on the state of the lever
-function setIE() {
-    if ($("#ckExpense").prop("checked")) {
+function setIE()
+{
+    if ($("#ckExpense").prop("checked"))
+    {
         $("#lblNewEntry").html("Add New Expense");
     }
-    else {
+    else
+    {
         $("#lblNewEntry").html("Add New Income");
     }
 
     getCategories($("#ckExpense").prop("checked"));
+}
+
+function setCollectiveIE()
+{
+    if ($("#ckCollectiveExpense").prop("checked"))
+    {
+        $("#lblNewCollectiveEntry").html("Add new Collective Expense");
+    }
+    else 
+    {
+       $("#lblNewCollectiveEntry").html("Add new Collective Income");
+    }
+
+    getCategories($("#ckCollectiveExpense").prop("checked"));
 }
 
 function openAddElement(isExpense) {
@@ -257,6 +275,15 @@ function openAddElement(isExpense) {
     setIE();
 
     $('#mdlPurchase').openModal();
+}
+
+function openCollectiveElement(isExpense)
+{
+    $("#chkCollectiveExpense").prop("checked", isExpense);
+
+    setCollectiveIE();
+
+    $("#mdlCollective").openModal();
 }
 
 var categories = [];
@@ -273,6 +300,9 @@ function getCategories(isExpense) {
 
         $("#slCategory").html(html);
         $("#slCategory").material_select();
+
+        $("#slCollectiveCategory").html(html);
+        $("#slCollectiveCategory").material_select();
 
         getSubCategories($("#slCategory").val());
     });
@@ -301,5 +331,8 @@ function getSubCategories(id) {
 
     $("#slSubCategory").html(html);
     $("#slSubCategory").material_select();
+
+    $("#slCollectiveSubCategory").html(html);
+    $("#slCollectiveSubCategory").material_select();
 
 }
