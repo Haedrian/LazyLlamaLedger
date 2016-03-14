@@ -16,7 +16,28 @@ $(document).ready(function () {
       format: 'yyyy-mm',
   });
 
+    var from = $('#txtDateFrom').pickadate("picker");
+    var to = $("#txtDateTo").pickadate("picker");
+
+    from.on('set', function (event) {
+        if (event.select) {
+            to.set('min', from.get('select'))
+        } else if ('clear' in event) {
+            to.set('min', false)
+        }
+    });
+
+    to.on('set', function (event) {
+        if (event.select) {
+            from.set('max', to.get('select'))
+        } else if ('clear' in event) {
+            from.set('max', false)
+        }
+    });
+
 });
+
+
 
 
 function getAndCreateExpenseTable() {
