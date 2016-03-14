@@ -21,6 +21,26 @@ $(document).ready(function () {
             selectYears: false
         });
 
+    //Set the collectives as from-to pickers
+    var from = $('#txtCollectiveDateFrom').pickadate("picker");
+    var to = $("#txtCollectiveDateTo").pickadate("picker");
+
+    from.on('set', function (event) {
+        if (event.select) {
+            to.set('min', from.get('select'))
+        } else if ('clear' in event) {
+            to.set('min', false)
+        }
+    });
+
+    to.on('set', function (event) {
+        if (event.select) {
+            from.set('max', to.get('select'))
+        } else if ('clear' in event) {
+            from.set('max', false)
+        }
+    });
+
     $('.picker').appendTo('body');
 
     $('#slCategory').material_select();
@@ -160,6 +180,44 @@ function readLedgerEntry() {
     entry.Money = $("#txtMoney").val();
 
     return entry;
+}
+
+function readCollectiveEntry()
+{
+    var entry = new Object();
+    entry.Item = $("#txtCollectiveItem").val();
+    entry.IsExpense = $("#ckCollectiveExpense").prop("checked");
+    entry.DateFrom = $("#txtCollectiveStartDate").val();
+    entry.DateTo = $("#txtCollectiveEndDate").val();
+    entry.Category = $("#slCollectiveCategory").val();
+    entry.SubCategory = $("#slCollectiveSubCategory").val();
+    entry.Money = $("#txtMoney").val();
+
+    return entry;
+}
+
+function validateCollectiveEntry(entry)
+{
+    if (entry.Item.length == 0)
+    {
+        Materialize.toast('Item Missing', 2000);
+        return false;
+    }
+
+
+    if (Number(entry.Money) == NaN || Number(entry.Money) <= 0) {
+        Materialize.toast('Money needs to be larger than 0', 2000);
+        return false;
+    }
+
+    if (entry.DateFrom.length == 0 || entry.DateTo.length == 0)
+    {
+        Materialize.toast('Date Range is Missing', 2000);
+        return false;
+    }
+
+    return true;
+
 }
 
 function validateLedgerEntry(entry) {
