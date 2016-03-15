@@ -3,7 +3,7 @@ Lazy Llama Ledger is a simple ledger app which lets you save any purchases and i
 
 LLL is a webapp, with the inner workings all run locally on the user's machine as a self-hosted RESTful service.
 
-[Much more details, how-tos (and screenshots) to be found here](https://github.com/Haedrian/LazyLlamaLedger/wiki/Lazy-Llama-Ledger)
+[Much more details, how-tos (and screenshots) to be found here](https://github.com/Haedrian/LazyLlamaLedger/wiki)
 
 #Version 3.0
 
