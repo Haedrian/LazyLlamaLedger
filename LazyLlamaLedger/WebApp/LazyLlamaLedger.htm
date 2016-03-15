@@ -293,37 +293,35 @@
                         <input tabindex="1" placeholder="Item" id="txtCollectiveItem" type="text">
                         <label for="txtCollectiveItem">Item</label>
                     </div>
+                    <div class="input-field col s6">
+                        <input tabindex="2" placeholder="" min="0" step="0.01" id="txtCollectiveMoney" type="number">
+                        <label for="txtCollectiveMoney">Money</label>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <input tabindex="2" placeholder="Date From" id="txtCollectiveStartDate" class="datepicker">
+                        <input tabindex="3" placeholder="Date From" id="txtCollectiveDateFrom" class="datepicker">
                         <label for="txtCollectiveStartDate"></label>
                     </div>
                     <div class="input-field col s6">
-                        <input tabindex="3" placeholder="Date To" id="txtCollectiveDateTo" class="datepicker">
+                        <input tabindex="4" placeholder="Date To" id="txtCollectiveDateTo" class="datepicker">
                         <label for="txtCollectiveDateTo"></label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <select tabindex="4" id="slCollectiveCategory" onchange="getSubCategories($('#slCollectiveCategory').val())"></select>
+                        <select tabindex="5" id="slCollectiveCategory" onchange="getSubCategories($('#slCollectiveCategory').val())"></select>
                         <label>Category</label>
                     </div>
                     <div class="input-field col s6">
-                        <select tabindex="5" id="slCollectiveSubCategory"></select>
+                        <select tabindex="6" id="slCollectiveSubCategory"></select>
                         <label>Subcategory</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input tabindex="6" placeholder="" min="0" step="0.01" id="txtCollectiveMoney" type="number">
-                        <label for="txtCollectiveMoney">Money</label>
                     </div>
                 </div>
             </form>
         </div>
         <div class="modal-footer">
-            <a class="modal-action waves-effect waves-green btn-flat " onclick="saveCollectiveEntry(true);">Insert and Close</a>
+            <a class="modal-action waves-effect waves-green btn-flat " onclick="saveCollectiveEntry();">Insert and Close</a>
             <a class="modal-action waves-effect waves-green btn-flat " onclick="closeModal();">Close</a>
         </div>
     </div>

@@ -9,7 +9,7 @@ $(document).ready(function () {
         selectYears: false
     });
 
-    $("#txtCollectiveStartDate").pickadate(
+    $("#txtCollectiveDateFrom").pickadate(
         {
             selectMonths: false,
             selectYears:false
@@ -187,11 +187,11 @@ function readCollectiveEntry()
     var entry = new Object();
     entry.Item = $("#txtCollectiveItem").val();
     entry.IsExpense = $("#ckCollectiveExpense").prop("checked");
-    entry.DateFrom = $("#txtCollectiveStartDate").val();
-    entry.DateTo = $("#txtCollectiveEndDate").val();
+    entry.DateFrom = $("#txtCollectiveDateFrom").val();
+    entry.DateTo = $("#txtCollectiveDateTo").val();
     entry.Category = $("#slCollectiveCategory").val();
     entry.SubCategory = $("#slCollectiveSubCategory").val();
-    entry.Money = $("#txtMoney").val();
+    entry.Money = $("#txtCollectiveMoney").val();
 
     return entry;
 }
@@ -240,9 +240,30 @@ function validateLedgerEntry(entry) {
 }
 
 ///Sorta clears the interface. Will retain the date and categories in case multiples want to be input
-function clearEntryInterface() {
+function clearEntryInterface()
+{
     $("#txtItem").val("");
     $("#txtMoney").val("0");
+    $("#txtCollectiveItem").val("");
+    $("#txtCollectiveMoney").val("0");
+}
+
+function saveCollectiveEntry()
+{
+    var entry = readCollectiveEntry();
+
+    if (validateCollectiveEntry(entry))
+    {
+        //Save
+        $.post("http://localhost:7744/api/ledger/CollectiveLedgerEntry", entry, function (data)
+        {
+            Materialize.toast("Entry Saved", 2000);
+
+            fetchData();
+            clearEntryInterface();
+            closeModal();
+        });
+    }
 }
 
 function saveEntry(quit) {
@@ -270,7 +291,7 @@ function saveEntry(quit) {
 function closeModal() {
     fetchData();
     $('#mdlPurchase').closeModal();
-    $("#dmlCollective").closeModal();
+    $("#mdlCollective").closeModal();
 }
 
 ///Fetches the data. Considers filters and month and whatnot.

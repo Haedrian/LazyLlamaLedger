@@ -135,7 +135,7 @@ namespace LazyLlamaLedger.Controllers
             }
 
             //This is the enddate month, so let's do similar to what we did with firstmonth
-            int daysInLastMonth = DateTime.DaysInMonth(le.DateTo.Year, le.DateTo.Month) - le.DateTo.Day + 1;
+            int daysInLastMonth = le.DateTo.Day;
 
             ratios.Add(new Tuple<DateTime, int>(new DateTime(le.DateTo.Year, le.DateTo.Month, 1), daysInLastMonth));
 
