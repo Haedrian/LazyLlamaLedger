@@ -21,6 +21,8 @@ namespace LazyLlamaLedger.Views
 
         public decimal Money { get; set; }
 
+        public bool IsCollective { get; set; }
+
         public LedgerEntryView()
         { }
 
@@ -33,6 +35,7 @@ namespace LazyLlamaLedger.Views
             Category = DataHandling.Categories.Where(c => c.ID == le.Category).Select(c => c.Name).FirstOrDefault();
             SubCategory = DataHandling.Categories.FirstOrDefault(c => c.ID == le.Category).Subcats.Where(c => c.ID == le.SubCategory).Select(c => c.Name).FirstOrDefault(); ;
             Money = le.Money;
+            IsCollective = le.IsCollective;
         }
     }
 }

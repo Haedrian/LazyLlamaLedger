@@ -12,7 +12,7 @@ $(document).ready(function () {
     $("#txtCollectiveDateFrom").pickadate(
         {
             selectMonths: false,
-            selectYears:false
+            selectYears: false
         });
 
     $("#txtCollectiveDateTo").pickadate(
@@ -182,8 +182,7 @@ function readLedgerEntry() {
     return entry;
 }
 
-function readCollectiveEntry()
-{
+function readCollectiveEntry() {
     var entry = new Object();
     entry.Item = $("#txtCollectiveItem").val();
     entry.IsExpense = $("#ckCollectiveExpense").prop("checked");
@@ -196,10 +195,8 @@ function readCollectiveEntry()
     return entry;
 }
 
-function validateCollectiveEntry(entry)
-{
-    if (entry.Item.length == 0)
-    {
+function validateCollectiveEntry(entry) {
+    if (entry.Item.length == 0) {
         Materialize.toast('Item Missing', 2000);
         return false;
     }
@@ -210,8 +207,7 @@ function validateCollectiveEntry(entry)
         return false;
     }
 
-    if (entry.DateFrom.length == 0 || entry.DateTo.length == 0)
-    {
+    if (entry.DateFrom.length == 0 || entry.DateTo.length == 0) {
         Materialize.toast('Date Range is Missing', 2000);
         return false;
     }
@@ -240,23 +236,19 @@ function validateLedgerEntry(entry) {
 }
 
 ///Sorta clears the interface. Will retain the date and categories in case multiples want to be input
-function clearEntryInterface()
-{
+function clearEntryInterface() {
     $("#txtItem").val("");
     $("#txtMoney").val("0");
     $("#txtCollectiveItem").val("");
     $("#txtCollectiveMoney").val("0");
 }
 
-function saveCollectiveEntry()
-{
+function saveCollectiveEntry() {
     var entry = readCollectiveEntry();
 
-    if (validateCollectiveEntry(entry))
-    {
+    if (validateCollectiveEntry(entry)) {
         //Save
-        $.post("http://localhost:7744/api/ledger/CollectiveLedgerEntry", entry, function (data)
-        {
+        $.post("http://localhost:7744/api/ledger/CollectiveLedgerEntry", entry, function (data) {
             Materialize.toast("Entry Saved", 2000);
 
             fetchData();
@@ -297,23 +289,38 @@ function closeModal() {
 ///Fetches the data. Considers filters and month and whatnot.
 function fetchData() {
     $.get("http://localhost:7744/api/ledger/ledgerentry?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data) {
-        //Populate a table
+        //Populate two tables, one with collectives, the other without
         var html = "";
+        var collectiveHtml = "";
         var total = 0;
 
         $.each(data, function (index, val) {
-            html += "<tr><td>" + val.Item + "</td><td>" + val.Date + "</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+            var elementHtml = "";
 
-            if (val.IsExpense) {
-                html += ";color:red";
+            if (val.IsCollective)
+            {
+                elementHtml = "<tr><td>" + val.Item + "</td><td>Collective</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+            }
+            else
+            {
+                elementHtml = "<tr><td>" + val.Item + "</td><td>" + val.Date + "</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+            }
+
+            if (val.IsExpense)
+            {
+                elementHtml += ";color:red";
                 total -= val.Money;
             }
-            else {
-                html += ";color:green";
+            else
+            {
+                elementHtml += ";color:green";
                 total += val.Money;
             }
 
-            html += "'>" + val.Money + "</td><tr>";
+            elementHtml += "'>" + val.Money + "</td><tr>";
+
+            html += elementHtml;
+
         });
 
         $("#tblLedger tbody").html(html);
@@ -335,29 +342,23 @@ function fetchData() {
 }
 
 //Marks the modal interface as being expense or income depending on the state of the lever
-function setIE()
-{
-    if ($("#ckExpense").prop("checked"))
-    {
+function setIE() {
+    if ($("#ckExpense").prop("checked")) {
         $("#lblNewEntry").html("Add New Expense");
     }
-    else
-    {
+    else {
         $("#lblNewEntry").html("Add New Income");
     }
 
     getCategories($("#ckExpense").prop("checked"));
 }
 
-function setCollectiveIE()
-{
-    if ($("#ckCollectiveExpense").prop("checked"))
-    {
+function setCollectiveIE() {
+    if ($("#ckCollectiveExpense").prop("checked")) {
         $("#lblNewCollectiveEntry").html("Add new Collective Expense");
     }
-    else 
-    {
-       $("#lblNewCollectiveEntry").html("Add new Collective Income");
+    else {
+        $("#lblNewCollectiveEntry").html("Add new Collective Income");
     }
 
     getCategories($("#ckCollectiveExpense").prop("checked"));
@@ -371,8 +372,7 @@ function openAddElement(isExpense) {
     $('#mdlPurchase').openModal();
 }
 
-function openCollectiveElement(isExpense)
-{
+function openCollectiveElement(isExpense) {
     $("#chkCollectiveExpense").prop("checked", isExpense);
 
     setCollectiveIE();
