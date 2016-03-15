@@ -373,7 +373,7 @@ function openAddElement(isExpense) {
 }
 
 function openCollectiveElement(isExpense) {
-    $("#chkCollectiveExpense").prop("checked", isExpense);
+    $("#ckCollectiveExpense").prop("checked", isExpense);
 
     setCollectiveIE();
 
