@@ -5,6 +5,12 @@ LLL is a webapp, with the inner workings all run locally on the user's machine a
 
 [Much more details, how-tos (and screenshots) to be found here](https://github.com/Haedrian/LazyLlamaLedger/wiki/Lazy-Llama-Ledger)
 
+#Version 3.0
+
+- Added Collective Payments
+- Added Proper From/To In Reports
+- Added Monitary Values in Pie Charts
+
 #Version 2.0
 
 - Added reports
