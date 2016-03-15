@@ -26,7 +26,7 @@
 
     <script src="Charts/jquery.jqplot.min.js"></script>
     <link href="Charts/jquery.jqplot.min.css" rel="stylesheet" />
-    <script src="Charts/plugins/jqplot.pieRenderer.min.js"></script>
+    <script src="Charts/plugins/jqplot.pieRenderer.js"></script>
     <script src="Charts/plugins/jqplot.barRenderer.min.js"></script>
     <script src="Charts/plugins/jqplot.categoryAxisRenderer.min.js"></script>
     <script src="Charts/plugins/jqplot.pointLabels.min.js"></script>
@@ -162,6 +162,8 @@
             <ul>
                 <li><a class="btn-floating green" onclick="openAddElement(false)"><i class="material-icons">attach_money</i></a></li>
                 <li><a class="btn-floating red" onclick="openAddElement(true)"><i class="material-icons">attach_money</i></a></li>
+                <li><a class="btn-floating green" onclick="openCollectiveElement(false)"><i class="material-icons">date_range</i></a></li>
+                <li><a class="btn-floating red" onclick="openCollectiveElement(true)"><i class="material-icons">date_range</i></a></li>
             </ul>
         </div>
     </div>
@@ -268,6 +270,58 @@
         <div class="modal-footer">
             <a class="modal-action waves-effect waves-green btn-flat " onclick="saveEntry(false);">Insert</a>
             <a class="modal-action waves-effect waves-green btn-flat " onclick="saveEntry(true);">Insert and Close</a>
+            <a class="modal-action waves-effect waves-green btn-flat " onclick="closeModal();">Close</a>
+        </div>
+    </div>
+
+    <div id="mdlCollective" class="modal modal-fixed-footer" style="overflow-y:visible">
+        <div class="modal-content" style="overflow-y:visible">
+            <h4 id="lblNewCollectiveEntry">Add new Collective Payment</h4>
+            <form class="col s12">
+                <div class="row">
+                    <div class="switch col s6">
+                        <label>
+                            Income
+                            <input id="ckCollectiveExpense" type="checkbox" onchange="setCollectiveIE()">
+                            <span class="lever"></span>
+                            Expense
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input tabindex="1" placeholder="Item" id="txtCollectiveItem" type="text">
+                        <label for="txtCollectiveItem">Item</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input tabindex="2" placeholder="" min="0" step="0.01" id="txtCollectiveMoney" type="number">
+                        <label for="txtCollectiveMoney">Money</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input tabindex="3" placeholder="Date From" id="txtCollectiveDateFrom" class="datepicker">
+                        <label for="txtCollectiveStartDate"></label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input tabindex="4" placeholder="Date To" id="txtCollectiveDateTo" class="datepicker">
+                        <label for="txtCollectiveDateTo"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select tabindex="5" id="slCollectiveCategory" onchange="getSubCategories($('#slCollectiveCategory').val())"></select>
+                        <label>Category</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select tabindex="6" id="slCollectiveSubCategory"></select>
+                        <label>Subcategory</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action waves-effect waves-green btn-flat " onclick="saveCollectiveEntry();">Insert and Close</a>
             <a class="modal-action waves-effect waves-green btn-flat " onclick="closeModal();">Close</a>
         </div>
     </div>

@@ -38,8 +38,14 @@ namespace LLLApplication
             //Locate the setting file
             RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
 
-            key = key.OpenSubKey("LazyLlamaLedger", true);
-            
+            //We'll create a different location when running in debug. So I can play around with it without breaking my actual real ledger data
+
+#if DEBUG
+            key = key.OpenSubKey("LazyLlamaLedgerDebug", true);
+#else
+            key = key.OpenSubKey("LazyLlamaLedger", true);        
+#endif
+
             if (key == null || key.GetValue("DataPath") == null)
             {
                 //First time being loaded, get user to choose save directory
@@ -59,13 +65,16 @@ namespace LLLApplication
                 }
 
                 key = Registry.CurrentUser.OpenSubKey("Software", true);
+#if DEBUG
+                key = key.CreateSubKey("LazyLlamaLedgerDebug");
+#else
                 key = key.CreateSubKey("LazyLlamaLedger");
-
+#endif
                 //Write it to the key
                 key.SetValue("DataPath", directory);
 
                 DataHandling.FolderPath = directory;
-            }            
+            }
             else
             {
                 //Read it off the key
@@ -83,7 +92,7 @@ namespace LLLApplication
             WebApp.Start<Startup>(url: baseAddress);
 
             //Open the browser
-            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + (String.IsNullOrEmpty(DataHandling.relativeChange) ? DataHandling.relativeChange : "/" + DataHandling.relativeChange) +  ConfigurationManager.AppSettings["PagePath"]);
+            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory() + (String.IsNullOrEmpty(DataHandling.relativeChange) ? DataHandling.relativeChange : "/" + DataHandling.relativeChange) + ConfigurationManager.AppSettings["PagePath"]);
         }
 
         private void tmrFlush_Tick(object sender, EventArgs e)

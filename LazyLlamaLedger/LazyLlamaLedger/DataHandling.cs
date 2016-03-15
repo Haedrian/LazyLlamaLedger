@@ -111,7 +111,7 @@ namespace LazyLlamaLedger
         public static void LoadCategoryStarterPack()
         {
             //Load the file from resources
-            string sPack = File.ReadAllText(String.IsNullOrEmpty(relativeChange) ? relativeChange : relativeChange + "/" + "Resources/cats.json");
+            string sPack = File.ReadAllText(!String.IsNullOrEmpty(relativeChange) ? relativeChange : relativeChange + "/" + "Resources/cats.json");
 
             List<Category> sPackCats = JsonConvert.DeserializeObject<List<Category>>(sPack);
 

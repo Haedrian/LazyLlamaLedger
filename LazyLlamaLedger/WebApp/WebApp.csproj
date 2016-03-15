@@ -51,6 +51,7 @@
     <Content Include="Charts\jquery.jqplot.min.js" />
     <Content Include="Charts\plugins\jqplot.barRenderer.min.js" />
     <Content Include="Charts\plugins\jqplot.categoryAxisRenderer.min.js" />
+    <Content Include="Charts\plugins\jqplot.pieRenderer.js" />
     <Content Include="Charts\plugins\jqplot.pieRenderer.min.js" />
     <Content Include="Charts\plugins\jqplot.pointLabels.min.js" />
     <Content Include="css\lll.css" />

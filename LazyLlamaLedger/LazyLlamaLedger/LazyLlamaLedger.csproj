@@ -117,6 +117,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DataHandling.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CollectiveLedgerEntry.cs" />
     <Compile Include="Models\LedgerEntry.cs" />
     <Compile Include="Models\ReportTable.cs" />
     <Compile Include="Models\SubCategory.cs" />

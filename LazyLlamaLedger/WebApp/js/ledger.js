@@ -9,10 +9,45 @@ $(document).ready(function () {
         selectYears: false
     });
 
+    $("#txtCollectiveDateFrom").pickadate(
+        {
+            selectMonths: false,
+            selectYears: false
+        });
+
+    $("#txtCollectiveDateTo").pickadate(
+        {
+            selectMonths: false,
+            selectYears: false
+        });
+
+    //Set the collectives as from-to pickers
+    var from = $('#txtCollectiveDateFrom').pickadate("picker");
+    var to = $("#txtCollectiveDateTo").pickadate("picker");
+
+    from.on('set', function (event) {
+        if (event.select) {
+            to.set('min', from.get('select'))
+        } else if ('clear' in event) {
+            to.set('min', false)
+        }
+    });
+
+    to.on('set', function (event) {
+        if (event.select) {
+            from.set('max', to.get('select'))
+        } else if ('clear' in event) {
+            from.set('max', false)
+        }
+    });
+
     $('.picker').appendTo('body');
 
     $('#slCategory').material_select();
     $('#slSubCategory').material_select();
+
+    $('#slCollectiveCategory').material_select();
+    $('#slCollectiveSubCategory').material_select();
 });
 
 function drawChart() {
@@ -41,7 +76,7 @@ function drawChart() {
                 rendererOptions:
                     {
                         showDataLabels: true,
-                        dataLabels: 'label',
+                        dataLabels: 'both',
                         // stroke the slices with a little thicker line.
                         lineWidth: 5,
                     }
@@ -72,7 +107,7 @@ function drawChart() {
                 rendererOptions:
                     {
                         showDataLabels: true,
-                        dataLabels: 'label',
+                        dataLabels: 'both',
                         // stroke the slices with a little thicker line.
                         lineWidth: 5,
                     }
@@ -111,7 +146,7 @@ function drawSubcatExpenseChart(catName, chartSelector) {
                 rendererOptions:
                     {
                         showDataLabels: true,
-                        dataLabels: 'label',
+                        dataLabels: 'both',
                         // stroke the slices with a little thicker line.
                         lineWidth: 5,
                     }
@@ -147,6 +182,40 @@ function readLedgerEntry() {
     return entry;
 }
 
+function readCollectiveEntry() {
+    var entry = new Object();
+    entry.Item = $("#txtCollectiveItem").val();
+    entry.IsExpense = $("#ckCollectiveExpense").prop("checked");
+    entry.DateFrom = $("#txtCollectiveDateFrom").val();
+    entry.DateTo = $("#txtCollectiveDateTo").val();
+    entry.Category = $("#slCollectiveCategory").val();
+    entry.SubCategory = $("#slCollectiveSubCategory").val();
+    entry.Money = $("#txtCollectiveMoney").val();
+
+    return entry;
+}
+
+function validateCollectiveEntry(entry) {
+    if (entry.Item.length == 0) {
+        Materialize.toast('Item Missing', 2000);
+        return false;
+    }
+
+
+    if (Number(entry.Money) == NaN || Number(entry.Money) <= 0) {
+        Materialize.toast('Money needs to be larger than 0', 2000);
+        return false;
+    }
+
+    if (entry.DateFrom.length == 0 || entry.DateTo.length == 0) {
+        Materialize.toast('Date Range is Missing', 2000);
+        return false;
+    }
+
+    return true;
+
+}
+
 function validateLedgerEntry(entry) {
     if (entry.Item.length == 0) {
         Materialize.toast('Item Missing', 2000);
@@ -170,6 +239,23 @@ function validateLedgerEntry(entry) {
 function clearEntryInterface() {
     $("#txtItem").val("");
     $("#txtMoney").val("0");
+    $("#txtCollectiveItem").val("");
+    $("#txtCollectiveMoney").val("0");
+}
+
+function saveCollectiveEntry() {
+    var entry = readCollectiveEntry();
+
+    if (validateCollectiveEntry(entry)) {
+        //Save
+        $.post("http://localhost:7744/api/ledger/CollectiveLedgerEntry", entry, function (data) {
+            Materialize.toast("Entry Saved", 2000);
+
+            fetchData();
+            clearEntryInterface();
+            closeModal();
+        });
+    }
 }
 
 function saveEntry(quit) {
@@ -197,28 +283,44 @@ function saveEntry(quit) {
 function closeModal() {
     fetchData();
     $('#mdlPurchase').closeModal();
+    $("#mdlCollective").closeModal();
 }
 
 ///Fetches the data. Considers filters and month and whatnot.
 function fetchData() {
     $.get("http://localhost:7744/api/ledger/ledgerentry?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data) {
-        //Populate a table
+        //Populate two tables, one with collectives, the other without
         var html = "";
+        var collectiveHtml = "";
         var total = 0;
 
         $.each(data, function (index, val) {
-            html += "<tr><td>" + val.Item + "</td><td>" + val.Date + "</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+            var elementHtml = "";
 
-            if (val.IsExpense) {
-                html += ";color:red";
+            if (val.IsCollective)
+            {
+                elementHtml = "<tr><td>" + val.Item + "</td><td>Collective</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+            }
+            else
+            {
+                elementHtml = "<tr><td>" + val.Item + "</td><td>" + val.Date + "</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+            }
+
+            if (val.IsExpense)
+            {
+                elementHtml += ";color:red";
                 total -= val.Money;
             }
-            else {
-                html += ";color:green";
+            else
+            {
+                elementHtml += ";color:green";
                 total += val.Money;
             }
 
-            html += "'>" + val.Money + "</td><tr>";
+            elementHtml += "'>" + val.Money + "</td><tr>";
+
+            html += elementHtml;
+
         });
 
         $("#tblLedger tbody").html(html);
@@ -251,12 +353,31 @@ function setIE() {
     getCategories($("#ckExpense").prop("checked"));
 }
 
+function setCollectiveIE() {
+    if ($("#ckCollectiveExpense").prop("checked")) {
+        $("#lblNewCollectiveEntry").html("Add new Collective Expense");
+    }
+    else {
+        $("#lblNewCollectiveEntry").html("Add new Collective Income");
+    }
+
+    getCategories($("#ckCollectiveExpense").prop("checked"));
+}
+
 function openAddElement(isExpense) {
     $("#ckExpense").prop("checked", isExpense);
 
     setIE();
 
     $('#mdlPurchase').openModal();
+}
+
+function openCollectiveElement(isExpense) {
+    $("#ckCollectiveExpense").prop("checked", isExpense);
+
+    setCollectiveIE();
+
+    $("#mdlCollective").openModal();
 }
 
 var categories = [];
@@ -273,6 +394,9 @@ function getCategories(isExpense) {
 
         $("#slCategory").html(html);
         $("#slCategory").material_select();
+
+        $("#slCollectiveCategory").html(html);
+        $("#slCollectiveCategory").material_select();
 
         getSubCategories($("#slCategory").val());
     });
@@ -301,5 +425,8 @@ function getSubCategories(id) {
 
     $("#slSubCategory").html(html);
     $("#slSubCategory").material_select();
+
+    $("#slCollectiveSubCategory").html(html);
+    $("#slCollectiveSubCategory").material_select();
 
 }

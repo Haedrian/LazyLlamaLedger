@@ -98,6 +98,70 @@ namespace LazyLlamaLedger.Controllers
             }
         }
 
+        [HttpPost]
+        [ActionName("CollectiveLedgerEntry")]
+        public IHttpActionResult Post([FromBody] CollectiveLedgerEntry le)
+        {
+            if (le == null || !ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            if (le.DateFrom >= le.DateTo)
+            {
+                return BadRequest("Date from isn't larger than Date to");
+            }
+
+            //We're going to create a number of ledger entries - one for each month.
+            //Let's determine how many days there are between date from and the end of the month
+            //Then we'll work month by month, adding days as appropriate
+            //Then we'll determine each ratio, and divide the total money by that amount
+            List<Tuple<DateTime, int>> ratios = new List<Tuple<DateTime, int>>();
+
+            int daysInFirstMonth = DateTime.DaysInMonth(le.DateFrom.Year, le.DateFrom.Month) - le.DateFrom.Day + 1;
+
+            ratios.Add(new Tuple<DateTime, int>(new DateTime(le.DateFrom.Year,le.DateFrom.Month,1),daysInFirstMonth));
+
+            //Now, go month month until we reach the enddate
+            DateTime dateCursor = new DateTime(le.DateFrom.Ticks);
+
+            dateCursor = dateCursor.AddMonths(1);
+
+            while (dateCursor.Month < le.DateTo.Month)
+            {
+                ratios.Add(new Tuple<DateTime, int>(new DateTime(dateCursor.Year, dateCursor.Month, 1), DateTime.DaysInMonth(dateCursor.Year, dateCursor.Month)));
+
+                dateCursor = dateCursor.AddMonths(1);
+            }
+
+            //This is the enddate month, so let's do similar to what we did with firstmonth
+            int daysInLastMonth = le.DateTo.Day;
+
+            ratios.Add(new Tuple<DateTime, int>(new DateTime(le.DateTo.Year, le.DateTo.Month, 1), daysInLastMonth));
+
+            //Now we create the entries
+
+            int daysTotal = ratios.Sum(r => r.Item2);
+
+            foreach(var ratio in ratios)
+            {
+                LedgerEntry entry = new LedgerEntry()
+                {
+                    Category = le.Category,
+                    Date = ratio.Item1,
+                    IsCollective = true,
+                    IsExpense = le.IsExpense,
+                    Item = le.Item,
+                    Money = Math.Round(((le.Money / (decimal)daysTotal) * ratio.Item2), 2),
+                    SubCategory = le.SubCategory
+                };
+
+                DataHandling.AddLedgerEntry(entry);
+            }
+
+            return Ok();
+        }
+
         [HttpGet]
         [ActionName("Category")]
         public IHttpActionResult Category(bool activeOnly, bool expense)
