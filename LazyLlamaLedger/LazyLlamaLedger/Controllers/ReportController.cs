@@ -82,6 +82,14 @@ namespace LazyLlamaLedger.Controllers
                 }
             }
 
+            //How about a total too ?
+            rt.Headers.Add("Total");
+
+            foreach(var row in rt.Rows)
+            {
+                row.Values.Add(row.Values.Sum(v => Decimal.Parse(v)).ToString("0.00") );
+            }
+
 
             return Ok(rt); //TODO
         }
@@ -154,6 +162,14 @@ namespace LazyLlamaLedger.Controllers
                 }
             }
 
+            //How about a total too ?
+            rt.Headers.Add("Total");
+
+            foreach (var row in rt.Rows)
+            {
+                row.Values.Add(row.Values.Sum(v => Decimal.Parse(v)).ToString("0.00"));
+            }
+
 
             return Ok(rt); //TODO
         }
@@ -174,8 +190,8 @@ namespace LazyLlamaLedger.Controllers
                 dates.Add(startDate.ToString("yy/MM"));
 
                 incomes.Add(DataHandling.LedgerEntries.Where(le => le.Date.Month == dateTimeCursor.Month && le.Date.Year == dateTimeCursor.Year && !le.IsExpense).Sum(e => e.Money));
-                expenses.Add(DataHandling.LedgerEntries.Where(le => le.Date.Month == dateTimeCursor.Month && le.Date.Year == dateTimeCursor.Year && le.IsExpense).Sum(e => e.Money));
-                total.Add(incomes[incomes.Count-1] - expenses[expenses.Count -1]);
+                expenses.Add(DataHandling.LedgerEntries.Where(le => le.Date.Month == dateTimeCursor.Month && le.Date.Year == dateTimeCursor.Year && le.IsExpense).Sum(e => e.Money*-1));
+                total.Add(incomes[incomes.Count-1] + expenses[expenses.Count -1]);
 
                 dateTimeCursor = dateTimeCursor.AddMonths(1);
             }
