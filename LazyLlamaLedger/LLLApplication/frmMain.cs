@@ -65,8 +65,11 @@ namespace LLLApplication
                 }
 
                 key = Registry.CurrentUser.OpenSubKey("Software", true);
+#if DEBUG
+                key = key.CreateSubKey("LazyLlamaLedgerDebug");
+#else
                 key = key.CreateSubKey("LazyLlamaLedger");
-
+#endif
                 //Write it to the key
                 key.SetValue("DataPath", directory);
 
