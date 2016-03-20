@@ -45,7 +45,7 @@ namespace LazyLlamaLedger.Controllers
             {
                 //Get the data
 
-                var monthValues = DataHandling.LedgerEntries.Where(e => e.Date.Month == dateTimeCursor.Month && e.Date.Year == dateTimeCursor.Year && e.IsExpense).ToArray();
+                var monthValues = DataHandling.GetLedgerEntries(dateTimeCursor.Year, dateTimeCursor.Month).Where(e => e.IsExpense).ToArray();
 
                 //Then group them by category and return the cat and the sum
                 var res = monthValues.GroupBy(m => m.Category).Select(cg => new { Category = DataHandling.Categories.Where(c => c.ID == cg.First().Category).Select(c => c.ID).FirstOrDefault(), Sum = cg.Sum(cg1 => cg1.Money).ToString("0.00") });
@@ -125,7 +125,7 @@ namespace LazyLlamaLedger.Controllers
             {
                 //Get the data
 
-                var monthValues = DataHandling.LedgerEntries.Where(e => e.Date.Month == dateTimeCursor.Month && e.Date.Year == dateTimeCursor.Year && !e.IsExpense).ToArray();
+                var monthValues = DataHandling.GetLedgerEntries(dateTimeCursor.Year,dateTimeCursor.Month).Where(e => !e.IsExpense).ToArray();
 
                 //Then group them by category and return the cat and the sum
                 var res = monthValues.GroupBy(m => m.Category).Select(cg => new { Category = DataHandling.Categories.Where(c => c.ID == cg.First().Category).Select(c => c.ID).FirstOrDefault(), Sum = cg.Sum(cg1 => cg1.Money).ToString("0.00") });
@@ -187,10 +187,10 @@ namespace LazyLlamaLedger.Controllers
 
             while (dateTimeCursor <= endDate)
             {
-                dates.Add(startDate.ToString("yy/MM"));
+                dates.Add(dateTimeCursor.ToString("yy/MM"));
 
-                incomes.Add(DataHandling.LedgerEntries.Where(le => le.Date.Month == dateTimeCursor.Month && le.Date.Year == dateTimeCursor.Year && !le.IsExpense).Sum(e => e.Money));
-                expenses.Add(DataHandling.LedgerEntries.Where(le => le.Date.Month == dateTimeCursor.Month && le.Date.Year == dateTimeCursor.Year && le.IsExpense).Sum(e => e.Money*-1));
+                incomes.Add(DataHandling.GetLedgerEntries(dateTimeCursor.Year,dateTimeCursor.Month).Where(le => !le.IsExpense).Sum(e => e.Money));
+                expenses.Add(DataHandling.GetLedgerEntries(dateTimeCursor.Year, dateTimeCursor.Month).Where(le => le.IsExpense).Sum(e => e.Money*-1));
                 total.Add(incomes[incomes.Count-1] + expenses[expenses.Count -1]);
 
                 dateTimeCursor = dateTimeCursor.AddMonths(1);

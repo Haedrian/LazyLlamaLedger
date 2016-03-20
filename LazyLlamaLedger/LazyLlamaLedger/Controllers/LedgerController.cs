@@ -15,16 +15,9 @@ namespace LazyLlamaLedger.Controllers
     {
         [HttpGet]
         [ActionName("LedgerEntry")]
-        public IEnumerable<LedgerEntry> Get()
-        {
-            return DataHandling.LedgerEntries;
-        }
-
-        [HttpGet]
-        [ActionName("LedgerEntry")]
         public IHttpActionResult Get(int month, int year)
         {
-            return Ok(DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year).ToArray().OrderBy(e => e.Date).Select(e => new LedgerEntryView(e)).ToArray());
+            return Ok(DataHandling.GetLedgerEntries(year,month).ToArray().OrderBy(e => e.Date).Select(e => new LedgerEntryView(e)).ToArray());
         }
 
         /// <summary>
@@ -39,7 +32,7 @@ namespace LazyLlamaLedger.Controllers
         {
             //First get all the values of that month
 
-            var monthValues = DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year && e.IsExpense).ToArray();
+            var monthValues = DataHandling.GetLedgerEntries(year,month).Where(e => e.IsExpense).ToArray();
 
             //Then group them by category and return the cat and the sum
             var res = monthValues.GroupBy(m => m.Category).Select(cg => new { Category = DataHandling.Categories.Where(c => c.ID == cg.First().Category).Select(c => c.Name).FirstOrDefault(), Sum = cg.Sum(cg1 => cg1.Money).ToString("0.00") });
@@ -58,7 +51,7 @@ namespace LazyLlamaLedger.Controllers
             var catID = DataHandling.Categories.FirstOrDefault(c => String.Equals(c.Name, catN, StringComparison.InvariantCultureIgnoreCase)).ID;
 
             //First get all the values of that month
-            var monthValues = DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year && e.Category == catID).ToArray();
+            var monthValues = DataHandling.GetLedgerEntries(year,month).Where(e => e.Category == catID).ToArray();
 
             var res = monthValues.GroupBy(m => m.SubCategory).Select(cg => new { Category = DataHandling.Categories.First(c => c.ID == catID).Subcats.FirstOrDefault(sc => sc.ID == cg.FirstOrDefault().SubCategory).Name, Sum = cg.Sum(cg1 => cg1.Money).ToString("0.00") });
 
@@ -71,7 +64,7 @@ namespace LazyLlamaLedger.Controllers
         {
             //First get all the values of that month
 
-            var monthValues = DataHandling.LedgerEntries.Where(e => e.Date.Month == month && e.Date.Year == year && !e.IsExpense).ToArray();
+            var monthValues = DataHandling.GetLedgerEntries(year, month).Where(e => !e.IsExpense).ToArray();
 
             //Then group them by category and return the cat and the sum
             var res = monthValues.GroupBy(m => m.Category).Select(cg => new { Category = DataHandling.Categories.Where(c => c.ID == cg.First().Category).Select(c => c.Name).FirstOrDefault(), Sum = cg.Sum(cg1 => cg1.Money).ToString("0.00") });
