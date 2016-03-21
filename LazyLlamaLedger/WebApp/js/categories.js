@@ -114,7 +114,7 @@ function SaveAndClose() {
 
     //Check for duplicate name, even if it's an edit (we handle that later)
 
-    $.get("http://localhost:7744/api/cat/CheckUnique?catname=" + window.btoa(cat.Name) + "&id=" + cat.ID, function (data) {
+    $.get("http://localhost:7744/api/cat/CheckUnique?catname=" + encodeURIComponent(cat.Name) + "&id=" + cat.ID, function (data) {
         if (data) {
             //Save away
             $.post("http://localhost:7744/api/cat/Categories", cat, function (data) {

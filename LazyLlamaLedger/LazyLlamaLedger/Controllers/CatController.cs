@@ -57,7 +57,7 @@ namespace LazyLlamaLedger.Controllers
         [ActionName("CheckUnique")]
         public IHttpActionResult CheckUnique(string catName,int id)
         {
-            string cName = Encoding.UTF8.GetString(Convert.FromBase64String(catName));
+            string cName = System.Uri.UnescapeDataString(catName);
 
             return Ok(!DataHandling.Categories.Any(c => String.Equals(c.Name, cName, StringComparison.InvariantCultureIgnoreCase) && c.ID != id));
         }
