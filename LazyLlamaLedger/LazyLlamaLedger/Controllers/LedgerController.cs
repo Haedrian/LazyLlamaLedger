@@ -112,6 +112,11 @@ namespace LazyLlamaLedger.Controllers
                 return BadRequest("Date from isn't larger than Date to");
             }
 
+            if (le.DateFrom.Month == le.DateTo.Month && le.DateFrom.Year == le.DateFrom.Year)
+            {
+                return BadRequest("Date From and Date to are in the same month");
+            }
+
             //We're going to create a number of ledger entries - one for each month.
             //Let's determine how many days there are between date from and the end of the month
             //Then we'll work month by month, adding days as appropriate
