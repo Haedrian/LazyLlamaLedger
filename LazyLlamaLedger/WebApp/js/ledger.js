@@ -254,6 +254,9 @@ function saveCollectiveEntry() {
             fetchData();
             clearEntryInterface();
             closeModal();
+        }).fail(function (xhr)
+        {
+            Materialize.toast("Error occured: " + JSON.parse(xhr.responseText).Message, 2000)
         });
     }
 }
