@@ -131,6 +131,7 @@ namespace LazyLlamaLedger
                 if (fromFile != null)
                 {
                     Entries.AddRange(fromFile);
+                    Entries = Entries.OrderBy(e => e.Date).ToList();
 
                     //Go through them and pick out the unique month-years
                     MonthYearPair[] uniqueMonths = Entries.Select(e => new MonthYearPair(e)).Distinct().ToArray();
@@ -142,6 +143,7 @@ namespace LazyLlamaLedger
                     FlushLedgers();
 
                     //And delete - no more
+                    File.Copy(FolderPath + Path.DirectorySeparatorChar + "les.json",FolderPath+Path.DirectorySeparatorChar + "lesBackup.json",true);
                     File.Delete(FolderPath + Path.DirectorySeparatorChar + "les.json");
                 }
             }
