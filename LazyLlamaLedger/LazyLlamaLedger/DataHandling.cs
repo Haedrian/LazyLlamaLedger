@@ -29,6 +29,7 @@ namespace LazyLlamaLedger
         private static List<LedgerEntry> LoadEntriesFromFile(DateTime yearMonth)
         {
             string path = FolderPath + Path.DirectorySeparatorChar + "les" + yearMonth.ToString("MMyyyy") + ".json";
+            LoadedFiles.Add(new MonthYearPair(yearMonth));
 
             if (File.Exists(path))
             {
@@ -37,7 +38,7 @@ namespace LazyLlamaLedger
 
                 if (fromFile != null)
                 {
-                    return fromFile;    
+                    return fromFile;
                 }
                 else
                 {
@@ -52,49 +53,51 @@ namespace LazyLlamaLedger
 
         public static List<LedgerEntry> GetLedgerEntries(int year, int month)
         {
-            return GetLedgerEntries(new DateTime(year, month, 1), new DateTime(year, month, 1));
+            return GetLedgerEntries(new DateTime(year, month, 1));
         }
 
-        public static List<LedgerEntry> GetLedgerEntries(DateTime monthFrom,DateTime monthTo)
+        public static List<LedgerEntry> GetLedgerEntries(DateTime monthYear)
         {
-            //Have we loaded each file ?
-            DateTime timeCursor = monthFrom;
-
-            while (timeCursor <= monthTo)
+            //Have we loaded the file ?
+            lock (fileLock)
             {
-                if (!LoadedFiles.Any(lf => lf.Month == timeCursor.Month && lf.Year == timeCursor.Year))
+                if (!LoadedFiles.Any(lf => lf.Month == monthYear.Month && lf.Year == monthYear.Year))
                 {
                     //Not loaded yet, lets do so
-                    Entries.AddRange(LoadEntriesFromFile(timeCursor));
+                    Entries.AddRange(LoadEntriesFromFile(monthYear));
 
                     //Order the entries
                     Entries = Entries.OrderBy(e => e.Date).ToList();
-
-                    //Loaded them
-                    LoadedFiles.Add(new MonthYearPair(timeCursor));
                 }
 
-                timeCursor = timeCursor.AddMonths(1);
             }
 
             //Now we can return the ledger entries as requested
-            return Entries.Where(e => e.Date > monthFrom && e.Date < monthTo).ToList();
+            return Entries.Where(e => e.Date.Month == monthYear.Month && e.Date.Year == monthYear.Year).ToList();
         }
+
 
         public static void AddLedgerEntry(LedgerEntry le)
         {
-            lock(fileLock) //This is to prevent a race condition to do with the dirty files
+            lock (fileLock) //This is to prevent a race condition to do with the dirty files
             {
                 //Have we loaded the correct file already?
-                if (!LoadedFiles.Any(df => df.Month == le.Date.Month && df.Year == le.Date.Year))
+                if (LoadedFiles.Any(df => df.Month == le.Date.Month && df.Year == le.Date.Year))
                 {
                     //Good, no need to load them
                     //But we've dirtied the file, so lets mark accordingly
-                    if (!DirtyFiles.Any(df => df.Month == le.Date.Month && df.Year == le.Date.Year))
-                    {
-                        DirtyFiles.Add(new MonthYearPair(le)); //Mark
-                    }
                 }
+                else
+                {
+                    //Load em
+                    Entries.AddRange(LoadEntriesFromFile(le.Date));
+                }
+
+                if (!DirtyFiles.Any(df => df.Month == le.Date.Month && df.Year == le.Date.Year))
+                {
+                    DirtyFiles.Add(new MonthYearPair(le)); //Mark
+                }
+
                 Entries.Add(le);
             }
         }
@@ -226,7 +229,7 @@ namespace LazyLlamaLedger
                 {
                     string les = JsonConvert.SerializeObject(Entries.Where(e => e.Date.Year == dirty.Year && e.Date.Month == dirty.Month).ToList());
 
-                    File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les "+ dirty.Month+dirty.Year +".json", les);
+                    File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les" + dirty.Month.ToString("00") + dirty.Year.ToString("0000") + ".json", les);
                 }
 
                 DirtyFiles.Clear(); //and clear
