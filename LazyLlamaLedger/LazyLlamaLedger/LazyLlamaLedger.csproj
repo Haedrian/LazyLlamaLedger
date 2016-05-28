@@ -119,6 +119,7 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CollectiveLedgerEntry.cs" />
     <Compile Include="Models\LedgerEntry.cs" />
+    <Compile Include="Models\MonthYearPair.cs" />
     <Compile Include="Models\ReportTable.cs" />
     <Compile Include="Models\SubCategory.cs" />
     <Compile Include="Program.cs" />
@@ -144,6 +145,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

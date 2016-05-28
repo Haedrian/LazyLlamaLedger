@@ -19,14 +19,87 @@ namespace LazyLlamaLedger
         public static bool isFirstTime = false;
         public static string FolderPath = "";
 
-        public static List<LedgerEntry> LedgerEntries { get; set; }
+        private static List<MonthYearPair> LoadedFiles { get; set; }
+        private static List<MonthYearPair> DirtyFiles { get; set; }
+        private static List<LedgerEntry> Entries { get; set; }
+
         public static List<Category> Categories { get; set; }
+
+
+        private static List<LedgerEntry> LoadEntriesFromFile(DateTime yearMonth)
+        {
+            string path = FolderPath + Path.DirectorySeparatorChar + "les" + yearMonth.ToString("MMyyyy") + ".json";
+            LoadedFiles.Add(new MonthYearPair(yearMonth));
+
+            if (File.Exists(path))
+            {
+                string les = File.ReadAllText(path);
+                var fromFile = JsonConvert.DeserializeObject<List<LedgerEntry>>(les);
+
+                if (fromFile != null)
+                {
+                    return fromFile;
+                }
+                else
+                {
+                    return new List<LedgerEntry>();
+                }
+            }
+            else
+            {
+                return new List<LedgerEntry>(); //Nothing to load
+            }
+        }
+
+        public static List<LedgerEntry> GetLedgerEntries(int year, int month)
+        {
+            return GetLedgerEntries(new DateTime(year, month, 1));
+        }
+
+        public static List<LedgerEntry> GetLedgerEntries(DateTime monthYear)
+        {
+            //Have we loaded the file ?
+            lock (fileLock)
+            {
+                if (!LoadedFiles.Any(lf => lf.Month == monthYear.Month && lf.Year == monthYear.Year))
+                {
+                    //Not loaded yet, lets do so
+                    Entries.AddRange(LoadEntriesFromFile(monthYear));
+
+                    //Order the entries
+                    Entries = Entries.OrderBy(e => e.Date).ToList();
+                }
+
+            }
+
+            //Now we can return the ledger entries as requested
+            return Entries.Where(e => e.Date.Month == monthYear.Month && e.Date.Year == monthYear.Year).ToList();
+        }
+
 
         public static void AddLedgerEntry(LedgerEntry le)
         {
-            le.ID = LedgerEntries.Count + 1;
+            lock (fileLock) //This is to prevent a race condition to do with the dirty files
+            {
+                //Have we loaded the correct file already?
+                if (LoadedFiles.Any(df => df.Month == le.Date.Month && df.Year == le.Date.Year))
+                {
+                    //Good, no need to load them
+                    //But we've dirtied the file, so lets mark accordingly
+                }
+                else
+                {
+                    //Load em
+                    Entries.AddRange(LoadEntriesFromFile(le.Date));
+                }
 
-            LedgerEntries.Add(le);
+                if (!DirtyFiles.Any(df => df.Month == le.Date.Month && df.Year == le.Date.Year))
+                {
+                    DirtyFiles.Add(new MonthYearPair(le)); //Mark
+                }
+
+                Entries.Add(le);
+            }
         }
 
         public static void AddCategory(Category cat)
@@ -42,9 +115,14 @@ namespace LazyLlamaLedger
         /// </summary>
         public static void StartDataHandling()
         {
-            LedgerEntries = new List<LedgerEntry>();
+            Entries = new List<LedgerEntry>();
             Categories = new List<Category>();
+            DirtyFiles = new List<MonthYearPair>();
+            LoadedFiles = new List<MonthYearPair>();
 
+            //We'll load the entries lazily as we need them
+
+            //Does he still have from the old file format? Better read it, then delete it - we'll convert it to the new format for him :)
             if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "les.json"))
             {
                 string les = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "les.json");
@@ -52,7 +130,21 @@ namespace LazyLlamaLedger
 
                 if (fromFile != null)
                 {
-                    LedgerEntries.AddRange(fromFile);
+                    Entries.AddRange(fromFile);
+                    Entries = Entries.OrderBy(e => e.Date).ToList();
+
+                    //Go through them and pick out the unique month-years
+                    MonthYearPair[] uniqueMonths = Entries.Select(e => new MonthYearPair(e)).Distinct().ToArray();
+
+                    DirtyFiles.AddRange(uniqueMonths);
+                    LoadedFiles.AddRange(uniqueMonths);
+
+                    //Flush
+                    FlushLedgers();
+
+                    //And delete - no more
+                    File.Copy(FolderPath + Path.DirectorySeparatorChar + "les.json",FolderPath+Path.DirectorySeparatorChar + "lesBackup.json",true);
+                    File.Delete(FolderPath + Path.DirectorySeparatorChar + "les.json");
                 }
             }
 
@@ -135,8 +227,14 @@ namespace LazyLlamaLedger
         {
             lock (fileLock)
             {
-                string les = JsonConvert.SerializeObject(LedgerEntries);
-                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", les);
+                foreach (var dirty in DirtyFiles)
+                {
+                    string les = JsonConvert.SerializeObject(Entries.Where(e => e.Date.Year == dirty.Year && e.Date.Month == dirty.Month).ToList());
+
+                    File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les" + dirty.Month.ToString("00") + dirty.Year.ToString("0000") + ".json", les);
+                }
+
+                DirtyFiles.Clear(); //and clear
             }
         }
 
@@ -153,11 +251,9 @@ namespace LazyLlamaLedger
         {
             lock (fileLock)
             {
-                string les = JsonConvert.SerializeObject(LedgerEntries);
-                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "les.json", les);
+                FlushLedgers();
 
-                string cats = JsonConvert.SerializeObject(Categories);
-                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "cats.json", cats);
+                FlushCats();
             }
         }
     }
