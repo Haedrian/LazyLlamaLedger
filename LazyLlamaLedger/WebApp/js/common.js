@@ -43,6 +43,7 @@ function closeAll()
     $("#divCategories").css("display", "none");
     $("#divLedger").css("display", "none");
     $("#divReports").css("display", "none");
+    $("#divFunds").css("display", "none");
     $("li.active").removeClass("active");
 }
 
@@ -73,4 +74,13 @@ function openAbout()
 {
     $("#txtVersion").text("Version " + versionNumber);
     $("#mdlAbout").openModal();
+}
+
+function openFunds()
+{
+    closeAll();
+    loadFunds();
+
+    $("#divFunds").css("display", "block");
+    $("#liFunds").addClass("active");
 }

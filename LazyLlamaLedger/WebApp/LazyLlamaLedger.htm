@@ -23,6 +23,7 @@
     <script src="js/common.js"></script>
     <script src="js/settings.js"></script>
     <script src="js/reports.js"></script>
+    <script src="js/funds.js"></script>
 
     <script src="Charts/jquery.jqplot.min.js"></script>
     <link href="Charts/jquery.jqplot.min.css" rel="stylesheet" />
@@ -38,6 +39,7 @@
                 <li id="liLedger" onclick="openLedger()" class="active"><a>Ledger</a></li>
                 <li id="liReports" onclick="openReports()"><a>Reports</a></li>
                 <li id="liCategories" onclick="openCats()"><a>Categories</a></li>
+                <li id="liFunds" onclick="openFunds()"><a>Funds</a></li>
                 <li id="liSettings" onclick="$('#mdlSettings').openModal();"><a>Settings</a></li>
                 <li id="liAbout" onclick="openAbout()"><a>About</a></li>
             </ul>
@@ -110,11 +112,11 @@
                 <table id="tblLedger">
                     <thead>
                         <tr>
-                            <td>Item</td>
-                            <td>Date</td>
-                            <td>Category</td>
-                            <td>Subcategory</td>
-                            <td style="text-align:right">€</td>
+                            <th>Item</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Subcategory</th>
+                            <th style="text-align:right">€</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -160,8 +162,8 @@
                 <i class="large material-icons">add</i>
             </a>
             <ul>
-                <li><a class="btn-floating green" onclick="openAddElement(false)"><i class="material-icons">attach_money</i></a></li>
-                <li><a class="btn-floating red" onclick="openAddElement(true)"><i class="material-icons">attach_money</i></a></li>
+                <li><a class="btn-floating green" onclick="openAddElement(false)"><i class="material-icons">euro_symbol</i></a></li>
+                <li><a class="btn-floating red" onclick="openAddElement(true)"><i class="material-icons">euro_symbol</i></a></li>
                 <li><a class="btn-floating green" onclick="openCollectiveElement(false)"><i class="material-icons">date_range</i></a></li>
                 <li><a class="btn-floating red" onclick="openCollectiveElement(true)"><i class="material-icons">date_range</i></a></li>
             </ul>
@@ -222,6 +224,50 @@
                 </div>
             </form>
         </div>
+    </div>
+
+    <div id="divFunds" class="container" style="width:75%; display:none">
+
+        <h4>Funds</h4>
+
+        <div id="fundLoading">
+            <div class="preloader-wrapper big active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div><div class="gap-patch">
+                        <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <table id="tblFund">
+                <thead>
+                    <tr>
+                        <th>Fund Name</th>
+                        <th>Percentage</th>
+                        <th>Minimum</th>
+                        <th>Maximum</th>
+                        <th style="text-align:right">€</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;" onclick="openNewFundInterface()">
+            <a class="btn-floating btn-large red">
+                <!--<i class="large material-icons">account_balance_wallet</i>-->
+                <i class="large material-icons">add</i>
+            </a>
+        </div>
+
     </div>
 
     <!-- Modal Structure -->

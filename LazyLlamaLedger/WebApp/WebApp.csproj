@@ -63,6 +63,7 @@
     <Content Include="images\lll.png" />
     <Content Include="js\categories.js" />
     <Content Include="js\common.js" />
+    <Content Include="js\funds.js" />
     <Content Include="js\ledger.js" />
     <Content Include="js\materialize.js" />
     <Content Include="js\materialize.min.js" />
