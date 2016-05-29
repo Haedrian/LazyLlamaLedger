@@ -27,11 +27,11 @@
                 { key: "#FFA500", value: "Orange" }
             ];
 
-        for (var i = 0; i < colours.lengh; i++)
+        for (var i = 0; i < colours.length; i++)
         {
-            for (var j=0 ; j < funds.lengh; j++)
+            for (var j=0 ; j < data.length; j++)
             {
-                if (colours[i].key == funds[i].Colour)
+                if (colours[i].key == data[j].Colour)
                 {
                     //Remove
                     colours.splice(i, 1);
