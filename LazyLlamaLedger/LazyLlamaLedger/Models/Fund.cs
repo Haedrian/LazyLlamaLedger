@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace LazyLlamaLedger.Models
 {
-    [Serializable]
     public class Fund
     {
         /// <summary>

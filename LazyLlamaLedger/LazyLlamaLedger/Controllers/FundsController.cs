@@ -16,7 +16,7 @@ namespace LazyLlamaLedger.Controllers
         [HttpGet]
         public IHttpActionResult Funds()
         {
-            return Ok(DataHandling.Funds);
+            return Ok(DataHandling.Funds.ToArray());
         }
 
         [HttpPost]
@@ -43,6 +43,11 @@ namespace LazyLlamaLedger.Controllers
             if (DataHandling.Funds.Any(f => String.Equals(f.Name,fund.Name,StringComparison.InvariantCultureIgnoreCase)))
             {
                 return BadRequest("There is a fund with that name already");
+            }
+
+            if (DataHandling.Funds.Any(f => String.Equals(f.Colour, fund.Colour, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                return BadRequest("There is a fund with that colour already");
             }
 
             //Add it to the funds
