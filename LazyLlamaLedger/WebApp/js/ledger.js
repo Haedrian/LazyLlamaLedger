@@ -345,7 +345,8 @@ function fetchData() {
 }
 
 //Marks the modal interface as being expense or income depending on the state of the lever
-function setIE() {
+function setIE()
+{
     if ($("#ckExpense").prop("checked")) {
         $("#lblNewEntry").html("Add New Expense");
     }

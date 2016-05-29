@@ -261,7 +261,7 @@
             </table>
         </div>
 
-        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;" onclick="openNewFundInterface()">
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;" onclick="openAddFund()">
             <a class="btn-floating btn-large red">
                 <!--<i class="large material-icons">account_balance_wallet</i>-->
                 <i class="large material-icons">add</i>
@@ -270,7 +270,7 @@
 
     </div>
 
-    <div id="mdlFunds" class="modal modal-fixed-footer">
+    <div id="mdlFunds" class="modal modal-fixed-footer" style="overflow-y:visible">
         <div class="modal-content" style="overflow-y:visible">
             <h4 id="lblNewFund">Add New Fund</h4>
             <form class="col s12">
@@ -279,14 +279,43 @@
                         <input tabindex="1" placeholder="Name" id="txtFundName" type="text" />
                         <label for="txtFundName">Fund Name</label>
                     </div>
+                    <div class="input-field col s6">
+                        <select tabindex="2" id="ddlColour"></select>
+                        <label>Fund Colour</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:0px">
+                    <div class="input-field col s4">
+                        <input tabindex="3" placeholder="MinAmount" id="txtMinAmount" type="text" />
+                        <label for="txtMinAmount">Minimum Amount</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input tabindex="4" placeholder="Percentage" id="txtPercentage" type="text" />
+                        <label for="txtPercentage">Percentage</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input tabindex="5" placeholder="MaxAmount" id="txtMaxAmount" type="text" />
+                        <label for="txtMaxAmount">Maximum Amount</label>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s3">
-                        <input tabindex="2" placeholder="MinAmount" id="txtMinAmount" type="number" />
-                        <label for="txtMinAmount">Minimum Amount</label>
+                    <div class="input-field col s12" style="margin-top:0px">
+                        <input tabindex="6" type="checkbox" id="cbOnNegative" />
+                        <label for="cbOnNegative">Grant Minimum if Negative</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input tabindex="7" type="text" id="txtFundSeed" />
+                        <label for="txtFundSeed">Seed Amount</label>
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="modal-footer">
+            <a class="modal-action waves-effect waves-green btn-flat " onclick="saveEntry(false);">Create</a>
+            <a class="modal-action waves-effect waves-green btn-flat " onclick="saveEntry(true);">Insert and Close</a>
+            <a class="modal-action waves-effect waves-green btn-flat " onclick="closeModal();">Close</a>
         </div>
     </div>
 
