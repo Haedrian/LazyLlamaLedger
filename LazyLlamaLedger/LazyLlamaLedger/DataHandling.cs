@@ -27,6 +27,8 @@ namespace LazyLlamaLedger
 
         public static List<Fund> Funds { get; set; }
 
+        public static List<ClosedMonth> ClosedMonths { get; set; }
+
         private static List<LedgerEntry> LoadEntriesFromFile(DateTime yearMonth)
         {
             string path = FolderPath + Path.DirectorySeparatorChar + "les" + yearMonth.ToString("MMyyyy") + ".json";
@@ -76,7 +78,6 @@ namespace LazyLlamaLedger
             //Now we can return the ledger entries as requested
             return Entries.Where(e => e.Date.Month == monthYear.Month && e.Date.Year == monthYear.Year).ToList();
         }
-
 
         public static void AddLedgerEntry(LedgerEntry le)
         {
@@ -266,6 +267,15 @@ namespace LazyLlamaLedger
             }
         }
 
+        public static void FlushClosedMonths()
+        {
+            lock(fileLock)
+            {
+                string closedMonths = JsonConvert.SerializeObject(ClosedMonths);
+                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "closedMonths.json", closedMonths);
+            }
+        }
+
         public static void FlushAll()
         {
             lock (fileLock)
@@ -275,6 +285,8 @@ namespace LazyLlamaLedger
                 FlushCats();
 
                 FlushFunds();
+
+                FlushClosedMonths();
             }
         }
     }
