@@ -34,15 +34,28 @@
 
     <nav>
         <div class="nav-wrapper">
+            
             <a href="#" class="brand-logo" style="margin-left:30px"><img style="height: 50px;vertical-align: middle;padding-right: 15px;padding-bottom: 5px" src="images/lll.png" />Lazy Llama Ledger</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li id="liLedger" onclick="openLedger()" class="active"><a>Ledger</a></li>
-                <li id="liReports" onclick="openReports()"><a>Reports</a></li>
-                <li id="liCategories" onclick="openCats()"><a>Categories</a></li>
-                <li id="liFunds" onclick="openFunds()"><a>Funds</a></li>
-                <li id="liSettings" onclick="$('#mdlSettings').openModal();"><a>Settings</a></li>
-                <li id="liAbout" onclick="openAbout()"><a>About</a></li>
-            </ul>
+            <nav>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li id="liLedger" onclick="openLedger()" class="active"><a>Ledger</a></li>
+                    <li id="liReports" onclick="openReports()"><a>Reports</a></li>
+                    <li id="liCategories" onclick="openCats()"><a>Categories</a></li>
+                    <li id="liFunds" onclick="openFunds()"><a>Funds</a></li>
+                    <li id="liSettings" onclick="$('#mdlSettings').openModal();"><a>Settings</a></li>
+                    <li id="liAbout" onclick="openAbout()"><a>About</a></li>
+                </ul>
+
+                <ul id="slide-out" class="side-nav">
+                    <li id="liLedger" onclick="openLedger()" class="active"><a>Ledger</a></li>
+                    <li id="liReports" onclick="openReports()"><a>Reports</a></li>
+                    <li id="liCategories" onclick="openCats()"><a>Categories</a></li>
+                    <li id="liFunds" onclick="openFunds()"><a>Funds</a></li>
+                    <li id="liSettings" onclick="$('#mdlSettings').openModal();"><a>Settings</a></li>
+                    <li id="liAbout" onclick="openAbout()"><a>About</a></li>
+                </ul>
+                <a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+            </nav>
         </div>
     </nav>
 

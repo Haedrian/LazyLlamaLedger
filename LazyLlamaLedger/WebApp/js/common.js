@@ -9,6 +9,9 @@ $(window).on("close", function ()
 $(document).ready(function ()
 {
     isFirstTime();
+
+    $(".button-collapse").sideNav();
+
 });
 
 function isFirstTime()
