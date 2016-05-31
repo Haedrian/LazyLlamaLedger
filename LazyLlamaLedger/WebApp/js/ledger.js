@@ -339,9 +339,41 @@ function fetchData() {
             $("#lblTotal").css("color", "black");
         }
 
+        //Let's check whether the month's closed off or not
+        getMonthCloseStatus();
+
     }, "json");
 
     drawChart();
+}
+
+function getMonthCloseStatus()
+{
+    $.get("http://localhost:7744/api/month?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data)
+    {
+        if (data.length == 0)
+        {
+            //Month is still open
+            $("#btnCloseOff").css("display", "block");
+        }
+        else 
+        {
+            //Month is closed - show me the funding!
+            $("#btnCloseOff").css("display", "none");
+
+            var html = "";
+
+            data.forEach(function (element)
+            {
+                html += "<h5 style='color:" + element.Colour + "'>" + element.Name + "-" + element.Amount + "</h5>";
+            });
+        }
+    });
+}
+
+function closeOffMonth()
+{
+    
 }
 
 //Marks the modal interface as being expense or income depending on the state of the lever

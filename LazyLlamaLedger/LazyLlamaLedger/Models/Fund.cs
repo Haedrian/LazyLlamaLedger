@@ -39,11 +39,14 @@ namespace LazyLlamaLedger.Models
 
         public decimal Total { get; set; }
 
+        public bool IsActive { get; set; }
+
         public Fund()
         {
             MinimumAmount = MaximumAmount = Percentage = null;
             Total = 0;
             MinimumIfNegative = false;
+            IsActive = true;
         }
 
         public bool CheckIfValid(out string issue)

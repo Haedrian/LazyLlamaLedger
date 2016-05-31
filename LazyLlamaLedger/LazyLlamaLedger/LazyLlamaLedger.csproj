@@ -119,7 +119,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DataHandling.cs" />
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\ClosedMonth.cs" />
+    <Compile Include="Models\MonthDetails.cs" />
     <Compile Include="Models\CollectiveLedgerEntry.cs" />
     <Compile Include="Models\Fund.cs" />
     <Compile Include="Models\LedgerEntry.cs" />

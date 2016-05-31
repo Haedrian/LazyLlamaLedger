@@ -27,7 +27,7 @@ namespace LazyLlamaLedger
 
         public static List<Fund> Funds { get; set; }
 
-        public static List<ClosedMonth> ClosedMonths { get; set; }
+        public static List<MonthDetails> ClosedMonths { get; set; }
 
         private static List<LedgerEntry> LoadEntriesFromFile(DateTime yearMonth)
         {
@@ -122,6 +122,7 @@ namespace LazyLlamaLedger
             DirtyFiles = new List<MonthYearPair>();
             LoadedFiles = new List<MonthYearPair>();
             Funds = new List<Fund>();
+            ClosedMonths = new List<MonthDetails>();
 
             //We'll load the entries lazily as we need them
 
@@ -158,6 +159,14 @@ namespace LazyLlamaLedger
                 var fromFile = JsonConvert.DeserializeObject<List<Fund>>(funds);
 
                 Funds.AddRange(fromFile);
+            }
+
+            if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "months.json"))
+            {
+                //Read it
+                string mths = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "months.json");
+
+                ClosedMonths.AddRange(JsonConvert.DeserializeObject<List<MonthDetails>>(mths));
             }
 
             if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "cats.json"))
@@ -272,7 +281,7 @@ namespace LazyLlamaLedger
             lock(fileLock)
             {
                 string closedMonths = JsonConvert.SerializeObject(ClosedMonths);
-                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "closedMonths.json", closedMonths);
+                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "months.json", closedMonths);
             }
         }
 
