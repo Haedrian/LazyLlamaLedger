@@ -25,7 +25,6 @@ namespace LazyLlamaLedger.Controllers
             else
             {
                 //Let's expand the data we sent back so we include pretty colours
-
                 return Ok(monthData.FundDistribution.Select(fd => new { Name =  fd.Key, Amount = fd.Value, Colour = DataHandling.Funds.Where( f => f.Name.Equals(fd.Key,StringComparison.InvariantCultureIgnoreCase)).Select(f => f.Colour).FirstOrDefault() } ).ToArray());
             }
         }
@@ -33,6 +32,12 @@ namespace LazyLlamaLedger.Controllers
         [HttpPatch]
         public IHttpActionResult CloseMonth(int year, int month)
         {
+            //Have we closed it before?
+            if (DataHandling.ClosedMonths.Any(cm => cm.Month == month && cm.Year == year))
+            {
+                return BadRequest("This month has been closed off already");
+            }
+
             //We must distribute according to the funds
             //How much money we make?
             decimal total = DataHandling.GetLedgerEntries(year, month).Where(le => !le.IsExpense).Sum(le => le.Money) - DataHandling.GetLedgerEntries(year, month).Where(le => le.IsExpense).Sum(le => le.Money);
@@ -77,7 +82,7 @@ namespace LazyLlamaLedger.Controllers
 
             }
 
-            DataHandling.ClosedMonths.Add(new Models.MonthDetails() { Month = month, Year = year });
+            DataHandling.ClosedMonths.Add(new Models.MonthDetails() { Month = month, Year = year, FundDistribution = fundDistribution });
             DataHandling.FlushClosedMonths();
             DataHandling.FlushFunds();
 

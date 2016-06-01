@@ -17,8 +17,6 @@
         var colours =
             [
                 { key: "#6d7889", value: "Bluegrey" },
-                { key: "#dffffe", value: "Light Mint" },
-                { key: "#fef0f4", value: "Light Pink" },
                 { key: "#ea6459", value: "Papaya" },
                 { key: "#1c5f5f", value: "Teal" },
                 { key: "#3c0d22", value: "Plum" },

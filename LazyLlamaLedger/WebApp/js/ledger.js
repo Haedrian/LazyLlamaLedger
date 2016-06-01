@@ -351,9 +351,10 @@ function getMonthCloseStatus()
 {
     $.get("http://localhost:7744/api/month?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data)
     {
-        if (data.length == 0)
+        if (!data  || data.length == 0)
         {
             //Month is still open
+            $("#divFundDistribution").html("");
             $("#btnCloseOff").css("display", "block");
         }
         else 
@@ -365,16 +366,32 @@ function getMonthCloseStatus()
 
             data.forEach(function (element)
             {
-                html += "<h5 style='color:" + element.Colour + "'>" + element.Name + "-" + element.Amount + "</h5>";
+                html += "<h5 style='color:" + element.Colour + ";text-align:right'>" + element.Name + ": " + element.Amount.toFixed(2) + "</h5>";
             });
+
+            $("#divFundDistribution").html(html);
         }
     });
 }
 
 function closeOffMonth()
 {
-    
-}
+    $.ajax(
+       {
+           url: "http://localhost:7744/api/month?month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(),
+           method: "PATCH",
+       })
+        .done(function (data)
+        {
+            //'reload'
+            fetchData();
+        })
+        .fail(function (error)
+        {
+            Materialize.toast(error.responseJSON.Message, 2000);
+        });
+
+    }
 
 //Marks the modal interface as being expense or income depending on the state of the lever
 function setIE()
