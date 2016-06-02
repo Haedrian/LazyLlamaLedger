@@ -6,7 +6,7 @@
 
             data.forEach(function (element)
         {
-                html += "<tr><td style='width:20px'> <div style='border: 1px groove black;width:20px;height:20px;background-color:" + element.Colour + "';></td><td>" + element.Name + "</td><td>" + element.Percentage + "</td><td>" + element.MinimumAmount + "</td><td>" + element.MaximumAmount + "</td><td style='text-align:right'>" + element.Total + "</td></tr>";
+                html += "<tr><td style='width:20px'> <div style='border: 1px groove black;width:20px;height:20px;background-color:" + element.Colour + "';></td><td>" + element.Name + "</td><td>" + element.Percentage + "</td><td>" + element.MinimumAmount + "</td><td>" + element.MaximumAmount + "</td><td style='text-align:right'>" + element.Total.toFixed(2) + "</td></tr>";
         });
 
         $("#tblFund tbody").html(html);

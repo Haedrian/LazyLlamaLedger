@@ -23,6 +23,8 @@ namespace LazyLlamaLedger.Views
 
         public bool IsCollective { get; set; }
 
+        public string Colour { get; set; }
+
         public LedgerEntryView()
         { }
 
@@ -36,6 +38,11 @@ namespace LazyLlamaLedger.Views
             SubCategory = DataHandling.Categories.FirstOrDefault(c => c.ID == le.Category).Subcats.Where(c => c.ID == le.SubCategory).Select(c => c.Name).FirstOrDefault(); ;
             Money = le.Money;
             IsCollective = le.IsCollective;
+
+            if (!String.IsNullOrEmpty(le.Fund))
+            {
+                Colour = DataHandling.Funds.Where(fd => fd.Name.Equals(le.Fund,StringComparison.InvariantCultureIgnoreCase)).Select(fd => fd.Colour).FirstOrDefault();
+            }
         }
     }
 }

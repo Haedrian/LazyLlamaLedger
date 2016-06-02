@@ -39,8 +39,8 @@ namespace LazyLlamaLedger.Controllers
             }
 
             //We must distribute according to the funds
-            //How much money we make?
-            decimal total = DataHandling.GetLedgerEntries(year, month).Where(le => !le.IsExpense).Sum(le => le.Money) - DataHandling.GetLedgerEntries(year, month).Where(le => le.IsExpense).Sum(le => le.Money);
+            //How much money we make? Don't forget to filter out any income made TO funds
+            decimal total = DataHandling.GetLedgerEntries(year, month).Where(le => !le.IsExpense && String.IsNullOrEmpty(le.Fund)).Sum(le => le.Money) - DataHandling.GetLedgerEntries(year, month).Where(le => le.IsExpense).Sum(le => le.Money);
 
             //Go through the funds and see how much we need to give
             List<KeyValuePair<string, decimal>> fundDistribution = new List<KeyValuePair<string, decimal>>();

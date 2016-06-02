@@ -48,6 +48,7 @@ $(document).ready(function () {
 
     $('#slCollectiveCategory').material_select();
     $('#slCollectiveSubCategory').material_select();
+    $("#ddlFund").material_select();
 });
 
 function drawChart() {
@@ -91,12 +92,16 @@ function drawChart() {
     });
 
     //Income Graph
-    $.get("http://localhost:7744/api/ledger/LedgerIncAggregate?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data) {
+    $.get("http://localhost:7744/api/ledger/LedgerIncAggregate?Month=" + (chosenDate.getMonth() + 1) + "&year=" + chosenDate.getFullYear(), function (data)
+    {
         var cData = [];
 
-        $.each(data, function (index, val) {
-            cData.push([val.Category, Number(val.Sum)]);
-        });
+        if (data)
+        {
+            $.each(data, function (index, val) {
+                cData.push([val.Category, Number(val.Sum)]);
+            });
+        }
 
         //and plot it
         jQuery.jqplot('divIncomeChart', [cData],
@@ -132,9 +137,12 @@ function drawSubcatExpenseChart(catName, chartSelector) {
         function (data) {
             var cData = [];
 
-            $.each(data, function (index, val) {
-                cData.push([val.Category, Number(val.Sum)]);
-            });
+            if (data)
+            {
+                    $.each(data, function (index, val) {
+                        cData.push([val.Category, Number(val.Sum)]);
+                    });
+            }
 
             //and plot it
             jQuery.jqplot(chartSelector, [cData],
@@ -178,6 +186,7 @@ function readLedgerEntry() {
     entry.Category = $("#slCategory").val();
     entry.SubCategory = $("#slSubCategory").val();
     entry.Money = $("#txtMoney").val();
+    entry.Fund = $("#ddlFund").val();
 
     return entry;
 }
@@ -297,34 +306,37 @@ function fetchData() {
         var collectiveHtml = "";
         var total = 0;
 
-        $.each(data, function (index, val) {
-            var elementHtml = "";
+        if (data)
+        {
+            $.each(data, function (index, val) {
+                var elementHtml = "";
 
-            if (val.IsCollective)
-            {
-                elementHtml = "<tr><td>" + val.Item + "</td><td>Collective</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+                if (val.IsCollective)
+                {
+                    elementHtml = "<tr><td style='width:20px'> <div style='border:"+ (val.Colour ? "1px":"0px") +" groove black;width:20px;height:20px;background-color:" + val.Colour + "';></td><td>" + val.Item + "</td><td>Collective</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+                }
+                else
+                {
+                    elementHtml = "<tr><td style='width:20px'> <div style='border:" + (val.Colour ? "1px" : "0px") + " groove black;width:20px;height:20px;background-color:" + val.Colour + "';></td><td>" + val.Item + "</td><td>" + val.Date + "</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
+                }
+
+                if (val.IsExpense)
+                {
+                    elementHtml += ";color:red";
+                    total -= val.Money;
+                }
+                else
+                {
+                    elementHtml += ";color:green";
+                    total += val.Money;
+                }
+
+                elementHtml += "'>" + val.Money + "</td><tr>";
+
+                html += elementHtml;
+
+            });
             }
-            else
-            {
-                elementHtml = "<tr><td>" + val.Item + "</td><td>" + val.Date + "</td><td> " + val.Category + "</td><td>" + val.SubCategory + "</td><td style='text-align:right";
-            }
-
-            if (val.IsExpense)
-            {
-                elementHtml += ";color:red";
-                total -= val.Money;
-            }
-            else
-            {
-                elementHtml += ";color:green";
-                total += val.Money;
-            }
-
-            elementHtml += "'>" + val.Money + "</td><tr>";
-
-            html += elementHtml;
-
-        });
 
         $("#tblLedger tbody").html(html);
 
@@ -342,9 +354,32 @@ function fetchData() {
         //Let's check whether the month's closed off or not
         getMonthCloseStatus();
 
+        //Also get the Funds and populate the dropdown
+        getFundsForDropdown();
+
     }, "json");
 
     drawChart();
+}
+
+function getFundsForDropdown()
+{
+    $.get("http://localhost:7744/api/funds", function(data)
+    {
+        $("#ddlFund").html("<option>None</option>");
+
+        data.forEach(function(element)
+        {
+            if (element.IsActive)
+            {
+                $('#ddlFund')
+                 .append($('<option>', { value: element.Name })
+                 .text(element.Name + " - " + element.Total.toFixed(2)));
+            }
+        });
+
+        $("#ddlFund").material_select();
+    });
 }
 
 function getMonthCloseStatus()

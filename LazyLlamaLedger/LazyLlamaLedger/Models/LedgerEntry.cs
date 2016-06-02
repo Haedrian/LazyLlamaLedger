@@ -28,6 +28,8 @@ namespace LazyLlamaLedger.Models
 
         public bool IsCollective { get; set; }
 
+        public string Fund { get; set; }
+
         public LedgerEntry()
         {
             IsCollective = false;
