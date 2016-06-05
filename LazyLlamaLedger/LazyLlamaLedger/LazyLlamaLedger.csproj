@@ -126,6 +126,7 @@
     <Compile Include="Models\MonthYearPair.cs" />
     <Compile Include="Models\ReportTable.cs" />
     <Compile Include="Models\SubCategory.cs" />
+    <Compile Include="Models\UpdateFund.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

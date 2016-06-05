@@ -112,6 +112,67 @@ function openEditFund(fundName)
  
 }
 
+function updateFund()
+{
+    var fund = readUpdateFund();
+
+    //Validate it
+    if (fund.MinimumAmount.length > 0) {
+        if (isNaN(parseFloat(fund.MinimumAmount))) {
+            Materialize.toast("Minimum amount is not a valid number", 2000);
+            return;
+        }
+    }
+
+    if (fund.MaximumAmount.length > 0) {
+        if (isNaN(parseFloat(fund.MaximumAmount))) {
+            Materialize.toast("Maximum amount is not a valid number", 2000);
+            return;
+        }
+    }
+
+    if (fund.Percentage.length > 0) {
+        if (isNaN(parseFloat(fund.Percentage))) {
+            Materialize.toast("Percentage is not a valid number", 2000);
+            return;
+        }
+    }
+
+    //Okay it's fine
+
+    $.ajax(
+        {
+            url: "http://localhost:7744/api/funds?fundName="+fund.Name,
+            method: "PUT",
+            data: fund
+        })
+    .done(function (data)
+    {
+        //Done 
+
+        $('#mdlEditFund').closeModal();
+        //reload the funds
+        loadFunds();
+
+    }).fail(function (data) {
+        Materialize.toast(data.responseJSON.Message, 2000);
+    });
+}
+
+function readUpdateFund()
+{
+    var fund = new Object();
+
+    fund.Name = loadedFund.Name;
+    fund.MinimumAmount = $("#mdlEditFund #txtEditMinAmount").val();
+    fund.Percentage = $("#mdlEditFund #txtEditPercentage").val();
+    fund.MaximumAmount = $("#mdlEditFund #txtEditMaxAmount").val();
+    fund.MinimumIfNegative = $("#mdlEditFund #cbEditOnNegative").prop("checked");
+    fund.IsActive = $("#mdlEditFund #cbEditFundActive").prop("checked");
+
+    return fund;
+}
+
 function saveFund()
 {
     var fund = readFund();

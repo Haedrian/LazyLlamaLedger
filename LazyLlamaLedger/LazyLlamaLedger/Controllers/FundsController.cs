@@ -26,6 +26,45 @@ namespace LazyLlamaLedger.Controllers
             }
         }
 
+        [HttpPut]
+        public IHttpActionResult UpdateFund(string fundName,[FromBody]UpdateFund fund)
+        {
+            if (String.IsNullOrEmpty(fundName))
+            {
+                return BadRequest("Fund Name is missing");
+            }
+            else if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string error = "";
+            if (!fund.CheckIfValid(out error))
+            {
+                return BadRequest(error);
+            }
+
+            //Get the fund from the database
+            var oldFund = DataHandling.Funds.FirstOrDefault(f => f.Name.Equals(fundName, StringComparison.InvariantCultureIgnoreCase));
+
+            if (oldFund == null)
+            {
+                return BadRequest("Could not find fund with name " + fundName);
+            }
+
+            //Update old fund
+            oldFund.IsActive = fund.IsActive;
+            oldFund.MaximumAmount = fund.MaximumAmount;
+            oldFund.MinimumAmount = fund.MinimumAmount;
+            oldFund.MinimumIfNegative = fund.MinimumIfNegative;
+            oldFund.Percentage = fund.Percentage;
+
+            //Done
+            DataHandling.FlushFunds();
+
+            return Ok();
+        }
+
         [HttpPost]
         public IHttpActionResult NewFund(Fund fund)
         {
