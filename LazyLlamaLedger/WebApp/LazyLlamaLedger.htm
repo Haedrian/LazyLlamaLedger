@@ -272,6 +272,7 @@
                         <tr>
                             <th></th>
                             <th>Fund Name</th>
+                            <th>Active</th>
                             <th>Percentage</th>
                             <th>Minimum</th>
                             <th>Maximum</th>
@@ -336,6 +337,43 @@
             <div class="modal-footer">
                 <a class="modal-action waves-effect waves-green btn-flat " onclick="saveFund();">Create</a>
                 <a class="modal-action waves-effect waves-green btn-flat " onclick="$('#mdlFunds').closeModal();">Close</a>
+            </div>
+        </div>
+
+        <div id="mdlEditFund" class="modal modal-fixed-footer" style="overflow-y:visible">
+            <div class="modal-content" style="overflow-y:visible">
+                <h4 id="lblFundName" style="display:inline">Update Fund</h4> <div id="divEditFundColour" style="border: 1px groove black; width:30px;height:30px;background-color:deeppink; display:inline-block;margin-left:15px"></div>
+                <form class="col s12">
+                    <div class="row" style="margin-bottom:0px">
+                        <div class="input-field col s4">
+                            <input tabindex="1" placeholder="MinAmount" id="txtEditMinAmount" type="text" />
+                            <label for="txtEditMinAmount">Minimum Amount</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <input tabindex="2" placeholder="Percentage" id="txtEditPercentage" type="text" />
+                            <label for="txtEditPercentage">Percentage</label>
+                        </div>
+                        <div class="input-field col s4">
+                            <input tabindex="3" placeholder="MaxAmount" id="txtEditMaxAmount" type="text" />
+                            <label for="txtEditMaxAmount">Maximum Amount</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6" style="margin-top:0px">
+                            <input tabindex="4" type="checkbox" id="cbEditOnNegative" />
+                            <label for="cbEditOnNegative">Grant Minimum if Negative</label>
+                        </div>
+                        <div class="input-field col s6" style="margin-top:0px">
+                            <input tabindex="5" type="checkbox" id="cbEditFundActive" />
+                            <label for="cbEditFundActive">Active</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action waves-effect waves-green btn-flat " onclick="updateFund();">Create</a>
+                <a class="modal-action waves-effect waves-green btn-flat " onclick="$('#mdlEditFund').closeModal();">Cancel</a>
+                <a class="modal-action waves-effect waves-green btn-flat " onclick="">Transfer Money</a>
             </div>
         </div>
 

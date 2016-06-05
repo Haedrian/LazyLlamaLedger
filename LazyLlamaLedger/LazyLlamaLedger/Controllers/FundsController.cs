@@ -14,9 +14,16 @@ namespace LazyLlamaLedger.Controllers
         :ApiController
     {
         [HttpGet]
-        public IHttpActionResult Funds()
+        public IHttpActionResult Funds(string fundName = null)
         {
-            return Ok(DataHandling.Funds.ToArray());
+            if (String.IsNullOrEmpty(fundName))
+            {
+                return Ok(DataHandling.Funds.ToArray().OrderBy(ob => ob.IsActive).ThenBy(ob => ob.Name));
+            }
+            else
+            {
+                return Ok(DataHandling.Funds.FirstOrDefault(f => f.Name.Equals(fundName, StringComparison.InvariantCultureIgnoreCase)));
+            }
         }
 
         [HttpPost]

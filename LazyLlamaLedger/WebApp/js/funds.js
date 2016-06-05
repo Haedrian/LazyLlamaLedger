@@ -1,4 +1,6 @@
-﻿function loadFunds()
+﻿var loadedFund;
+
+function loadFunds()
 {
     $.get("http://localhost:7744/api/funds", function(data)
     {
@@ -6,7 +8,7 @@
 
             data.forEach(function (element)
         {
-                html += "<tr><td style='width:20px'> <div style='border: 1px groove black;width:20px;height:20px;background-color:" + element.Colour + "';></td><td>" + element.Name + "</td><td>" + element.Percentage + "</td><td>" + element.MinimumAmount + "</td><td>" + element.MaximumAmount + "</td><td style='text-align:right'>" + element.Total.toFixed(2) + "</td></tr>";
+                html += "<tr style='cursor:pointer' onclick='openEditFund(\""+ element.Name +"\")'><td style='width:20px'> <div style='border: 1px groove black;width:20px;height:20px;background-color:" + element.Colour + "';></td><td>" + element.Name + "</td><td>"+ (element.IsActive ? "Active": "Inactive") +"</td><td>" + element.Percentage + "</td><td>" + element.MinimumAmount + "</td><td>" + element.MaximumAmount + "</td><td style='text-align:right'>" + element.Total.toFixed(2) + "</td></tr>";
         });
 
         $("#tblFund tbody").html(html);
@@ -22,7 +24,14 @@
                 { key: "#3c0d22", value: "Plum" },
                 { key: "#46784e", value: "Forest Green" },
                 { key: "#482a43", value: "Royal Purple" },
-                { key: "#FFA500", value: "Orange" }
+                { key: "#FFA500", value: "Orange" },
+                { key: "#673AB7", value: "Deep Purple" },
+                { key: "#5C6BC0", value: "Indigo" },
+                { key: "#2196F3", value: "Sea Blue" },
+                { key: "#43A047", value: "Sea Green" },
+                { key: "#CDDC39", value: "Lime" },
+                { key: "#6D4C41", value: "Leather" },
+                { key: "#37474F", value: "Nightsky" }
             ];
 
         for (var i = 0; i < colours.length; i++)
@@ -68,6 +77,39 @@ function readFund()
     fund.Total = $("#mdlFunds #txtFundSeed").val();
 
     return fund;
+}
+
+function openEditFund(fundName)
+{
+    //Load the details for that fund
+    $.get("http://localhost:7744/api/funds?fundName=" + fundName, function (fund)
+    {
+        if (fund)
+        {
+            loadedFund = fund;
+
+            //Load it up
+            var titleHtml = fund.Name + " : " + fund.Total;
+
+            $("#mdlEditFund #lblFundName").html(titleHtml);
+            $("#mdlEditFund #divEditFundColour").css("background-color", fund.Colour);
+
+            $("#mdlEditFund #txtEditMinAmount").val(fund.MinimumAmount);
+            $("#mdlEditFund #txtEditPercentage").val(fund.Percentage);
+            $("#mdlEditFund #txtEditMaxAmount").val(fund.MaximumAmount);
+
+            $("#mdlEditFund #cbEditOnNegative").prop("checked", fund.MinimumIfNegative);
+            $("#mdlEditFund #cbEditFundActive").prop("checked", fund.IsActive);
+
+            $("#mdlEditFund").openModal();
+        }
+        else 
+        {
+            Materialize.toast("Couldn't find fund");
+        }
+    });
+        
+ 
 }
 
 function saveFund()
