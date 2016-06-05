@@ -65,6 +65,25 @@ namespace LazyLlamaLedger.Controllers
             return Ok();
         }
 
+        [HttpPatch]
+        public IHttpActionResult AdjustTotals(string fundName,decimal newTotal)
+        {
+            //Get the fund from the database
+            var oldFund = DataHandling.Funds.FirstOrDefault(f => f.Name.Equals(fundName, StringComparison.InvariantCultureIgnoreCase));
+
+            if (oldFund == null)
+            {
+                return BadRequest("Could not find fund with name " + fundName);
+            }
+
+            //Update old fund
+            oldFund.Total = Math.Round(newTotal,2);
+
+            DataHandling.FlushFunds();
+
+            return Ok();
+        }
+
         [HttpPost]
         public IHttpActionResult NewFund(Fund fund)
         {

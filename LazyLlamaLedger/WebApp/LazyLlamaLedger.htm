@@ -277,6 +277,8 @@
                             <th>Minimum</th>
                             <th>Maximum</th>
                             <th style="text-align:right">€</th>
+                            <th style="width:24px"></th>
+                            <th style="width:24px"></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -373,7 +375,42 @@
             <div class="modal-footer">
                 <a class="modal-action waves-effect waves-green btn-flat " onclick="updateFund();">Update</a>
                 <a class="modal-action waves-effect waves-green btn-flat " onclick="$('#mdlEditFund').closeModal();">Cancel</a>
-                <a class="modal-action waves-effect waves-green btn-flat " onclick="">Transfer Money</a>
+            </div>
+        </div>
+
+        <div id="mdlTransferFunds" class="modal modal-fixed-footer">
+            <div class="modal-content" style="overflow-y:visible">
+                <h4 id="lblTransferFundName" style="display:inline">Update Fund</h4> <div id="divTransferFundColour" style="border: 1px groove black; width:30px;height:30px;background-color:deeppink; display:inline-block;margin-left:15px"></div>
+                <form class="col s12"style="margin-top:30px">
+                    <div class="row">
+                        <div class="col offset-s3 s4">
+                            <h5>Current Amount</h5>
+                        </div>
+                        <div class="col s2">
+                            <h5 id="h5FundCurrentAmount"> 40030</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col offset-s3 s4">
+                            <h5>Adjustment Amount</h5>
+                        </div>
+                        <div class="col s2">
+                            <input onblur="determineTotal()" onkeyup="determineTotal()" id="txtTransferAdjustment" type="text" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col offset-s3 s4">
+                            <h5>New Total</h5>
+                        </div>
+                        <div class="col s2">
+                            <h5 id="h5FundNewAmount"> 100 Billion Dollars</h5>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action waves-effect waves-green btn-flat " onclick="makeAdjustment()">Adjust</a>
+                <a class="modal-action waves-effect waves-green btn-flat " onclick="$('#mdlTransferFunds').closeModal();">Cancel</a>
             </div>
         </div>
 

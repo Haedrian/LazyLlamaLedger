@@ -7,8 +7,19 @@ function loadFunds()
         var html = "";
 
             data.forEach(function (element)
-        {
-                html += "<tr style='cursor:pointer' onclick='openEditFund(\""+ element.Name +"\")'><td style='width:20px'> <div style='border: 1px groove black;width:20px;height:20px;background-color:" + element.Colour + "';></td><td>" + element.Name + "</td><td>"+ (element.IsActive ? "Active": "Inactive") +"</td><td>" + element.Percentage + "</td><td>" + element.MinimumAmount + "</td><td>" + element.MaximumAmount + "</td><td style='text-align:right'>" + element.Total.toFixed(2) + "</td></tr>";
+            {
+                var total = "";
+
+                if (total < 0)
+                {
+                    total = "<td style='text-align:right;color:red'>" + element.Total.toFixed(2) + "</td>"
+                }
+                else
+                {
+                    total = "<td style='text-align:right;color:green'>" + element.Total.toFixed(2) + "</td>"
+                }
+
+                html += "<tr><td style='width:20px'> <div style='border: 1px groove black;width:20px;height:20px;background-color:" + element.Colour + "';></td><td>" + element.Name + "</td><td>" + (element.IsActive ? "Active" : "Inactive") + "</td><td>" + element.Percentage + "</td><td>" + element.MinimumAmount + "</td><td>" + element.MaximumAmount + "</td>" + total + "<td><i style='cursor:pointer' onclick='openEditFund(\"" + element.Name + "\")' class='material-icons'>settings</i></td><td><i style='cursor:pointer' onclick='openAdjustFund(\"" + element.Name + "\")' class='material-icons'>compare_arrows</i></td></tr>";
         });
 
         $("#tblFund tbody").html(html);
@@ -59,6 +70,71 @@ function loadFunds()
     });
 }
 
+function openAdjustFund(fundName)
+{
+    //Load the details for that fund
+    $.get("http://localhost:7744/api/funds?fundName=" + fundName, function (fund)
+    {
+        loadedFund = fund;
+        $("#txtTransferAdjustment").val("");
+
+        $("#lblTransferFundName").html(fund.Name);
+        $("#divTransferFundColour").css("background-color", fund.Colour);
+        $("#h5FundCurrentAmount").html(fund.Total.toFixed(2));
+        $("#h5FundNewAmount").html(fund.Total.toFixed(2));
+
+        $("#mdlTransferFunds").openModal();
+    });
+}
+
+function determineTotal()
+{
+    var prev = loadedFund.Total;
+    var adjustment = Number($("#txtTransferAdjustment").val());
+
+    if (isNaN(adjustment))
+    {
+        $("#h5FundNewAmount").html("---");
+    }
+    else
+    {
+        $("#h5FundNewAmount").html((prev + adjustment).toFixed(2));
+    }
+}
+
+function makeAdjustment()
+{
+    var prev = loadedFund.Total;
+    var adjustment = Number($("#txtTransferAdjustment").val());
+
+    if (isNaN(adjustment))
+    {
+        Materialize.toast("Adjustment amount is not a valid number", 2000);
+    }
+    else 
+    {
+        var newTotal = prev + adjustment;
+
+        //Do it
+        $.ajax(
+        {
+            url: "http://localhost:7744/api/funds?fundName=" + loadedFund.Name + "&newTotal=" + newTotal,
+            method: "PATCH"
+        })
+    .done(function (data)
+    {
+        //Done 
+        $('#mdlTransferFunds').closeModal();
+        //reload the funds
+        loadFunds();
+
+    }).fail(function (data)
+    {
+        Materialize.toast(data.responseJSON.Message, 2000);
+    });
+    }
+}
+
 function openAddFund()
 {
     $('#mdlFunds').openModal();
@@ -89,7 +165,7 @@ function openEditFund(fundName)
             loadedFund = fund;
 
             //Load it up
-            var titleHtml = fund.Name + " : " + fund.Total;
+            var titleHtml = fund.Name + " : " + fund.Total.toFixed(2);
 
             $("#mdlEditFund #lblFundName").html(titleHtml);
             $("#mdlEditFund #divEditFundColour").css("background-color", fund.Colour);
