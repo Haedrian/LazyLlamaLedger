@@ -1,4 +1,4 @@
-var versionNumber = "4.0";
+var versionNumber = "5.0";
 
 //This is to fix a bug where the datepicker pops up when you change tab
 $(window).on("close", function ()
@@ -9,6 +9,9 @@ $(window).on("close", function ()
 $(document).ready(function ()
 {
     isFirstTime();
+
+    $(".button-collapse").sideNav();
+
 });
 
 function isFirstTime()
@@ -43,6 +46,7 @@ function closeAll()
     $("#divCategories").css("display", "none");
     $("#divLedger").css("display", "none");
     $("#divReports").css("display", "none");
+    $("#divFunds").css("display", "none");
     $("li.active").removeClass("active");
 }
 
@@ -73,4 +77,13 @@ function openAbout()
 {
     $("#txtVersion").text("Version " + versionNumber);
     $("#mdlAbout").openModal();
+}
+
+function openFunds()
+{
+    closeAll();
+    loadFunds();
+
+    $("#divFunds").css("display", "block");
+    $("#liFunds").addClass("active");
 }

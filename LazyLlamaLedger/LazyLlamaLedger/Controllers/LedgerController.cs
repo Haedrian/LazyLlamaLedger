@@ -78,6 +78,26 @@ namespace LazyLlamaLedger.Controllers
         {
             if (le != null && ModelState.IsValid)
             {
+                if (!String.IsNullOrEmpty(le.Fund))
+                {
+                    //Find the fund, and reduce it
+                    var fund = DataHandling.Funds.FirstOrDefault(f => f.Name.Equals(le.Fund, StringComparison.InvariantCultureIgnoreCase));
+
+                    if (fund != null)
+                    {
+                        if (le.IsExpense)
+                        {
+                            fund.Total -= le.Money;
+                        }
+                        else
+                        {
+                            //Maybe you're pouring some money directly into a fund
+                            fund.Total += le.Money;
+                        }
+                        
+                    }
+                }
+
                 DataHandling.AddLedgerEntry(le);
 
                 //Increment the use amount

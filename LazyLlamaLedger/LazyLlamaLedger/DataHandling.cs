@@ -25,6 +25,9 @@ namespace LazyLlamaLedger
 
         public static List<Category> Categories { get; set; }
 
+        public static List<Fund> Funds { get; set; }
+
+        public static List<MonthDetails> ClosedMonths { get; set; }
 
         private static List<LedgerEntry> LoadEntriesFromFile(DateTime yearMonth)
         {
@@ -76,7 +79,6 @@ namespace LazyLlamaLedger
             return Entries.Where(e => e.Date.Month == monthYear.Month && e.Date.Year == monthYear.Year).ToList();
         }
 
-
         public static void AddLedgerEntry(LedgerEntry le)
         {
             lock (fileLock) //This is to prevent a race condition to do with the dirty files
@@ -119,6 +121,8 @@ namespace LazyLlamaLedger
             Categories = new List<Category>();
             DirtyFiles = new List<MonthYearPair>();
             LoadedFiles = new List<MonthYearPair>();
+            Funds = new List<Fund>();
+            ClosedMonths = new List<MonthDetails>();
 
             //We'll load the entries lazily as we need them
 
@@ -146,6 +150,23 @@ namespace LazyLlamaLedger
                     File.Copy(FolderPath + Path.DirectorySeparatorChar + "les.json",FolderPath+Path.DirectorySeparatorChar + "lesBackup.json",true);
                     File.Delete(FolderPath + Path.DirectorySeparatorChar + "les.json");
                 }
+            }
+
+            if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "funds.json"))
+            {
+                //Read it
+                string funds = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "funds.json");
+                var fromFile = JsonConvert.DeserializeObject<List<Fund>>(funds);
+
+                Funds.AddRange(fromFile);
+            }
+
+            if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "months.json"))
+            {
+                //Read it
+                string mths = File.ReadAllText(FolderPath + Path.DirectorySeparatorChar + "months.json");
+
+                ClosedMonths.AddRange(JsonConvert.DeserializeObject<List<MonthDetails>>(mths));
             }
 
             if (File.Exists(FolderPath + Path.DirectorySeparatorChar + "cats.json"))
@@ -223,6 +244,14 @@ namespace LazyLlamaLedger
         private static object fileLock = new object();
 
 
+        public static void FlushFunds()
+        {
+            lock (fileLock)
+            {
+                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "funds.json", JsonConvert.SerializeObject(Funds));
+            }
+        }
+
         public static void FlushLedgers()
         {
             lock (fileLock)
@@ -247,6 +276,15 @@ namespace LazyLlamaLedger
             }
         }
 
+        public static void FlushClosedMonths()
+        {
+            lock(fileLock)
+            {
+                string closedMonths = JsonConvert.SerializeObject(ClosedMonths);
+                File.WriteAllText(FolderPath + Path.DirectorySeparatorChar + "months.json", closedMonths);
+            }
+        }
+
         public static void FlushAll()
         {
             lock (fileLock)
@@ -254,6 +292,10 @@ namespace LazyLlamaLedger
                 FlushLedgers();
 
                 FlushCats();
+
+                FlushFunds();
+
+                FlushClosedMonths();
             }
         }
     }

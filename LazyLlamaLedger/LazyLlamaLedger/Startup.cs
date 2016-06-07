@@ -27,6 +27,12 @@ namespace LazyLlamaLedger
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+            name: "DefaultApi2",
+            routeTemplate: "api/{controller}/",
+            defaults: new {}
+        );
+
             appBuilder.UseWebApi(config);
         }
     }
