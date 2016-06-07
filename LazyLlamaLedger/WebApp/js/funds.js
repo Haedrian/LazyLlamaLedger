@@ -107,7 +107,7 @@ function makeAdjustment()
     var prev = loadedFund.Total;
     var adjustment = Number($("#txtTransferAdjustment").val());
 
-    if (isNaN(adjustment))
+    if (isNaN(adjustment) || adjustment == 0)
     {
         Materialize.toast("Adjustment amount is not a valid number", 2000);
     }
